@@ -1,0 +1,82 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * TPrivilege
+ *
+ * @ORM\Table(name="t_privilege", indexes={@ORM\Index(name="ixfk_privilege_menu", columns={"menu_id"}), @ORM\Index(name="ixfk_privilege_user_group", columns={"user_group_id"})})
+ * @ORM\Entity
+ */
+class TPrivilege
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="p_access", type="smallint", nullable=false)
+     */
+    private $pAccess = '1';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="p_create", type="smallint", nullable=false)
+     */
+    private $pCreate = '1';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="p_retrieve", type="smallint", nullable=false)
+     */
+    private $pRetrieve = '1';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="p_update", type="smallint", nullable=false)
+     */
+    private $pUpdate = '1';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="p_delete", type="smallint", nullable=false)
+     */
+    private $pDelete = '1';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="t_privilege_id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="t_privilege_t_privilege_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $tPrivilegeId;
+
+    /**
+     * @var \AppBundle\Entity\TUserGroup
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\TUserGroup")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="user_group_id", referencedColumnName="user_group_id")
+     * })
+     */
+    private $userGroup;
+
+    /**
+     * @var \AppBundle\Entity\TMenu
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\TMenu")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="menu_id", referencedColumnName="menu_id")
+     * })
+     */
+    private $menu;
+
+
+}
+

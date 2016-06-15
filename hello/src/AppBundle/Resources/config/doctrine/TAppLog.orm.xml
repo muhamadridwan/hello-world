@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\TAppLog" table="t_app_log">
+    <indexes>
+      <index name="ixfk_t_app_log_t_user" columns="activity_user_id"/>
+    </indexes>
+    <unique-constraints>
+      <unique-constraint name="uq_app_log_activity_id" columns="activity_id"/>
+    </unique-constraints>
+    <id name="activityId" type="string" column="activity_id" length="64">
+      <generator strategy="SEQUENCE"/>
+      <sequence-generator sequence-name="t_app_log_activity_id_seq" allocation-size="1" initial-value="1"/>
+    </id>
+    <field name="activity" type="string" column="activity" length="128" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="activityDesc" type="string" column="activity_desc" length="128" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="activityUrl" type="string" column="activity_url" length="128" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="userAgent" type="string" column="user_agent" length="64" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="ipAddress" type="string" column="ip_address" length="15" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="activityTime" type="datetime" column="activity_time" nullable="false"/>
+    <field name="remark" type="string" column="remark" length="255" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <many-to-one field="activityUser" target-entity="TUser" fetch="LAZY">
+      <join-columns>
+        <join-column name="activity_user_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

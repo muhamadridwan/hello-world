@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\Employee" table="employee">
+    <indexes>
+      <index name="ixfk_employee_t_user" columns="user_id"/>
+    </indexes>
+    <unique-constraints>
+      <unique-constraint name="uq_employee_employee_id" columns="employee_id"/>
+    </unique-constraints>
+    <id name="employeeId" type="string" column="employee_id" length="32">
+      <generator strategy="SEQUENCE"/>
+      <sequence-generator sequence-name="employee_employee_id_seq" allocation-size="1" initial-value="1"/>
+    </id>
+    <field name="personalId" type="string" column="personal_id" length="32" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="employeeName" type="string" column="employee_name" length="32" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="employeeFullname" type="string" column="employee_fullname" length="32" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="employeeAddress" type="string" column="employee_address" length="128" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="phoneNumber" type="string" column="phone_number" length="20" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="email" type="string" column="email" length="32" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="joinDate" type="datetime" column="join_date" nullable="true"/>
+    <field name="resignDate" type="datetime" column="resign_date" nullable="true"/>
+    <field name="picture" type="string" column="picture" length="255" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="isActive" type="integer" column="is_active" nullable="true">
+      <options>
+        <option name="unsigned"/>
+        <option name="default">1</option>
+      </options>
+    </field>
+    <many-to-one field="user" target-entity="TUser" fetch="LAZY">
+      <join-columns>
+        <join-column name="user_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

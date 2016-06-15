@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\TPrivilege" table="t_privilege">
+    <indexes>
+      <index name="ixfk_privilege_menu" columns="menu_id"/>
+      <index name="ixfk_privilege_user_group" columns="user_group_id"/>
+    </indexes>
+    <id name="tPrivilegeId" type="integer" column="t_privilege_id">
+      <generator strategy="SEQUENCE"/>
+      <sequence-generator sequence-name="t_privilege_t_privilege_id_seq" allocation-size="1" initial-value="1"/>
+    </id>
+    <field name="pAccess" type="smallint" column="p_access" nullable="false">
+      <options>
+        <option name="unsigned"/>
+        <option name="default">1</option>
+      </options>
+    </field>
+    <field name="pCreate" type="smallint" column="p_create" nullable="false">
+      <options>
+        <option name="unsigned"/>
+        <option name="default">1</option>
+      </options>
+    </field>
+    <field name="pRetrieve" type="smallint" column="p_retrieve" nullable="false">
+      <options>
+        <option name="unsigned"/>
+        <option name="default">1</option>
+      </options>
+    </field>
+    <field name="pUpdate" type="smallint" column="p_update" nullable="false">
+      <options>
+        <option name="unsigned"/>
+        <option name="default">1</option>
+      </options>
+    </field>
+    <field name="pDelete" type="smallint" column="p_delete" nullable="false">
+      <options>
+        <option name="unsigned"/>
+        <option name="default">1</option>
+      </options>
+    </field>
+    <many-to-one field="userGroup" target-entity="TUserGroup" fetch="LAZY">
+      <join-columns>
+        <join-column name="user_group_id" referenced-column-name="user_group_id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="menu" target-entity="TMenu" fetch="LAZY">
+      <join-columns>
+        <join-column name="menu_id" referenced-column-name="menu_id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>
