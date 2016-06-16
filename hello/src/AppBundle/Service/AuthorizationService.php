@@ -4,21 +4,15 @@ use AppBundle\Repository\AuthorizationRepository;
 
 class AuthorizationService
 {
-	
+	private $authRepo;
 	function __construct()
 	{
 		$this->authRepo = new AuthorizationRepository();
 	}
 
-	public function getMenu($user)
+	public function getMenu($userGroupID)
 	{
-		$userGroupID = "ROLE_ANONYMOUS";
-		if($user)
-		{
-			$userGroupID = $user->getUserGroup()->getUserGroupID();
-		}
-
-		return $this->authRepo->getMenu($userGroupID);
+		return $this->authRepo->findByUserGroupID_Menu($userGroupID, "P");
 	}
 }
 

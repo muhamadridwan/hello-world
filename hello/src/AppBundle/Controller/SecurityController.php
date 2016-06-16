@@ -7,11 +7,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
-class SecurityController extends Controller
+class SecurityController extends BaseController
 {
+	function __construct()
+	{
+		parent::__construct();
+	}
 	
 	public function loginAction(Request $request)
 	{
+		$this->authSetup();
 		$authenticationUtils = $this->get('security.authentication_utils');
 		$error = $authenticationUtils->getLastAuthenticationError();
 		$last_username = $authenticationUtils->getLastUsername();
@@ -38,10 +43,9 @@ class SecurityController extends Controller
 		    }
 
 		} 
-		
-		return $this->render("login.html.twig", array(
-			"last_username"=>$last_username,
-			"error"=> $error));
+		$this->resp['error'] = $error;
+		$this->resp['last_username'] = $last_username;
+		return $this->render("login.html.twig", $this->resp);
 	
 	    
 	}

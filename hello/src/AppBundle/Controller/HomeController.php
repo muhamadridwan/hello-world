@@ -12,7 +12,6 @@ class HomeController extends BaseController
 	function __construct()
 	{
 		parent::__construct();
-		
 	}
 
     /**
@@ -21,10 +20,8 @@ class HomeController extends BaseController
     public function indexAction(Request $request)
     {
         $this->authSetup();
-		
-		echo $this->userdata['menu'];
-        return $this->render('default/index.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..'),
-        ]);
+		//print_r($this->userData['menu']);
+        $this->resp['base_dir'] = realpath($this->getParameter('kernel.root_dir').'/..');
+        return $this->render('default/index.html.twig',$this->resp );
     }
 }

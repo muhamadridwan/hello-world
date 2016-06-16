@@ -6,3 +6,19 @@ login:
   defaults: {_controller: AppBundle:Security:login}
 logout:
   path: logout
+
+userIndex:
+  path: administration/user/
+  defaults: {_controller: AppBundle:Administration:userIndex}
+customerIndex:
+  path: administration/customer/
+  defaults: {_controller: AppBundle:Administration:customerIndex}
+orderIndex:
+  path: order/order/
+  defaults: {_controller: AppBundle:Order:orderIndex}
+activeOrderIndex:
+  path: order/activeOrder/
+  defaults: {_controller: AppBundle:Order:activeOrderIndex}
+historyIndex:
+  path: order/history/
+  defaults: {_controller: AppBundle:Order:historyIndex}

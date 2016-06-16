@@ -37,5 +37,7 @@ security:
     access_control:
         # require ROLE_ADMIN for /admin*
         - { path: ^/user, roles: ROLE_SUPERADMIN }
+        - { path: ^/administration, roles: ROLE_SUPERADMIN }
+        - { path: ^/order, roles: ROLE_CUSTOMER }
     
 
