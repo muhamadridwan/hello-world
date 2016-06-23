@@ -82,5 +82,206 @@ class Customer
     private $user;
 
 
-}
 
+    /**
+     * Set personalId
+     *
+     * @param string $personalId
+     *
+     * @return Customer
+     */
+    public function setPersonalId($personalId)
+    {
+        $this->personalId = $personalId;
+
+        return $this;
+    }
+
+    /**
+     * Get personalId
+     *
+     * @return string
+     */
+    public function getPersonalId()
+    {
+        return $this->personalId;
+    }
+
+    /**
+     * Set customerName
+     *
+     * @param string $customerName
+     *
+     * @return Customer
+     */
+    public function setCustomerName($customerName)
+    {
+        $this->customerName = $customerName;
+
+        return $this;
+    }
+
+    /**
+     * Get customerName
+     *
+     * @return string
+     */
+    public function getCustomerName()
+    {
+        return $this->customerName;
+    }
+
+    /**
+     * Set customerFullname
+     *
+     * @param string $customerFullname
+     *
+     * @return Customer
+     */
+    public function setCustomerFullname($customerFullname)
+    {
+        $this->customerFullname = $customerFullname;
+
+        return $this;
+    }
+
+    /**
+     * Get customerFullname
+     *
+     * @return string
+     */
+    public function getCustomerFullname()
+    {
+        return $this->customerFullname;
+    }
+
+    /**
+     * Set customerAddress
+     *
+     * @param string $customerAddress
+     *
+     * @return Customer
+     */
+    public function setCustomerAddress($customerAddress)
+    {
+        $this->customerAddress = $customerAddress;
+
+        return $this;
+    }
+
+    /**
+     * Get customerAddress
+     *
+     * @return string
+     */
+    public function getCustomerAddress()
+    {
+        return $this->customerAddress;
+    }
+
+    /**
+     * Set phoneNumber
+     *
+     * @param string $phoneNumber
+     *
+     * @return Customer
+     */
+    public function setPhoneNumber($phoneNumber)
+    {
+        $this->phoneNumber = $phoneNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get phoneNumber
+     *
+     * @return string
+     */
+    public function getPhoneNumber()
+    {
+        return $this->phoneNumber;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return Customer
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set picture
+     *
+     * @param string $picture
+     *
+     * @return Customer
+     */
+    public function setPicture($picture)
+    {
+        $this->picture = $picture;
+
+        return $this;
+    }
+
+    /**
+     * Get picture
+     *
+     * @return string
+     */
+    public function getPicture()
+    {
+        return $this->picture;
+    }
+
+    /**
+     * Get customerId
+     *
+     * @return string
+     */
+    public function getCustomerId()
+    {
+        return $this->customerId;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \AppBundle\Entity\TUser $user
+     *
+     * @return Customer
+     */
+    public function setUser(\AppBundle\Entity\TUser $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \AppBundle\Entity\TUser
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+}

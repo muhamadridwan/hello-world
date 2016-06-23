@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * TMenu
  *
  * @ORM\Table(name="t_menu", uniqueConstraints={@ORM\UniqueConstraint(name="uq_menu_menu_id", columns={"menu_id"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\TMenuRepository")
  */
 class TMenu
 {

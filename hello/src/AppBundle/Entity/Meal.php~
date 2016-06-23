@@ -68,5 +68,158 @@ class Meal
     private $category;
 
 
-}
 
+    /**
+     * Set mealName
+     *
+     * @param string $mealName
+     *
+     * @return Meal
+     */
+    public function setMealName($mealName)
+    {
+        $this->mealName = $mealName;
+
+        return $this;
+    }
+
+    /**
+     * Get mealName
+     *
+     * @return string
+     */
+    public function getMealName()
+    {
+        return $this->mealName;
+    }
+
+    /**
+     * Set mealDesc
+     *
+     * @param string $mealDesc
+     *
+     * @return Meal
+     */
+    public function setMealDesc($mealDesc)
+    {
+        $this->mealDesc = $mealDesc;
+
+        return $this;
+    }
+
+    /**
+     * Get mealDesc
+     *
+     * @return string
+     */
+    public function getMealDesc()
+    {
+        return $this->mealDesc;
+    }
+
+    /**
+     * Set mealDescIndo
+     *
+     * @param string $mealDescIndo
+     *
+     * @return Meal
+     */
+    public function setMealDescIndo($mealDescIndo)
+    {
+        $this->mealDescIndo = $mealDescIndo;
+
+        return $this;
+    }
+
+    /**
+     * Get mealDescIndo
+     *
+     * @return string
+     */
+    public function getMealDescIndo()
+    {
+        return $this->mealDescIndo;
+    }
+
+    /**
+     * Set mealPrice
+     *
+     * @param integer $mealPrice
+     *
+     * @return Meal
+     */
+    public function setMealPrice($mealPrice)
+    {
+        $this->mealPrice = $mealPrice;
+
+        return $this;
+    }
+
+    /**
+     * Get mealPrice
+     *
+     * @return integer
+     */
+    public function getMealPrice()
+    {
+        return $this->mealPrice;
+    }
+
+    /**
+     * Set discount
+     *
+     * @param integer $discount
+     *
+     * @return Meal
+     */
+    public function setDiscount($discount)
+    {
+        $this->discount = $discount;
+
+        return $this;
+    }
+
+    /**
+     * Get discount
+     *
+     * @return integer
+     */
+    public function getDiscount()
+    {
+        return $this->discount;
+    }
+
+    /**
+     * Get mealId
+     *
+     * @return integer
+     */
+    public function getMealId()
+    {
+        return $this->mealId;
+    }
+
+    /**
+     * Set category
+     *
+     * @param \AppBundle\Entity\MealCategory $category
+     *
+     * @return Meal
+     */
+    public function setCategory(\AppBundle\Entity\MealCategory $category = null)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return \AppBundle\Entity\MealCategory
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+}

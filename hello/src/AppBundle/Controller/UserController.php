@@ -15,6 +15,7 @@ class UserController extends Controller
 	function __construct()
 	{}
 
+
 	/**
 	* @Route("user/", name="userIndex")
 	*/

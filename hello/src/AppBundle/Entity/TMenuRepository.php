@@ -2,21 +2,12 @@
 namespace AppBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\EntityManager;
 
-class AuthorizationRepository 
+class TMenuRepository extends EntityRepository
 {
-	private $em;
-	private $menuRepo;
-	function __construct(EntityManager $em)
+	private function findAllAuthorizedMenu($userGroupID, $menuPID)
 	{
-		$this->em = $em;
-		$this->menuRepo = $this->em->getRepository("AppBundle:TMenu");
-	}
-
-	public function getAuthorizedMenu($userGroupID, $menuPID)
-	{
-		$qb = $this->menuRepo->createQueryBuilder("m");
+		$qb = $this->createQueryBuilder("m");
 		$qb->innerJoin("AppBundle:TPrivilege", "p", "WITH", "m = p.menu");
 		$qb->innerJoin("AppBundle:TUserGroup", "grp", "WITH", "p.userGroup = grp");
 		
@@ -36,7 +27,7 @@ class AuthorizationRepository
 		{
 			foreach($dbResult as $m)
 			{
-				array_push($result,array("m" => $m, "subMenu" => $this->getAuthorizedMenu($userGroupID, $m->getMenuId())));
+				array_push($result,array("m" => $m, "subMenu" => $this->findByUserGroupID_Menu($userGroupID, $m->getMenuId())));
 			}	
 		}
 
