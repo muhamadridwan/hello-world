@@ -1,1 +1,0 @@
-[2016-06-24 06:44:48] php.DEBUG: unlink(web/bundles/framework): No such file or directory {"type":2,"file":"/app/hello/vendor/symfony/symfony/src/Symfony/Component/Filesystem/Filesystem.php","line":178,"level":28928} []
