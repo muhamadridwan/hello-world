@@ -2,21 +2,15 @@
 namespace AppBundle\Service;
 use AppBundle\Repository\AuthorizationRepository;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 
 class AuthorizationService
 {
-	private $container;
-	private $om;
-	private $entityClass;
+	private $em;
 	private $authRepo;
-	function __construct( EntityManager $om, $entityClass)
+	function __construct( EntityManager $em)
 	{
-		//$this->container = $container;
-		$this->om = $om;
-		$this->entityClass = $entityClass;
-		$this->authRepo = new AuthorizationRepository($this->om);
+		$this->em = $em;
+		$this->authRepo = new AuthorizationRepository($this->em);
 	}
 
 	public function getMenu($userGroupID)

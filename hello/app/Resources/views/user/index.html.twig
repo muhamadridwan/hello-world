@@ -29,15 +29,15 @@
             <td>{{ user.username }}</td>
             <td>{{ user.getUserGroup().getUserGroupID() }}</td>
             <td>{{ user.email }}</td>
-            <td>
+            {#<td>
             
-            {#<img class="img-thumbnail center-block" width="100em" src="{{asset('bundles/images/user/')}}{{user.getPicture()}}" />
-            #}
-            </td>
+            <img class="img-thumbnail center-block" width="100em" src="{{asset('bundles/images/user/')}}{{user.getPicture()}}" />
+            
+            </td>#}
             <td>
                 {# if session.logged_in #}
-                <a href="{{ path('editUser', {'id': user.username}) }}"><span class="glyphicon glyphicon-pencil" aria-hidden="true" style="margin-right:0.3em"></span></a>
-                <a href="{{ path('deleteUser', {'id': user.username}) }}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                <a href="{{ path('editUser', {'id': user.id}) }}"><span class="glyphicon glyphicon-pencil" aria-hidden="true" style="margin-right:0.3em"></span></a>
+                <a href="{{ path('deleteUser', {'id': user.id}) }}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                 {# endif #}
             </td>
         </tr>

@@ -19,7 +19,7 @@ class BaseController extends Controller
 		//$this->authService = new AuthorizationService();	
 	}
 
-	protected function AuthSetup()
+	protected function authSetup()
 	{
 		$userGroupID = "ROLE_ANONYMOUS";
 		if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) 

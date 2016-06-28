@@ -11,15 +11,6 @@ class AdministrationController extends BaseController
 		parent::__construct();
 	}
 
-	public function userIndexAction()
-	{
-		$this->authSetup();
-		$users = $this->getDoctrine()
-        ->getRepository('AppBundle:TUser')->findAll('Agus');
-        
-		$this->resp["users"] = $users;
-		return $this->render("user/index.html.twig", $this->resp);
-	}
 
 	public function customerIndexAction()
 	{

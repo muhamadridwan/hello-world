@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * TUser
@@ -17,13 +18,18 @@ class TUser implements UserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(name="username", type="string", length=32, nullable=false)
+     * 
+     * @Assert\NotBlank()
      */
+     
     private $username;
 
     /**
      * @var string
      *
      * @ORM\Column(name="password", type="string", length=64, nullable=false)
+     * 
+     *
      */
     private $password;
 
@@ -58,6 +64,7 @@ class TUser implements UserInterface, \Serializable
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user_group_id", referencedColumnName="user_group_id")
      * })
+     * @Assert\NotBlank()
      */
     private $userGroup;
 
@@ -251,4 +258,6 @@ class TUser implements UserInterface, \Serializable
     {
         return $this->isActive;
     }
+
+
 }

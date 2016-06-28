@@ -1,19 +1,20 @@
 {% extends 'base.html.twig' %}
 {% block body %}
 {# if session.logged_in #}
-<form enctype="multipart/form-data" action="{% if act == 'add' %}{{ path('addUser') }} {% else %} {{ path('editUser',{'id': user.username}) }} {% endif %}" method=post class="laminarin-form">
+{% if error %}
+<div class="error">{{ error }}</div>
+{% endif %}
+<form enctype="multipart/form-data" action="{% if act == 'add' %}{{ path('addUser') }} {% else %} {{ path('editUser',{'id': user.id}) }} {% endif %}" method=post class="laminarin-form">
     <dl>
         <dt>Username:</dt>
-        <dd><input type=text size=30 name="username" value="{{user.getUsername()}}"></dd>
-        <dt>Fullname:</dt>
-        <dd><input type=text size=30 name="fullname" value="{{user.getFullname()}}"></dd>
-        <dt>Phone Number:</dt>
-        <dd><input type=text size=30 name="phoneNumber" value="{{user.getPhoneNumber()}}"></dd>
-        <dt>Profile Picture:</dt>
-        <dd><input type="file" elm-view="#profilepic" name="picture" class="uploadfile" value="{{asset('/bundles/images/user/')}}{{user.getPicture()}}"/>
-                   <img alt="" id="profilepic" src="{{asset('/bundles/images/user/')}}{{user.getPicture()}}" /></dd>
-        <dd><input type=submit value=Save></dd>
+        <dd>{{ form_widget(form.username) }}</dd>
+        <dt>User Group:</dt>
+        <dd>{{ form_widget(form.userGroup) }}</dd>
+        <dt>Email:</dt>
+        <dd>{{ form_widget(form.email) }}</dd>
+        <dd>{{ form_widget(form.save) }}</dd>
     </dl>
 </form>
+
   {# endif #}
 {% endblock %}
