@@ -13,11 +13,7 @@ class BaseController extends Controller
 	protected $authService;
 	protected $container;
 	function __construct()
-	{
-		//parent::__construct();
-		//echo $request->getPathInfo();
-		//$this->authService = new AuthorizationService();	
-	}
+	{}
 
 	protected function authSetup()
 	{

@@ -3,6 +3,7 @@
 parameters:
     app.bundle.service.authorization.class: AppBundle\Service\AuthorizationService
     app.bundle.service.user.management.class: AppBundle\Service\UserManagementService
+    app.bundle.service.customer.management.class: AppBundle\Service\CustomerManagementService
 
 
 services:
@@ -12,6 +13,10 @@ services:
     app.bundle.user.management.service:
       class: %app.bundle.service.user.management.class%
       arguments: ["@doctrine.orm.entity_manager"]
+    app.bundle.customer.management.service:
+      class: %app.bundle.service.customer.management.class%
+      arguments: ["@doctrine.orm.entity_manager"]
+    
 #     
 #    service_name:
 #        class: AppBundle\Directory\ClassName "@service_container",

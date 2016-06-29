@@ -36,8 +36,13 @@ security:
                 target: /
     access_control:
         # require ROLE_ADMIN for /admin*
-        - { path: ^/user, roles: ROLE_SUPERADMIN }
         - { path: ^/administration, roles: ROLE_SUPERADMIN }
-        - { path: ^/order, roles: ROLE_CUSTOMER }
+        - { path: ^/administration/employee, roles: ROLE_ADMIN }
+        - { path: ^/administration/customer, roles: ROLE_ADMIN }
+        - { path: ^/orders, roles: ROLE_CUSTOMER }
+        - { path: ^/orders/activeOrder, roles: ROLE_ADMIN}
+        - { path: ^/orders/history, roles: ROLE_ADMIN}
+        - { path: ^/myprofile, roles: ROLE_CUSTOMER}
+
     
 

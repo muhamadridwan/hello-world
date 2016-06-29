@@ -1,26 +1,62 @@
-<?php 
+<?php
 namespace AppBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityManager;
 
-class CustomerReposotory extends EntityRepository
+class CustomerRepository 
 {
-	public function getAllCustomer($limit, $start)
+	private $em;
+	private $customerRepo;
+	function __construct(EntityManager $em)
 	{
-		$query = $this->getEntityManager->createQuery("SELECT c FROM AppBundle:Customer c ORDER BY c.customerName ASC LIMIT ?1 OFFSET ?2 ");
-
-		$query->setParameter(1, $limit);
-		$query->setParameter(2, $start);
-		
-		return $query->getResult();
+		$this->em = $em;
+		$this->customerRepo = $this->em->getRepository("AppBundle:Customer");
 	}
 
-	public function getTotalCustomer()
+	public function addCustomer($customer)
 	{
-		 return $this->getEntityManager()
-        ->createQuery('SELECT COUNT(c) FROM AppBundle:Customer c')
-        ->getSingleScalarResult();
+		$this->em->persist($customer);
+		$this->em->flush();
+	}
+
+	public function deleteCustomer($customer_id)
+	{
+		$user = $this->getCustomerById($customer_id);
+		$this->em->remove($user);
+		$this->em->flush();
+	}
+
+	public function getCustomerById($customer_id)
+	{
+		$qb = $this->customerRepo->createQueryBuilder("c");
+		$qb->where($qb->expr()->eq("c.customerId",":customerId"));
+
+		$qb->setParameters(array(
+			"customerId"=> $customer_id));
 		
+		return $qb->getQuery()->getSingleResult();
+
+	}
+
+
+	public function editCustomer($customer, $modifiedCustomer)
+	{
+		$customer->setUser($modifiedCustomer->getUser());
+		$customer->setPersonalId($modifiedCustomer->getPersonalId());
+		$customer->setCustomerName($modifiedCustomer->getCustomerName());
+		$customer->setCustomerFullname($modifiedCustomer->getCustomerFullname());
+		$customer->setCustomerAddress($modifiedCustomer->getCustomerAddress());
+		$customer->setPhoneNumber($modifiedCustomer->getPhoneNumber());
+		$customer->setEmail($modifiedCustomer->getEmail());
+		$customer->setPicture($modifiedCustomer->getPicture());
+		
+		$this->em->flush();
+	}
+
+	public function getAllCustomer()
+	{
+		return $this->customerRepo->findAll();
 	}
 }
 ?>

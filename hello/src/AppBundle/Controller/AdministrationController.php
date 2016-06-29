@@ -16,6 +16,17 @@ class AdministrationController extends BaseController
 	{
 		return new Response("Sorry, this page is under construction.");
 	}
+
+	public function adminIndexAction()
+	{
+		return new Response("Sorry, this page is under construction.");
+	}
+
+	public function employeeIndexAction()
+	{
+		return new Response("Sorry, this page is under construction.");
+	}
+
 }
 
 

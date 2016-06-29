@@ -1,0 +1,59 @@
+
+{% extends 'base.html.twig' %}
+{% block title %}Customer Management{% endblock %}
+     
+{% block body %}
+
+<!--<ul class=entries>-->
+<div class="panel panel-default">
+    <div class="panel-heading" style="height:3em;padding:0.2em;padding-right:1em;">
+    
+    <a href="{{ path('addCustomer') }}"><button type="button" class="btn btn-primary pull-right">Add</button></a>
+    
+    </div>
+    <!-- Table -->
+    <table class="table">
+        <tr>
+            <th>No</th>
+            <th>Customer ID</th>
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Phone Number</th>
+            <th>Email</th>
+            <th class="align-center">Picture</th>
+            <th>Action</th>
+        </tr>
+        {% set idx = 1 %}
+        {% for customer in customers %}
+        <tr>
+            <td>{{idx}}</td>
+            <td>{{ customer.customerId }}</td>
+            <td>{{ customer.getUser().getUsername() }}</td>
+            <td>{{ customer.customerFullname }}</td>
+            <td>{{ customer.customerAddress }}</td>
+            <td>{{ customer.phoneNumber }}</td>
+            <td>{{ customer.email }}</td>
+            <td>
+            
+            <img class="img-thumbnail center-block" width="100em" src="{{asset('bundles/images/customer/')}}{{customer.getPicture()}}" />
+            
+            </td>
+            <td>
+                {# if session.logged_in #}
+                <a href="{{ path('editCustomer', {'id': customer.customerId}) }}"><span class="glyphicon glyphicon-pencil" aria-hidden="true" style="margin-right:0.3em"></span></a>
+                <a href="{{ path('deleteCustomer', {'id': customer.customerId}) }}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                {# endif #}
+            </td>
+        </tr>
+        {% set idx = idx +1 %}
+        {% else %}
+        <em>Unbelievable.  No entries here so far</em>
+        {% endfor %}
+    </table>
+</div>
+    
+{% endblock %}
+
+
+

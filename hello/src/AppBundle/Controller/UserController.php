@@ -22,11 +22,10 @@ class UserController extends BaseController
 
 	}
 
-	public function userIndexAction()
+	public function indexAction()
 	{
 		$this->authSetup();
-		$users = $this->getDoctrine()
-        ->getRepository('AppBundle:TUser')->findAll('Agus');
+		$users = $this->container->get('app.bundle.user.management.service')->getAllUser();
         
 		$this->resp["users"] = $users;
 		return $this->render("user/index.html.twig", $this->resp);

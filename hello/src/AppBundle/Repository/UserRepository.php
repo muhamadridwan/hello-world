@@ -29,7 +29,7 @@ class UserRepository
 
 	public function getUserByUsername($username)
 	{
-		$qb = $this->menuRepo->createQueryBuilder("u");
+		$qb = $this->userRepo->createQueryBuilder("u");
 		$qb->where($qb->expr()->eq("u.username",":username"));
 
 		$qb->setParameters(array(
@@ -49,6 +49,24 @@ class UserRepository
 		$user->setUsername($modifiedUser->getUsername());
 		$user->setEmail($modifiedUser->getEmail());
 		$this->em->flush();
+	}
+
+	public function getAllUser()
+	{
+		return $this->userRepo->findAll();
+	}
+
+	public function getUserByUserGroupId($userGroupId)
+	{
+		$qb = $this->userRepo->createQueryBuilder("u");
+		$qb->innerJoin("AppBundle:TUserGroup", "grp", "WITH", "u.userGroup = grp");
+		
+		$qb->where($qb->expr()->eq("grp.userGroupId",":userGroupId"));
+
+		$qb->setParameters(array(
+			"userGroupId"=> $userGroupId));
+		
+		return $qb->getQuery()->getResult();
 	}
 }
 ?>

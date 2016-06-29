@@ -32,6 +32,16 @@ class UserManagementService
 	{
 		$this->userRepo->editUser($user, $modifiedUser);
 	}
+
+	public function getAllUser()
+	{
+		return $this->userRepo->getAllUser();
+	}
+
+	public function getAllCustomerUser()
+	{
+		return $this->userRepo->getUserByUserGroupId("ROLE_CUSTOMER");
+	}
 }
 
 ?>

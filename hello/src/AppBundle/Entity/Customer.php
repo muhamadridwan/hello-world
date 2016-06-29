@@ -66,8 +66,6 @@ class Customer
      *
      * @ORM\Column(name="customer_id", type="string", length=32)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="customer_customer_id_seq", allocationSize=1, initialValue=1)
      */
     private $customerId;
 
@@ -259,6 +257,19 @@ class Customer
     public function getCustomerId()
     {
         return $this->customerId;
+    }
+
+    /**
+     * Set picture
+     *
+     * @param string $customerId
+     *
+     * @return Customer
+     */
+    public function setCustomerId($customerId)
+    {
+        $this->customerId = $customerId;
+        return $this;
     }
 
     /**
