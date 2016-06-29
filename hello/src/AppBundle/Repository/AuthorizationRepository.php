@@ -23,7 +23,7 @@ class AuthorizationRepository
 		$qb->where($qb->expr()->eq("m.isActive","1"));
 		$qb->andWhere($qb->expr()->eq("grp.userGroupId", ":userGroupID"));
 		$qb->andWhere($qb->expr()->eq("m.menuPid", ":menuPID"));
-
+		$qb->orderBy('m.menuSeq', 'ASC');
 		$qb->setParameters(array(
 			"userGroupID"=> $userGroupID,
 			"menuPID" => $menuPID));

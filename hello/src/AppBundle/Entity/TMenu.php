@@ -71,7 +71,12 @@ class TMenu
      */
     private $menuId;
 
-
+	/**
+     * @var integer
+     *
+     * @ORM\Column(name="menu_seq", type="integer", nullable=false)
+     */
+    private $menuSeq = '1';
 
     /**
      * Set menuPid
@@ -249,5 +254,29 @@ class TMenu
     public function getMenuId()
     {
         return $this->menuId;
+    }
+	
+	/**
+     * Set menuSeq
+     *
+     * @param integer $menuSeq
+     *
+     * @return TMenu
+     */
+    public function setMenuSeq($menuSeq)
+    {
+        $this->menuSeq = $menuSeq;
+
+        return $this;
+    }
+
+    /**
+     * Get menuSeq
+     *
+     * @return integer
+     */
+    public function getMenuSeq()
+    {
+        return $this->menuSeq;
     }
 }

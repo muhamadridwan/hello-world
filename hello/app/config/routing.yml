@@ -46,7 +46,7 @@ employeeIndex:
   path: administration/employeeIndex/
   defaults: {_controller: AppBundle:Administration:employeeIndex}
 
-order:
+orders:
   path: orders/
   defaults: {_controller: AppBundle:Order:orderIndex}
 orderIndex:

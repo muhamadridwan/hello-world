@@ -44,5 +44,11 @@
         <option name="default">1</option>
       </options>
     </field>
+	<field name="menuSeq" type="integer" column="menu_seq" nullable="false">
+      <options>
+        <option name="unsigned"/>
+        <option name="default">1</option>
+      </options>
+    </field>
   </entity>
 </doctrine-mapping>
