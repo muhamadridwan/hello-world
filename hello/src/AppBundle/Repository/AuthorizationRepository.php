@@ -3,7 +3,7 @@ namespace AppBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManager;
-
+use Doctrine\ORM\Query\ResultSetMapping;
 class AuthorizationRepository 
 {
 	private $em;
@@ -48,23 +48,31 @@ class AuthorizationRepository
 
 	public function getMenuPrivilegeByUsergoupId($userGroupID)
 	{
-		$qb = $this->em->createNativeQuery("
-			SELECT 	
-				a.menu_id, a.menu, a.menu_pid, b.p_access, 
-				b.p_create, b.p_retrieve, b.p_update, b.p_delete
-			FROM	
-				t_menu a
-			LEFT JOIN t_privilege b  on b.menu_id = a.menu_id and b.user_group_id = :userGroupID
-			WHERE 
-				a.is_active = 1
-			ORDER BY a.menu_seq
-			"
-			);
-		$qb->setParameters(array(
-			"userGroupID"=> $userGroupID));
+		$sql = "
+		SELECT 	
+			a.menu_id AS menu_id, 
+			a.menu AS menu, 
+			a.menu_pid AS menu_pid,
+			:userGroupID AS user_group_id,
+			CASE WHEN b.p_access IS NULL THEN 0 ELSE b.p_access END AS p_access, 
+			CASE WHEN b.p_create IS NULL THEN 0 ELSE b.p_create END AS p_create, 
+			CASE WHEN b.p_retrieve IS NULL THEN 0 ELSE b.p_retrieve END AS p_retrieve, 
+			CASE WHEN b.p_update IS NULL THEN 0 ELSE b.p_update END AS p_update, 
+			CASE WHEN b.p_delete IS NULL THEN 0 ELSE b.p_delete END AS p_delete
+		FROM	
+			t_menu a
+		LEFT JOIN t_privilege b  on b.menu_id = a.menu_id and b.user_group_id = :userGroupID
+		WHERE 
+			a.is_active = 1
+		ORDER BY a.menu_seq
+		";
+	
+		$params = array('userGroupID'=>$userGroupID);
 		
-		$dbResult = $qb->getQuery()->getArrayResult();
-
+		$stmt = $this->em->getConnection()->prepare($sql);
+		$stmt->execute($params);
+		$dbResult = $stmt->fetchAll();
+		//print_r($dbResult);
 		return $dbResult;
 	}
 }

@@ -15,42 +15,44 @@
         {{ form_end(form) }}
     </div>
     {% if userPrivilegeMenu is defined %}
-    <table class="table">
-        <tr>
-            <th>No</th>
-            <th>User Group ID</th>
-            <th>User Group Name</th>
-            <th>Description</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-        {% set idx = 1 %}
-        {% if usergroup is defined %}
-        {% for usergroup in usergroups %}
-        <tr>
-            <td>{{idx}}</td>
-            <td>{{ usergroup.userGroupId }}</td>
-            <td>{{ usergroup.getUserGroupName() }}</td>
-            <td>{{ usergroup.userGroupDesc }}</td>
-            <td>
-                {% if usergroup.isActive %}
-                Active
-                {% else %}
-                Non-Active
-                {% endif %} </td>
-            <td>
-                {# if session.logged_in #}
-                <a href="{{ path('editUsergroup', {'id': usergroup.userGroupId}) }}"><span class="glyphicon glyphicon-pencil" aria-hidden="true" style="margin-right:0.3em"></span></a>
-                <a href="{{ path('deleteUsergroup', {'id': usergroup.userGroupId}) }}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
-                {# endif #}
-            </td>
-        </tr>
-        {% set idx = idx +1 %}
-        {% else %}
+    <table  class="table">
+		<thead>
+			<tr><th rowspan="2" width="32">No</th>
+				<th rowspan="2" width="200">Menu</th>
+				<th colspan="5">Privilege</th>
+			</tr>
+			<tr><th width="50">Access</th>
+				<th width="50">Retrieve</th>
+				<th width="50">Create</th>
+				<th width="50">Update</th>
+				<th width="50">Delete</th>
+			</tr>
+		</thead>
+		<tbody>
+		{% set idx = 1 %}
+		{% for privilege in userPrivilegeMenu %}
+	        <tr {{privilege['menu_pid']}}">
+				<td class="center">{{idx}}</td>
+				<td>{% if privilege['menu_id'] == 'P' %}&nbsp;&nbsp;&nbsp;{% endif %}{{privilege['menu']}}</td>
+				{% if privilege['menu_pid'] != 'P' %}
+				<td><input class="postit acc[{{privilege['menu_id']}}]" type="checkbox" {% if privilege['p_access'] %} checked="checked" {% endif %}"  /></td>
+				<td><input class="postit ret[{{privilege['menu_id']}}]" type="checkbox" {% if privilege['p_retrieve'] %} checked="checked" {% endif %}"  /></td>
+				<td><input class="postit cre[{{privilege['menu_id']}}]" type="checkbox" {% if privilege['p_create'] %} checked="checked" {% endif %}"  /></td>
+				<td><input class="postit upd[{{privilege['menu_id']}}]" type="checkbox" {% if privilege['p_update'] %} checked="checked" {% endif %}"  /></td>
+				<td><input class="postit del[{{privilege['menu_id']}}]" type="checkbox" {% if privilege['p_delete'] %} checked="checked" {% endif %}"  /></td>
+				
+				{% else %}
+				<td>
+				<input class="postit mmn[{{privilege['menu_id']}}] pid t{{privilege['menu_id']}}" type="checkbox" {% if privilege['p_access'] %} checked="checked"{% endif %}"/></td> {# onchange="check_submenu(this,{$td.menu_id}) #}
+				<td colspan="4">&nbsp;</td>
+				{% endif %}
+			</tr>
+			{% set idx = idx +1 %}
+		{% else %}
         <em>Unbelievable.  No entries here so far</em>
-        {% endfor %}
-        {% endif %}
-    </table>
+		{% endfor %}
+		</tbody>
+	</table>
     {% endif %}
 </div>
     
