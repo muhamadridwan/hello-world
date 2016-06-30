@@ -42,6 +42,11 @@ class UserManagementService
 	{
 		return $this->userRepo->getUserByUserGroupId("ROLE_CUSTOMER");
 	}
+
+	public function getAllAdminUser()
+	{
+		return $this->userRepo->getUserByUserGroupId("ROLE_ADMIN");
+	}
 }
 
 ?>

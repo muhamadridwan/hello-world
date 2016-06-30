@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+{% block title %}Employee Management{% endblock %}
+{% block body %}
+{# if session.logged_in #}
+{% if error %}
+<div class="error">{{ error }}</div>
+{% endif %}
+<form enctype="multipart/form-data" action="{% if act == 'add' %}{{ path('addEmployee') }} {% else %} {{ path('editEmployee',{'id': employee.employeeId}) }} {% endif %}" method=post class="laminarin-form">
+    <dl>
+        <dt>Identity ID:</dt>
+        <dd>{{ form_widget(form.personalId) }}</dd>
+        <dt>Name:</dt>
+        <dd>{{ form_widget(form.employeeName) }}</dd>
+        <dt>Fullname:</dt>
+        <dd>{{ form_widget(form.employeeFullname) }}</dd>
+        {#
+        <dt>User ID:</dt>
+        <dd>{{ form_widget(form.user) }}</dd>
+        #}
+        <dt>Address:</dt>
+        <dd>{{ form_widget(form.employeeAddress) }}</dd>
+        <dt>Phone Number:</dt>
+        <dd>{{ form_widget(form.phoneNumber) }}</dd>
+        <dt>Email:</dt>
+        <dd>{{ form_widget(form.email) }}</dd>
+        <dt>Picture:</dt>
+        <dd>{{ form_widget(form.picture) }}</dd>
+        <dd><img id="cust-pic-preview" class="img-thumbnail" width="200em" onerror="getDefaultImage(this)" src="{{asset('bundles/images/employee/')}}{{employee.getPicture()}}" />
+        </dd>
+        <dd>{{ form_widget(form.save) }}</dd>
+    </dl>
+</form>
+
+  {# endif #}
+{% endblock %}

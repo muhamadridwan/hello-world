@@ -17,6 +17,11 @@ class AuthorizationService
 	{
 		return $this->authRepo->getAuthorizedMenu($userGroupID, "P");
 	}
+
+	public function getMenuPrivilageByUserGroupId($userGroupId)
+	{
+		return $this->authRepo->getMenuPrivilegeByUsergoupId($userGroupId);
+	}
 }
 
 ?>

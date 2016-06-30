@@ -32,5 +32,17 @@ class HomeController extends BaseController
         return $this->render('default/index.html.twig',$this->resp );
     }
 
+    /*$image = $request->files->get('picture');
+		    if($image)
+		    {
+		    	$fileName = $image->getClientOriginalName();
+		    	$image->move($this->get('kernel')->getRootDir().'/../web/bundles/images/user/', $fileName);
+
+		    	$user->setPicture($fileName);
+		    
+		    }
+		    $user->setUsername($request->request->get("username"));
+		    */
+
 
 }

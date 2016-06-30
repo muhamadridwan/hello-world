@@ -23,7 +23,7 @@ class CustomerController extends BaseController
 		$customers = $this->container->get('app.bundle.customer.management.service')->getAllCustomer();
         
 		$this->resp["customers"] = $customers;
-		return $this->render("customer/index.html.twig", $this->resp);
+		return $this->render("administration/customer/index.html.twig", $this->resp);
 	}
 
 	public function addAction(Request $request)
@@ -72,7 +72,7 @@ class CustomerController extends BaseController
 		    	$picture = $form['picture']->getData();
 		    	$serverDir = $this->get('kernel')->getRootDir().'/../web/bundles/images/customer/';		    	
 		    	
-		    	$filename = "cust-".time()."-".$picture->getClientOriginalName();
+		    	$filename = $newCustomer->getCustomerId()."-".time().".".$picture->getClientOriginalExtension();
 		    	$picture->move($serverDir, $filename);
 		    	$newCustomer->setPicture($filename);
 		        $this->container->get('app.bundle.customer.management.service')->addCustomer($newCustomer);
@@ -84,7 +84,7 @@ class CustomerController extends BaseController
         $this->resp["customer"] = $customer;
         $this->resp["act"] = "add";
         $this->resp['error'] = $error;
-		return $this->render("customer/customer_form.html.twig", $this->resp);
+		return $this->render("administration/customer/customer_form.html.twig", $this->resp);
 		
 	}
 
@@ -133,6 +133,12 @@ class CustomerController extends BaseController
 		    }
 		    else
 		    {
+		        $picture = $form['picture']->getData();
+		    	$serverDir = $this->get('kernel')->getRootDir().'/../web/bundles/images/customer/';		    	
+		    	
+		    	$filename = $customer->getCustomerId()."-".time().".".$picture->getClientOriginalExtension();
+		    	$picture->move($serverDir, $filename);
+		    	$modifiedCustomer->setPicture($filename);
 		        $this->container->get('app.bundle.customer.management.service')->editCustomer($customer, $modifiedCustomer);
 		        return $this->redirectToRoute("customerIndex");
 		    }
@@ -145,7 +151,7 @@ class CustomerController extends BaseController
 	        $this->resp["customer"] = $customer;
 	        $this->resp["act"] = "edit";
 	        $this->resp['error'] = $error;
-			return $this->render("customer/customer_form.html.twig", $this->resp);
+			return $this->render("administration/customer/customer_form.html.twig", $this->resp);
 		}
 
 	}
@@ -153,6 +159,7 @@ class CustomerController extends BaseController
 	
 	public function deleteAction($id)
 	{
+		$picturePath = $this->container->get('app.bundle.customer.management.service')->getCustomerById($id);
 		$this->container->get('app.bundle.customer.management.service')->deleteCustomer($id);
 		return $this->redirectToRoute("customerIndex");
 	}

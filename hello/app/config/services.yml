@@ -4,7 +4,9 @@ parameters:
     app.bundle.service.authorization.class: AppBundle\Service\AuthorizationService
     app.bundle.service.user.management.class: AppBundle\Service\UserManagementService
     app.bundle.service.customer.management.class: AppBundle\Service\CustomerManagementService
-
+    app.bundle.service.employee.management.class: AppBundle\Service\EmployeeManagementService
+    app.bundle.service.usergroup.management.class: AppBundle\Service\UsergroupManagementService
+    
 
 services:
     app.bundle.authorization.service:
@@ -15,6 +17,12 @@ services:
       arguments: ["@doctrine.orm.entity_manager"]
     app.bundle.customer.management.service:
       class: %app.bundle.service.customer.management.class%
+      arguments: ["@doctrine.orm.entity_manager"]
+    app.bundle.employee.management.service:
+      class: %app.bundle.service.employee.management.class%
+      arguments: ["@doctrine.orm.entity_manager"]
+    app.bundle.usergroup.management.service:
+      class: %app.bundle.service.usergroup.management.class%
       arguments: ["@doctrine.orm.entity_manager"]
     
 #     

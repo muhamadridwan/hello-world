@@ -22,26 +22,17 @@ class SecurityController extends BaseController
 		$last_username = $authenticationUtils->getLastUsername();
 		if($request->getMethod()=='POST')
 		{
-			$error = '';
 			$username = $request->request->get("username");
 			$passwd = $request->request->get("password");
 			$em = $this->getDoctrine()->getManager();
 		    $user = $em->getRepository('AppBundle:TUser')->find($username);
-		    if (!$user) {
-		        $error =
-		            'Invalide username '.$username;
-		    }
-
-		    if($user->getPassword()!=$passwd)
+		    if ($user) 
 		    {
-		    	$error =
-		            'Invalide password.';
+		        if($user->getPassword()==$passwd)
+			    {
+			    	return redirectToRoute("homepage");
+			    }
 		    }
-		    else
-		    {
-		    	return redirectToRoute("homepage");
-		    }
-
 		} 
 		$this->resp['error'] = $error;
 		$this->resp['last_username'] = $last_username;

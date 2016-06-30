@@ -87,8 +87,6 @@ class Employee
      *
      * @ORM\Column(name="employee_id", type="string", length=32)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="employee_employee_id_seq", allocationSize=1, initialValue=1)
      */
     private $employeeId;
 
@@ -342,6 +340,20 @@ class Employee
     public function getIsActive()
     {
         return $this->isActive;
+    }
+
+    /**
+     * Set employeeId
+     *
+     * @param string $employeeId
+     *
+     * @return Employee
+     */
+    public function setEmployeeId($employeeId)
+    {
+        $this->employeeId = $employeeId;
+
+        return $this;
     }
 
     /**

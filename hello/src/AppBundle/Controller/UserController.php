@@ -28,7 +28,7 @@ class UserController extends BaseController
 		$users = $this->container->get('app.bundle.user.management.service')->getAllUser();
         
 		$this->resp["users"] = $users;
-		return $this->render("user/index.html.twig", $this->resp);
+		return $this->render("administration/user/index.html.twig", $this->resp);
 	}
 
 	public function addAction(Request $request)
@@ -85,7 +85,7 @@ class UserController extends BaseController
         $this->resp["user"] = $user;
         $this->resp["act"] = "add";
         $this->resp['error'] = $error;
-		return $this->render("user/user_form.html.twig", $this->resp);
+		return $this->render("administration/user/user_form.html.twig", $this->resp);
 		
 	}
 
@@ -136,7 +136,7 @@ class UserController extends BaseController
 	        $this->resp["user"] = $user;
 	        $this->resp["act"] = "edit";
 	        $this->resp['error'] = $error;
-			return $this->render("user/user_form.html.twig", $this->resp);
+			return $this->render("administration/user/user_form.html.twig", $this->resp);
 		}
 
 	}

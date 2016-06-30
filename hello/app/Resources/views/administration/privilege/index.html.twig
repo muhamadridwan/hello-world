@@ -1,0 +1,60 @@
+
+{% extends 'base.html.twig' %}
+{% block title %}User Group Management{% endblock %}
+     
+{% block body %}
+
+<!--<ul class=entries>-->
+<div class="panel panel-default">
+    <div class="panel-heading" style="height:3em;padding:0.2em;padding-right:1em;">
+        {#<form enctype="multipart/form-data" action="{{ path('loadUserPrivilege') }}" method="post" >
+            
+        </form>#}
+        {{ form_start(form) }}
+            {{ form_widget(form.usergroup) }} {{ form_widget(form.save) }}
+        {{ form_end(form) }}
+    </div>
+    {% if userPrivilegeMenu is defined %}
+    <table class="table">
+        <tr>
+            <th>No</th>
+            <th>User Group ID</th>
+            <th>User Group Name</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        {% set idx = 1 %}
+        {% if usergroup is defined %}
+        {% for usergroup in usergroups %}
+        <tr>
+            <td>{{idx}}</td>
+            <td>{{ usergroup.userGroupId }}</td>
+            <td>{{ usergroup.getUserGroupName() }}</td>
+            <td>{{ usergroup.userGroupDesc }}</td>
+            <td>
+                {% if usergroup.isActive %}
+                Active
+                {% else %}
+                Non-Active
+                {% endif %} </td>
+            <td>
+                {# if session.logged_in #}
+                <a href="{{ path('editUsergroup', {'id': usergroup.userGroupId}) }}"><span class="glyphicon glyphicon-pencil" aria-hidden="true" style="margin-right:0.3em"></span></a>
+                <a href="{{ path('deleteUsergroup', {'id': usergroup.userGroupId}) }}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                {# endif #}
+            </td>
+        </tr>
+        {% set idx = idx +1 %}
+        {% else %}
+        <em>Unbelievable.  No entries here so far</em>
+        {% endfor %}
+        {% endif %}
+    </table>
+    {% endif %}
+</div>
+    
+{% endblock %}
+
+
+

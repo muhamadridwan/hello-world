@@ -42,10 +42,47 @@ deleteCustomer:
 adminIndex:
   path: administration/admin/
   defaults: {_controller: AppBundle:Administration:adminIndex}
+addAdmin:
+  path: administration/admin/add/
+  defaults: {_controller: AppBundle:Administration:addAdmin}
+  methods:  [GET, POST]
+deleteAdmin:
+  path: administration/admin/del/{id}
+  defaults: {_controller: AppBundle:Administration:deleteAdmin}
 employeeIndex:
-  path: administration/employeeIndex/
-  defaults: {_controller: AppBundle:Administration:employeeIndex}
-
+  path: administration/employee/
+  defaults: {_controller: AppBundle:Employee:index}
+addEmployee:
+  path: administration/employee/add/
+  defaults: {_controller: AppBundle:Employee:add}
+  methods:  [GET, POST]
+editEmployee:
+  path: administration/Employee/edit/{id}
+  defaults: {_controller: AppBundle:Employee:edit}
+  methods:  [GET, POST]
+deleteEmployee:
+  path: administration/Employee/del/{id}
+  defaults: {_controller: AppBundle:Employee:delete}
+usergroupIndex:
+  path: administration/usergroup/
+  defaults: {_controller: AppBundle:Usergroup:Index}
+addUsergroup:
+  path: administration/usergroup/add/
+  defaults: {_controller: AppBundle:Usergroup:add}
+  methods:  [GET, POST]
+editUsergroup:
+  path: administration/usergroup/edit/{id}
+  defaults: {_controller: AppBundle:Usergroup:edit}
+  methods:  [GET, POST]
+deleteUsergroup:
+  path: administration/usergroup/del/{id}
+  defaults: {_controller: AppBundle:Usergroup:delete}
+userPrivilegeIndex:
+  path: administration/userprivilege/
+  defaults: {_controller: AppBundle:UserPrivilege:index}
+loadUserPrivilege:
+  path: administration/userprivilege/loaduserprivilege/
+  defaults: {_controller: AppBundle:UserPrivilege:loadUserPrivilege}
 orders:
   path: orders/
   defaults: {_controller: AppBundle:Order:orderIndex}

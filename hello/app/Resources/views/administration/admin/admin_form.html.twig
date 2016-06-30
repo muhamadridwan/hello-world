@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+{% block title %}Admin Management{% endblock %}
+{% block body %}
+{# if session.logged_in #}
+{% if error %}
+<div class="error">{{ error }}</div>
+{% endif %}
+<form enctype="multipart/form-data" action="{{ path('addAdmin') }}" method=post class="laminarin-form">
+    <dl>
+        <dt>Employee</dt>
+        <dd>{{ form_widget(form.employee) }}</dd>
+        <dt>User ID:</dt>
+        <dd>{{ form_widget(form.user) }}</dd>
+        <dd>{{ form_widget(form.save) }}</dd>
+    </dl>
+</form>
+
+  {# endif #}
+{% endblock %}
