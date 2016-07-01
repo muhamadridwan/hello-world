@@ -24,8 +24,8 @@ class AuthorizationRepository
 		
 		$qb->where($qb->expr()->eq("m.menuPid", ":menuPID"));
 		$qb->andWhere($qb->expr()->eq("grp.userGroupId", ":userGroupID"));
-		$qb->andWhere($qb->expr()->eq("m.isActive","1"));
-		$qb->andWhere($qb->expr()->eq("p.pAccess", "1"));
+		$qb->andWhere($qb->expr()->eq("m.isActive","true"));
+		$qb->andWhere($qb->expr()->eq("p.pAccess", "true"));
 		$qb->orderBy('m.menuSeq', 'ASC');
 		$qb->setParameters(array(
 			"userGroupID"=> $userGroupID,
@@ -64,7 +64,7 @@ class AuthorizationRepository
 			t_menu a
 		LEFT JOIN t_privilege b  on b.menu_id = a.menu_id and b.user_group_id = :userGroupID
 		WHERE 
-			a.is_active = 1
+			a.is_active = true
 		ORDER BY a.menu_seq
 		";
 	

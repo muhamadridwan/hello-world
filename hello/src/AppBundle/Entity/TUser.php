@@ -5,7 +5,6 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-
 /**
  * TUser
  *
@@ -18,27 +17,22 @@ class TUser implements UserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(name="username", type="string", length=32, nullable=false)
-     * 
-     * @Assert\NotBlank()
      */
-     
     private $username;
 
     /**
      * @var string
      *
      * @ORM\Column(name="password", type="string", length=64, nullable=false)
-     * 
-     *
      */
     private $password;
 
     /**
-     * @var integer
+     * @var boolean
      *
-     * @ORM\Column(name="is_active", type="integer", nullable=true)
+     * @ORM\Column(name="is_active", type="boolean", nullable=true)
      */
-    private $isActive = '1';
+    private $isActive = true;
 
     /**
      * @var string
@@ -64,7 +58,6 @@ class TUser implements UserInterface, \Serializable
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user_group_id", referencedColumnName="user_group_id")
      * })
-     * @Assert\NotBlank()
      */
     private $userGroup;
 
@@ -121,7 +114,7 @@ class TUser implements UserInterface, \Serializable
     /**
      * Set isActive
      *
-     * @param integer $isActive
+     * @param boolean $isActive
      *
      * @return TUser
      */
@@ -135,7 +128,7 @@ class TUser implements UserInterface, \Serializable
     /**
      * Get isActive
      *
-     * @return integer
+     * @return boolean
      */
     public function getIsActive()
     {
@@ -200,16 +193,14 @@ class TUser implements UserInterface, \Serializable
         return $this->userGroup;
     }
 
-    public function getRoles()
+        public function getRoles()
     {
         return array($this->getUserGroup()->getUserGroupId());
     }
-
     public function getSalt()
     {
         return null;
     }
-
     public function eraseCredentials()
     {}
     
@@ -225,7 +216,6 @@ class TUser implements UserInterface, \Serializable
             // $this->salt,
         ));
     }
-
     /** @see \Serializable::unserialize() */
     public function unserialize($serialized)
     {
@@ -238,26 +228,20 @@ class TUser implements UserInterface, \Serializable
             // $this->salt
         ) = unserialize($serialized);
     }
-
     public function isAccountNonExpired()
     {
         return true;
     }
-
     public function isAccountNonLocked()
     {
         return true;
     }
-
     public function isCredentialsNonExpired()
     {
         return true;
     }
-
     public function isEnabled()
     {
         return $this->isActive;
     }
-
-
 }

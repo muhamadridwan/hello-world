@@ -21,7 +21,7 @@ class UserPrivilegeRepository
 		$qb = $this->privilegeRepo->createQueryBuilder("p");
 		$qb->rightJoin("AppBundle:TMenu", "m", "WITH", $qb->expr()->andX($qb->expr()->eq('p.menu', 'm'), $qb->expr()->eq('p.userGroup.userGroupID', ':userGroupID')));
 		
-		$qb->where($qb->expr()->eq("m.isActive","1"));
+		$qb->where($qb->expr()->eq("m.isActive","true"));
 		$qb->orderBy('m.menuSeq', 'ASC');
 		$qb->setParameters(array(
 			"userGroupID"=> $userGroupID));

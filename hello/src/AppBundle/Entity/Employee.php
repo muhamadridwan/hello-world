@@ -13,6 +13,13 @@ use Doctrine\ORM\Mapping as ORM;
 class Employee
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="user_id", type="integer", nullable=true)
+     */
+    private $userId;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="personal_id", type="string", length=32, nullable=true)
@@ -76,11 +83,11 @@ class Employee
     private $picture;
 
     /**
-     * @var integer
+     * @var boolean
      *
-     * @ORM\Column(name="is_active", type="integer", nullable=true)
+     * @ORM\Column(name="is_active", type="boolean", nullable=true)
      */
-    private $isActive = '1';
+    private $isActive = true;
 
     /**
      * @var string
@@ -90,17 +97,31 @@ class Employee
      */
     private $employeeId;
 
+
+
     /**
-     * @var \AppBundle\Entity\TUser
+     * Set userId
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\TUser")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     * })
+     * @param integer $userId
+     *
+     * @return Employee
      */
-    private $user;
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
 
+        return $this;
+    }
 
+    /**
+     * Get userId
+     *
+     * @return integer
+     */
+    public function getUserId()
+    {
+        return $this->userId;
+    }
 
     /**
      * Set personalId
@@ -321,7 +342,7 @@ class Employee
     /**
      * Set isActive
      *
-     * @param integer $isActive
+     * @param boolean $isActive
      *
      * @return Employee
      */
@@ -335,7 +356,7 @@ class Employee
     /**
      * Get isActive
      *
-     * @return integer
+     * @return boolean
      */
     public function getIsActive()
     {
@@ -364,29 +385,5 @@ class Employee
     public function getEmployeeId()
     {
         return $this->employeeId;
-    }
-
-    /**
-     * Set user
-     *
-     * @param \AppBundle\Entity\TUser $user
-     *
-     * @return Employee
-     */
-    public function setUser(\AppBundle\Entity\TUser $user = null)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return \AppBundle\Entity\TUser
-     */
-    public function getUser()
-    {
-        return $this->user;
     }
 }

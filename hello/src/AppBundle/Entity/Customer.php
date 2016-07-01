@@ -13,6 +13,13 @@ use Doctrine\ORM\Mapping as ORM;
 class Customer
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="user_id", type="integer", nullable=true)
+     */
+    private $userId;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="personal_id", type="string", length=32, nullable=true)
@@ -69,17 +76,31 @@ class Customer
      */
     private $customerId;
 
+
+
     /**
-     * @var \AppBundle\Entity\TUser
+     * Set userId
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\TUser")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     * })
+     * @param integer $userId
+     *
+     * @return Customer
      */
-    private $user;
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
 
+        return $this;
+    }
 
+    /**
+     * Get userId
+     *
+     * @return integer
+     */
+    public function getUserId()
+    {
+        return $this->userId;
+    }
 
     /**
      * Set personalId
@@ -250,17 +271,7 @@ class Customer
     }
 
     /**
-     * Get customerId
-     *
-     * @return string
-     */
-    public function getCustomerId()
-    {
-        return $this->customerId;
-    }
-
-    /**
-     * Set picture
+     * Set customerId
      *
      * @param string $customerId
      *
@@ -269,30 +280,18 @@ class Customer
     public function setCustomerId($customerId)
     {
         $this->customerId = $customerId;
-        return $this;
-    }
-
-    /**
-     * Set user
-     *
-     * @param \AppBundle\Entity\TUser $user
-     *
-     * @return Customer
-     */
-    public function setUser(\AppBundle\Entity\TUser $user = null)
-    {
-        $this->user = $user;
 
         return $this;
     }
 
+
     /**
-     * Get user
+     * Get customerId
      *
-     * @return \AppBundle\Entity\TUser
+     * @return string
      */
-    public function getUser()
+    public function getCustomerId()
     {
-        return $this->user;
+        return $this->customerId;
     }
 }

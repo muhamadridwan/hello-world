@@ -27,17 +27,19 @@ class TUserGroup
     private $userGroupDesc;
 
     /**
-     * @var integer
+     * @var boolean
      *
-     * @ORM\Column(name="is_active", type="integer", nullable=true)
+     * @ORM\Column(name="is_active", type="boolean", nullable=true)
      */
-    private $isActive = '1';
+    private $isActive = true;
 
     /**
      * @var string
      *
      * @ORM\Column(name="user_group_id", type="string", length=32)
      * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="t_user_group_user_group_id_seq", allocationSize=1, initialValue=1)
      */
     private $userGroupId;
 
@@ -94,7 +96,7 @@ class TUserGroup
     /**
      * Set isActive
      *
-     * @param integer $isActive
+     * @param boolean $isActive
      *
      * @return TUserGroup
      */
@@ -108,25 +110,11 @@ class TUserGroup
     /**
      * Get isActive
      *
-     * @return integer
+     * @return boolean
      */
     public function getIsActive()
     {
         return $this->isActive;
-    }
-
-    /**
-     * Set userGroupId
-     *
-     * @param string $userGroupId
-     *
-     * @return TUserGroup
-     */
-    public function setUserGroupId($userGroupId)
-    {
-        $this->userGroupId = $userGroupId;
-
-        return $this;
     }
 
     /**

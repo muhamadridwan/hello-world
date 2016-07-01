@@ -57,7 +57,7 @@ class CustomerOrder
     /**
      * @var integer
      *
-     * @ORM\Column(name="order_status", type="integer", nullable=false)
+     * @ORM\Column(name="order_status", type="smallint", nullable=false)
      */
     private $orderStatus = '0';
 

@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\TUser;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use AppBundle\Entity\Customer;
@@ -34,10 +35,14 @@ class CustomerController extends BaseController
         	
         $form = $this->createFormBuilder($customer)
             ->add('personalId', TextType::class)
-            ->add('user', EntityType::class, array(
-				    'class' => 'AppBundle:TUser',
+            ->add('userId', ChoiceType::class, array(
 				    'choices' => $userService->getAllCustomerUser(),
-				    'choice_label' => 'username'))
+				    'choice_label' => function($user, $key, $index) {
+				        return $user->getUsername();
+				    },
+				    'choice_value' => function ($value, $key) {
+				        return $value->getId();
+				    }))
             ->add('customerName', TextType::class)
             ->add('customerFullname', TextType::class)
             ->add('customerAddress', TextType::class)
@@ -101,10 +106,21 @@ class CustomerController extends BaseController
 	    }
         $form = $this->createFormBuilder($customer)
             ->add('personalId', TextType::class)
-            ->add('user', EntityType::class, array(
+            ->add('userId', ChoiceType::class, array(
+				    'choices' => $userService->getAllCustomerUser(),
+				    'choice_label' => function($user, $key, $index) {
+				        
+				        return $user->getUsername();
+				    },
+				    'choice_value' => function($user, $key, $index) {
+				        
+				        return $user->getUserId();
+				    }))
+		            
+            /*->add('userId', EntityType::class, array(
 				    'class' => 'AppBundle:TUser',
 				    'choices' => $userService->getAllCustomerUser(),
-				    'choice_label' => 'username'))
+				    'choice_label' => 'username'))*/
             ->add('customerName', TextType::class)
             ->add('customerFullname', TextType::class)
             ->add('customerAddress', TextType::class)

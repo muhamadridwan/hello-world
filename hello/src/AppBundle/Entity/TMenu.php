@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * TMenu
  *
  * @ORM\Table(name="t_menu", uniqueConstraints={@ORM\UniqueConstraint(name="uq_menu_menu_id", columns={"menu_id"})})
- * @ORM\Entity(repositoryClass="AppBundle\Entity\TMenuRepository")
+ * @ORM\Entity
  */
 class TMenu
 {
@@ -55,11 +55,18 @@ class TMenu
     private $menuIcon;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_active", type="boolean", nullable=false)
+     */
+    private $isActive = true;
+
+    /**
      * @var integer
      *
-     * @ORM\Column(name="is_active", type="integer", nullable=false)
+     * @ORM\Column(name="menu_seq", type="integer", nullable=true)
      */
-    private $isActive = '1';
+    private $menuSeq = '1';
 
     /**
      * @var string
@@ -71,12 +78,7 @@ class TMenu
      */
     private $menuId;
 
-	/**
-     * @var integer
-     *
-     * @ORM\Column(name="menu_seq", type="integer", nullable=false)
-     */
-    private $menuSeq = '1';
+
 
     /**
      * Set menuPid
@@ -225,7 +227,7 @@ class TMenu
     /**
      * Set isActive
      *
-     * @param integer $isActive
+     * @param boolean $isActive
      *
      * @return TMenu
      */
@@ -239,7 +241,7 @@ class TMenu
     /**
      * Get isActive
      *
-     * @return integer
+     * @return boolean
      */
     public function getIsActive()
     {
@@ -247,16 +249,6 @@ class TMenu
     }
 
     /**
-     * Get menuId
-     *
-     * @return string
-     */
-    public function getMenuId()
-    {
-        return $this->menuId;
-    }
-	
-	/**
      * Set menuSeq
      *
      * @param integer $menuSeq
@@ -278,5 +270,15 @@ class TMenu
     public function getMenuSeq()
     {
         return $this->menuSeq;
+    }
+
+    /**
+     * Get menuId
+     *
+     * @return string
+     */
+    public function getMenuId()
+    {
+        return $this->menuId;
     }
 }

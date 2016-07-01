@@ -9,33 +9,28 @@
       <generator strategy="SEQUENCE"/>
       <sequence-generator sequence-name="t_privilege_t_privilege_id_seq" allocation-size="1" initial-value="1"/>
     </id>
-    <field name="pAccess" type="smallint" column="p_access" nullable="false">
+    <field name="pAccess" type="boolean" column="p_access" nullable="false">
       <options>
-        <option name="unsigned"/>
         <option name="default">1</option>
       </options>
     </field>
-    <field name="pCreate" type="smallint" column="p_create" nullable="false">
+    <field name="pCreate" type="boolean" column="p_create" nullable="false">
       <options>
-        <option name="unsigned"/>
         <option name="default">1</option>
       </options>
     </field>
-    <field name="pRetrieve" type="smallint" column="p_retrieve" nullable="false">
+    <field name="pRetrieve" type="boolean" column="p_retrieve" nullable="false">
       <options>
-        <option name="unsigned"/>
         <option name="default">1</option>
       </options>
     </field>
-    <field name="pUpdate" type="smallint" column="p_update" nullable="false">
+    <field name="pUpdate" type="boolean" column="p_update" nullable="false">
       <options>
-        <option name="unsigned"/>
         <option name="default">1</option>
       </options>
     </field>
-    <field name="pDelete" type="smallint" column="p_delete" nullable="false">
+    <field name="pDelete" type="boolean" column="p_delete" nullable="false">
       <options>
-        <option name="unsigned"/>
         <option name="default">1</option>
       </options>
     </field>

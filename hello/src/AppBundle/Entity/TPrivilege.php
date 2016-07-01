@@ -13,39 +13,39 @@ use Doctrine\ORM\Mapping as ORM;
 class TPrivilege
 {
     /**
-     * @var integer
+     * @var boolean
      *
-     * @ORM\Column(name="p_access", type="smallint", nullable=false)
+     * @ORM\Column(name="p_access", type="boolean", nullable=false)
      */
-    private $pAccess = '1';
+    private $pAccess = true;
 
     /**
-     * @var integer
+     * @var boolean
      *
-     * @ORM\Column(name="p_create", type="smallint", nullable=false)
+     * @ORM\Column(name="p_create", type="boolean", nullable=false)
      */
-    private $pCreate = '1';
+    private $pCreate = true;
 
     /**
-     * @var integer
+     * @var boolean
      *
-     * @ORM\Column(name="p_retrieve", type="smallint", nullable=false)
+     * @ORM\Column(name="p_retrieve", type="boolean", nullable=false)
      */
-    private $pRetrieve = '1';
+    private $pRetrieve = true;
 
     /**
-     * @var integer
+     * @var boolean
      *
-     * @ORM\Column(name="p_update", type="smallint", nullable=false)
+     * @ORM\Column(name="p_update", type="boolean", nullable=false)
      */
-    private $pUpdate = '1';
+    private $pUpdate = true;
 
     /**
-     * @var integer
+     * @var boolean
      *
-     * @ORM\Column(name="p_delete", type="smallint", nullable=false)
+     * @ORM\Column(name="p_delete", type="boolean", nullable=false)
      */
-    private $pDelete = '1';
+    private $pDelete = true;
 
     /**
      * @var integer
@@ -82,7 +82,7 @@ class TPrivilege
     /**
      * Set pAccess
      *
-     * @param integer $pAccess
+     * @param boolean $pAccess
      *
      * @return TPrivilege
      */
@@ -96,7 +96,7 @@ class TPrivilege
     /**
      * Get pAccess
      *
-     * @return integer
+     * @return boolean
      */
     public function getPAccess()
     {
@@ -106,7 +106,7 @@ class TPrivilege
     /**
      * Set pCreate
      *
-     * @param integer $pCreate
+     * @param boolean $pCreate
      *
      * @return TPrivilege
      */
@@ -120,7 +120,7 @@ class TPrivilege
     /**
      * Get pCreate
      *
-     * @return integer
+     * @return boolean
      */
     public function getPCreate()
     {
@@ -130,7 +130,7 @@ class TPrivilege
     /**
      * Set pRetrieve
      *
-     * @param integer $pRetrieve
+     * @param boolean $pRetrieve
      *
      * @return TPrivilege
      */
@@ -144,7 +144,7 @@ class TPrivilege
     /**
      * Get pRetrieve
      *
-     * @return integer
+     * @return boolean
      */
     public function getPRetrieve()
     {
@@ -154,7 +154,7 @@ class TPrivilege
     /**
      * Set pUpdate
      *
-     * @param integer $pUpdate
+     * @param boolean $pUpdate
      *
      * @return TPrivilege
      */
@@ -168,7 +168,7 @@ class TPrivilege
     /**
      * Get pUpdate
      *
-     * @return integer
+     * @return boolean
      */
     public function getPUpdate()
     {
@@ -178,7 +178,7 @@ class TPrivilege
     /**
      * Set pDelete
      *
-     * @param integer $pDelete
+     * @param boolean $pDelete
      *
      * @return TPrivilege
      */
@@ -192,7 +192,7 @@ class TPrivilege
     /**
      * Get pDelete
      *
-     * @return integer
+     * @return boolean
      */
     public function getPDelete()
     {

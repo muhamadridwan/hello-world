@@ -38,13 +38,12 @@
         <option name="fixed"/>
       </options>
     </field>
-    <field name="isActive" type="integer" column="is_active" nullable="false">
+    <field name="isActive" type="boolean" column="is_active" nullable="false">
       <options>
-        <option name="unsigned"/>
         <option name="default">1</option>
       </options>
     </field>
-	<field name="menuSeq" type="integer" column="menu_seq" nullable="false">
+    <field name="menuSeq" type="integer" column="menu_seq" nullable="true">
       <options>
         <option name="unsigned"/>
         <option name="default">1</option>

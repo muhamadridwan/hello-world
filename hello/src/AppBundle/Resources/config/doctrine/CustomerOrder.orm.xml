@@ -40,7 +40,7 @@
         <option name="fixed"/>
       </options>
     </field>
-    <field name="orderStatus" type="integer" column="order_status" nullable="false">
+    <field name="orderStatus" type="smallint" column="order_status" nullable="false">
       <options>
         <option name="unsigned"/>
         <option name="default">0</option>

@@ -8,7 +8,13 @@
       <unique-constraint name="uq_employee_employee_id" columns="employee_id"/>
     </unique-constraints>
     <id name="employeeId" type="string" column="employee_id" length="32">
+      
     </id>
+    <field name="userId" type="integer" column="user_id" nullable="true">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
     <field name="personalId" type="string" column="personal_id" length="32" nullable="true">
       <options>
         <option name="fixed"/>
@@ -46,16 +52,10 @@
         <option name="fixed"/>
       </options>
     </field>
-    <field name="isActive" type="integer" column="is_active" nullable="true">
+    <field name="isActive" type="boolean" column="is_active" nullable="true">
       <options>
-        <option name="unsigned"/>
         <option name="default">1</option>
       </options>
     </field>
-    <many-to-one field="user" target-entity="TUser" fetch="LAZY">
-      <join-columns>
-        <join-column name="user_id" referenced-column-name="id"/>
-      </join-columns>
-    </many-to-one>
   </entity>
 </doctrine-mapping>

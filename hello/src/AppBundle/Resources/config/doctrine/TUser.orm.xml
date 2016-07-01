@@ -21,9 +21,8 @@
         <option name="fixed"/>
       </options>
     </field>
-    <field name="isActive" type="integer" column="is_active" nullable="true">
+    <field name="isActive" type="boolean" column="is_active" nullable="true">
       <options>
-        <option name="unsigned"/>
         <option name="default">1</option>
       </options>
     </field>

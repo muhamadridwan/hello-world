@@ -2,7 +2,7 @@
 {% block title %}Customer Management{% endblock %}
 {% block body %}
 {# if session.logged_in #}
-{% if error %}
+{% if error is defined %}
 <div class="error">{{ error }}</div>
 {% endif %}
 {{ form_start(form) }}

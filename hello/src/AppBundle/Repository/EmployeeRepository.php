@@ -41,7 +41,7 @@ class EmployeeRepository
 
 	public function setUser($employee_id, $user)
 	{
-		$this->getEmployeeById($employee_id)->setUser($user);
+		$this->getEmployeeById($employee_id)->setUserId($userId);
 		$this->em->flush();
 	}
 
@@ -70,7 +70,7 @@ class EmployeeRepository
 	public function getEmployeeWhichIsAdmin()
 	{
 		$qb = $this->employeeRepo->createQueryBuilder("e");
-		$qb->where($qb->expr()->isNotNull("e.user"));
+		$qb->where($qb->expr()->isNotNull("e.userId"));
 
 		return $qb->getQuery()->getResult();
 	}
@@ -78,7 +78,7 @@ class EmployeeRepository
 	public function getEmployeeWhichIsNotAdmin()
 	{
 		$qb = $this->employeeRepo->createQueryBuilder("e");
-		$qb->where($qb->expr()->isNull("e.user"));
+		$qb->where($qb->expr()->isNull("e.userId"));
 
 		return $qb->getQuery()->getResult();
 	}
