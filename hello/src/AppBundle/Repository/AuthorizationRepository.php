@@ -22,9 +22,10 @@ class AuthorizationRepository
 		$qb->innerJoin("AppBundle:TPrivilege", "p", "WITH", "m = p.menu");
 		$qb->innerJoin("AppBundle:TUserGroup", "grp", "WITH", "p.userGroup = grp");
 		
-		$qb->where($qb->expr()->eq("m.isActive","1"));
+		$qb->where($qb->expr()->eq("m.menuPid", ":menuPID"));
 		$qb->andWhere($qb->expr()->eq("grp.userGroupId", ":userGroupID"));
-		$qb->andWhere($qb->expr()->eq("m.menuPid", ":menuPID"));
+		$qb->andWhere($qb->expr()->eq("m.isActive","1"));
+		$qb->andWhere($qb->expr()->eq("p.pAccess", "1"));
 		$qb->orderBy('m.menuSeq', 'ASC');
 		$qb->setParameters(array(
 			"userGroupID"=> $userGroupID,

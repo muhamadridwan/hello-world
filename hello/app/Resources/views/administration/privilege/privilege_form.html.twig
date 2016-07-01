@@ -1,22 +1,13 @@
 {% extends 'base.html.twig' %}
-{% block title %}User Group Management{% endblock %}
+{% block title %}Customer Management{% endblock %}
 {% block body %}
 {# if session.logged_in #}
 {% if error %}
 <div class="error">{{ error }}</div>
 {% endif %}
-<form enctype="multipart/form-data" action="{% if act == 'add' %}{{ path('addUsergroup') }} {% else %} {{ path('editUsergroup',{'id': usergroup.userGroupId}) }} {% endif %}" method=post class="laminarin-form">
-    <dl>
-        <dt>User Group ID:</dt>
-        <dd>{{ form_widget(form.userGroupId) }}</dd>
-        <dt>User Group:</dt>
-        <dd>{{ form_widget(form.userGroupName) }}</dd>
-        <dt>Description:</dt>
-        <dd>{{ form_widget(form.userGroupDesc) }}</dd>
-        <dt>{{ form_widget(form.isActive) }}</dt>
-        <dd>{{ form_widget(form.save) }}</dd>
-    </dl>
-</form>
+{{ form_start(form) }}
+{{ form_widget(form) }}
+{{ form_end(form) }}
 
   {# endif #}
 {% endblock %}

@@ -12,7 +12,13 @@
         <dt>User ID:</dt>
         <dd>{{ form_widget(form.user) }}</dd>
         <dd>{{ form_widget(form.save) }}</dd>
+        <dd>
+        <a href="{{ path('adminIndex') }}"><button type="button" class="btn btn-primary pull-right">Back</button></a>
+        <br/>
+   	 	</dd>
     </dl>
+
+    
 </form>
 
   {# endif #}

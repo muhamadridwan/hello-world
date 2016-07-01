@@ -13,7 +13,10 @@
         <dd>{{ form_widget(form.userGroup) }}</dd>
         <dt>Email:</dt>
         <dd>{{ form_widget(form.email) }}</dd>
-        <dd>{{ form_widget(form.save) }}</dd>
+        <dd>{{ form_widget(form.save) }}
+
+            <a href="{{ path('userIndex') }}"><button type="button" class="btn btn-primary pull-right">Back</button></a>
+        <br/></dd>
     </dl>
 </form>
 

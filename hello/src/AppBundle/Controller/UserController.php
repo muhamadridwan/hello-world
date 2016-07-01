@@ -114,30 +114,30 @@ class UserController extends BaseController
 		if($request->getMethod()=='POST')
 		{
 		    $form->handleRequest($request);
-		    $newUser = $form->getData();
+		    $modifiedUser = $form->getData();
 		    
 		    $validator = $this->get('validator');
-    		$errors = $validator->validate($newUser);
+    		$errors = $validator->validate($modifiedUser);
 
 		    if (count($errors) > 0) {
 		        $error = (string) $errors;
 		    }
 		    else
 		    {
-		        $this->container->get('app.bundle.user.management.service')->editUser($user, $newUser);
+		        $this->container->get('app.bundle.user.management.service')->editUser($user, $modifiedUser);
 		        return $this->redirectToRoute("userIndex");
 		    }
 		    
 		} 
-		else
-		{
+		
+		
 			
-			$this->resp["form"] = $form->createView();
-	        $this->resp["user"] = $user;
-	        $this->resp["act"] = "edit";
-	        $this->resp['error'] = $error;
-			return $this->render("administration/user/user_form.html.twig", $this->resp);
-		}
+		$this->resp["form"] = $form->createView();
+        $this->resp["user"] = $user;
+        $this->resp["act"] = "edit";
+        $this->resp['error'] = $error;
+		return $this->render("administration/user/user_form.html.twig", $this->resp);
+	
 
 	}
 

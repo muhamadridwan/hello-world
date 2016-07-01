@@ -80,7 +80,7 @@ class AdministrationController extends BaseController
 	public function deleteAdminAction($id)
 	{
 		$this->container->get('app.bundle.employee.management.service')->SetUser($id, null);
-		return $this->redirectToRoute("employeeIndex");
+		return $this->redirectToRoute("adminIndex");
 	}
 	
 }

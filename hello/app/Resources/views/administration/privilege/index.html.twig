@@ -15,6 +15,7 @@
         {{ form_end(form) }}
     </div>
     {% if userPrivilegeMenu is defined %}
+    <form action="{{ path('saveUserPrivilege') }}" method="post" style="padding-bottom:5px;">
     <table  class="table">
 		<thead>
 			<tr><th rowspan="2" width="32">No</th>
@@ -29,11 +30,13 @@
 			</tr>
 		</thead>
 		<tbody>
-		{% set idx = 1 %}
+		
+        {% set idx = 1 %}
 		{% for privilege in userPrivilegeMenu %}
+        
 	        <tr {{privilege['menu_pid']}}">
 				<td class="center">{{idx}}</td>
-				<td>{% if privilege['menu_id'] == 'P' %}&nbsp;&nbsp;&nbsp;{% endif %}{{privilege['menu']}}</td>
+				<td>{% if privilege['menu_pid'] != 'P' %}&nbsp;&nbsp;&nbsp;&nbsp;{% endif %}{{privilege['menu']}}</td>
 				{% if privilege['menu_pid'] != 'P' %}
 				<td><input class="postit acc[{{privilege['menu_id']}}]" type="checkbox" {% if privilege['p_access'] %} checked="checked" {% endif %}"  /></td>
 				<td><input class="postit ret[{{privilege['menu_id']}}]" type="checkbox" {% if privilege['p_retrieve'] %} checked="checked" {% endif %}"  /></td>
@@ -51,8 +54,12 @@
 		{% else %}
         <em>Unbelievable.  No entries here so far</em>
 		{% endfor %}
+        
+        
 		</tbody>
 	</table>
+    <button id="form_save" name="save" type="submit" style="margin-top:10px;" class="pull-right">Save</button>
+    </form>
     {% endif %}
 </div>
     

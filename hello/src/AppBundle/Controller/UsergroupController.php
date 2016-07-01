@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use AppBundle\Entity\TUserGroup;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
@@ -46,6 +47,10 @@ class UsergroupController extends BaseController
 			        'Non-Active' => 0
 			    )
 			))
+			/*->add('isActive', CheckboxType::class, array(
+			    'label'    => 'is active?',
+			    'required' => false
+			))*/
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->getForm();
 		$error = "";

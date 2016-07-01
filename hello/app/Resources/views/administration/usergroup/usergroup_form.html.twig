@@ -14,7 +14,10 @@
         <dt>Description:</dt>
         <dd>{{ form_widget(form.userGroupDesc) }}</dd>
         <dt>{{ form_widget(form.isActive) }}</dt>
-        <dd>{{ form_widget(form.save) }}</dd>
+        <dd>{{ form_widget(form.save) }}
+
+            <a href="{{ path('usergroupIndex') }}"><button type="button" class="btn btn-primary pull-right">Back</button></a>
+        <br/></dd>
     </dl>
 </form>
 

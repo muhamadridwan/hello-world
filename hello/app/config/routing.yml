@@ -80,9 +80,9 @@ deleteUsergroup:
 userPrivilegeIndex:
   path: administration/userprivilege/
   defaults: {_controller: AppBundle:UserPrivilege:index}
-loadUserPrivilege:
-  path: administration/userprivilege/loaduserprivilege/
-  defaults: {_controller: AppBundle:UserPrivilege:loadUserPrivilege}
+saveUserPrivilege:
+  path: administration/userprivilege/saveuserprivilege/
+  defaults: {_controller: AppBundle:UserPrivilege:saveUserPrivilege}
 orders:
   path: orders/
   defaults: {_controller: AppBundle:Order:orderIndex}
