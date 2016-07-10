@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use AppBundle\Entity\TPrivilege;
+use AppBundle\Form\Type\UserPrivilegeType;
 
 class UserPrivilegeController extends BaseController
 {
@@ -35,7 +36,7 @@ class UserPrivilegeController extends BaseController
 				    'choice_label' => 'userGroupName'))
             ->add('save', SubmitType::class, array('label' => 'Load'))
             ->getForm();
-
+		
         if($request->getMethod()=='POST')
 		{
 		    $form->handleRequest($request);
@@ -44,9 +45,21 @@ class UserPrivilegeController extends BaseController
 		    $this->resp["userPrivilegeMenu"] = $this->container
 		    		->get('app.bundle.authorization.service')->getMenuPrivilageByUserGroupId(
 		    			$data["usergroup"]->getUserGroupId());
+					
+			$privilegeForm = $this->createFormBuilder($this->resp["userPrivilegeMenu"])
+				->add( 'privileges', 'collection', array('type'=> new UserPrivilegeType()))
+				->getForm();
+
+			// if ($formTickets->handleRequest( $this->getRequest() )->isValid()) {
+				// $data = $formTickets->getData();
+				// var_dump( $data );
+			// }
+			$this->resp["privilegeForm"] = $privilegeForm->createView();
+
 		}
 
         $this->resp["form"] = $form->createView();
+		
 		return $this->render("administration/privilege/index.html.twig", $this->resp);
 	}
 

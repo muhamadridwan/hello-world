@@ -47,6 +47,11 @@ class UserManagementService
 	{
 		return $this->userRepo->getUserByUserGroupId("ROLE_ADMIN");
 	}
+	
+	public function getAvailableAdmin()
+	{
+		return $this->userRepo->getAvailableAdmin();
+	}
 }
 
 ?>

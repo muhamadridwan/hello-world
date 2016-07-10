@@ -34,14 +34,14 @@
         <option name="default">1</option>
       </options>
     </field>
-    <many-to-one field="userGroup" target-entity="TUserGroup" fetch="LAZY">
-      <join-columns>
-        <join-column name="user_group_id" referenced-column-name="user_group_id"/>
-      </join-columns>
-    </many-to-one>
     <many-to-one field="menu" target-entity="TMenu" fetch="LAZY">
       <join-columns>
         <join-column name="menu_id" referenced-column-name="menu_id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="userGroup" target-entity="TUserGroup" fetch="LAZY">
+      <join-columns>
+        <join-column name="user_group_id" referenced-column-name="user_group_id"/>
       </join-columns>
     </many-to-one>
   </entity>

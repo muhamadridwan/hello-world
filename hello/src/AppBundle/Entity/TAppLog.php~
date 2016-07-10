@@ -82,5 +82,206 @@ class TAppLog
     private $activityUser;
 
 
-}
 
+    /**
+     * Set activity
+     *
+     * @param string $activity
+     *
+     * @return TAppLog
+     */
+    public function setActivity($activity)
+    {
+        $this->activity = $activity;
+
+        return $this;
+    }
+
+    /**
+     * Get activity
+     *
+     * @return string
+     */
+    public function getActivity()
+    {
+        return $this->activity;
+    }
+
+    /**
+     * Set activityDesc
+     *
+     * @param string $activityDesc
+     *
+     * @return TAppLog
+     */
+    public function setActivityDesc($activityDesc)
+    {
+        $this->activityDesc = $activityDesc;
+
+        return $this;
+    }
+
+    /**
+     * Get activityDesc
+     *
+     * @return string
+     */
+    public function getActivityDesc()
+    {
+        return $this->activityDesc;
+    }
+
+    /**
+     * Set activityUrl
+     *
+     * @param string $activityUrl
+     *
+     * @return TAppLog
+     */
+    public function setActivityUrl($activityUrl)
+    {
+        $this->activityUrl = $activityUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get activityUrl
+     *
+     * @return string
+     */
+    public function getActivityUrl()
+    {
+        return $this->activityUrl;
+    }
+
+    /**
+     * Set userAgent
+     *
+     * @param string $userAgent
+     *
+     * @return TAppLog
+     */
+    public function setUserAgent($userAgent)
+    {
+        $this->userAgent = $userAgent;
+
+        return $this;
+    }
+
+    /**
+     * Get userAgent
+     *
+     * @return string
+     */
+    public function getUserAgent()
+    {
+        return $this->userAgent;
+    }
+
+    /**
+     * Set ipAddress
+     *
+     * @param string $ipAddress
+     *
+     * @return TAppLog
+     */
+    public function setIpAddress($ipAddress)
+    {
+        $this->ipAddress = $ipAddress;
+
+        return $this;
+    }
+
+    /**
+     * Get ipAddress
+     *
+     * @return string
+     */
+    public function getIpAddress()
+    {
+        return $this->ipAddress;
+    }
+
+    /**
+     * Set activityTime
+     *
+     * @param \DateTime $activityTime
+     *
+     * @return TAppLog
+     */
+    public function setActivityTime($activityTime)
+    {
+        $this->activityTime = $activityTime;
+
+        return $this;
+    }
+
+    /**
+     * Get activityTime
+     *
+     * @return \DateTime
+     */
+    public function getActivityTime()
+    {
+        return $this->activityTime;
+    }
+
+    /**
+     * Set remark
+     *
+     * @param string $remark
+     *
+     * @return TAppLog
+     */
+    public function setRemark($remark)
+    {
+        $this->remark = $remark;
+
+        return $this;
+    }
+
+    /**
+     * Get remark
+     *
+     * @return string
+     */
+    public function getRemark()
+    {
+        return $this->remark;
+    }
+
+    /**
+     * Get activityId
+     *
+     * @return string
+     */
+    public function getActivityId()
+    {
+        return $this->activityId;
+    }
+
+    /**
+     * Set activityUser
+     *
+     * @param \AppBundle\Entity\TUser $activityUser
+     *
+     * @return TAppLog
+     */
+    public function setActivityUser(\AppBundle\Entity\TUser $activityUser = null)
+    {
+        $this->activityUser = $activityUser;
+
+        return $this;
+    }
+
+    /**
+     * Get activityUser
+     *
+     * @return \AppBundle\Entity\TUser
+     */
+    public function getActivityUser()
+    {
+        return $this->activityUser;
+    }
+}

@@ -46,7 +46,7 @@ class AdministrationController extends BaseController
         $form = $this->createFormBuilder()
             ->add('user', EntityType::class, array(
 				    'class' => 'AppBundle:TUser',
-				    'choices' => $userService->getAllAdminUser(),
+				    'choices' => $userService->getAvailableAdmin(),
 				    'choice_label' => 'username'))
             ->add('employee', EntityType::class, array(
 				    'class' => 'AppBundle:Employee',

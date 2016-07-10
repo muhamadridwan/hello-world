@@ -5,8 +5,8 @@
       <index name="ixfk_meal_meal_category" columns="category_id"/>
     </indexes>
     <unique-constraints>
-      <unique-constraint name="uq_meal_category_id" columns="category_id"/>
       <unique-constraint name="uq_meal_meal_id" columns="meal_id"/>
+      <unique-constraint name="uq_meal_category_id" columns="category_id"/>
     </unique-constraints>
     <id name="mealId" type="integer" column="meal_id">
       <generator strategy="SEQUENCE"/>

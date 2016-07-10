@@ -31,14 +31,14 @@
         <option name="unsigned"/>
       </options>
     </field>
-    <many-to-one field="meal" target-entity="Meal" fetch="LAZY">
-      <join-columns>
-        <join-column name="meal_id" referenced-column-name="meal_id"/>
-      </join-columns>
-    </many-to-one>
     <many-to-one field="order" target-entity="CustomerOrder" fetch="LAZY">
       <join-columns>
         <join-column name="order_id" referenced-column-name="order_id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="meal" target-entity="Meal" fetch="LAZY">
+      <join-columns>
+        <join-column name="meal_id" referenced-column-name="meal_id"/>
       </join-columns>
     </many-to-one>
   </entity>

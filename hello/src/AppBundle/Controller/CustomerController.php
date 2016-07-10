@@ -35,14 +35,10 @@ class CustomerController extends BaseController
         	
         $form = $this->createFormBuilder($customer)
             ->add('personalId', TextType::class)
-            ->add('userId', ChoiceType::class, array(
+			->add('user', EntityType::class, array(
+				    'class' => 'AppBundle:TUser',
 				    'choices' => $userService->getAllCustomerUser(),
-				    'choice_label' => function($user, $key, $index) {
-				        return $user->getUsername();
-				    },
-				    'choice_value' => function ($value, $key) {
-				        return $value->getId();
-				    }))
+				    'choice_label' => 'username'))
             ->add('customerName', TextType::class)
             ->add('customerFullname', TextType::class)
             ->add('customerAddress', TextType::class)
@@ -106,16 +102,10 @@ class CustomerController extends BaseController
 	    }
         $form = $this->createFormBuilder($customer)
             ->add('personalId', TextType::class)
-            ->add('userId', ChoiceType::class, array(
+            ->add('user', EntityType::class, array(
+				    'class' => 'AppBundle:TUser',
 				    'choices' => $userService->getAllCustomerUser(),
-				    'choice_label' => function($user, $key, $index) {
-				        
-				        return $user->getUsername();
-				    },
-				    'choice_value' => function($user, $key, $index) {
-				        
-				        return $user->getUserId();
-				    }))
+				    'choice_label' => 'username'))
 		            
             /*->add('userId', EntityType::class, array(
 				    'class' => 'AppBundle:TUser',

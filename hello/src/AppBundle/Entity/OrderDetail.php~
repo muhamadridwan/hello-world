@@ -71,5 +71,158 @@ class OrderDetail
     private $order;
 
 
-}
 
+    /**
+     * Set qty
+     *
+     * @param integer $qty
+     *
+     * @return OrderDetail
+     */
+    public function setQty($qty)
+    {
+        $this->qty = $qty;
+
+        return $this;
+    }
+
+    /**
+     * Get qty
+     *
+     * @return integer
+     */
+    public function getQty()
+    {
+        return $this->qty;
+    }
+
+    /**
+     * Set total
+     *
+     * @param integer $total
+     *
+     * @return OrderDetail
+     */
+    public function setTotal($total)
+    {
+        $this->total = $total;
+
+        return $this;
+    }
+
+    /**
+     * Get total
+     *
+     * @return integer
+     */
+    public function getTotal()
+    {
+        return $this->total;
+    }
+
+    /**
+     * Set totalDiscount
+     *
+     * @param integer $totalDiscount
+     *
+     * @return OrderDetail
+     */
+    public function setTotalDiscount($totalDiscount)
+    {
+        $this->totalDiscount = $totalDiscount;
+
+        return $this;
+    }
+
+    /**
+     * Get totalDiscount
+     *
+     * @return integer
+     */
+    public function getTotalDiscount()
+    {
+        return $this->totalDiscount;
+    }
+
+    /**
+     * Set totalBeforeDiscount
+     *
+     * @param integer $totalBeforeDiscount
+     *
+     * @return OrderDetail
+     */
+    public function setTotalBeforeDiscount($totalBeforeDiscount)
+    {
+        $this->totalBeforeDiscount = $totalBeforeDiscount;
+
+        return $this;
+    }
+
+    /**
+     * Get totalBeforeDiscount
+     *
+     * @return integer
+     */
+    public function getTotalBeforeDiscount()
+    {
+        return $this->totalBeforeDiscount;
+    }
+
+    /**
+     * Get orderDetailId
+     *
+     * @return string
+     */
+    public function getOrderDetailId()
+    {
+        return $this->orderDetailId;
+    }
+
+    /**
+     * Set meal
+     *
+     * @param \AppBundle\Entity\Meal $meal
+     *
+     * @return OrderDetail
+     */
+    public function setMeal(\AppBundle\Entity\Meal $meal = null)
+    {
+        $this->meal = $meal;
+
+        return $this;
+    }
+
+    /**
+     * Get meal
+     *
+     * @return \AppBundle\Entity\Meal
+     */
+    public function getMeal()
+    {
+        return $this->meal;
+    }
+
+    /**
+     * Set order
+     *
+     * @param \AppBundle\Entity\CustomerOrder $order
+     *
+     * @return OrderDetail
+     */
+    public function setOrder(\AppBundle\Entity\CustomerOrder $order = null)
+    {
+        $this->order = $order;
+
+        return $this;
+    }
+
+    /**
+     * Get order
+     *
+     * @return \AppBundle\Entity\CustomerOrder
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+}

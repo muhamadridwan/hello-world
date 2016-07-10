@@ -31,7 +31,7 @@ class TUserGroup
      *
      * @ORM\Column(name="is_active", type="boolean", nullable=true)
      */
-    private $isActive = '1';
+    private $isActive = true;
 
     /**
      * @var string
@@ -44,5 +44,86 @@ class TUserGroup
     private $userGroupId;
 
 
-}
 
+    /**
+     * Set userGroupName
+     *
+     * @param string $userGroupName
+     *
+     * @return TUserGroup
+     */
+    public function setUserGroupName($userGroupName)
+    {
+        $this->userGroupName = $userGroupName;
+
+        return $this;
+    }
+
+    /**
+     * Get userGroupName
+     *
+     * @return string
+     */
+    public function getUserGroupName()
+    {
+        return $this->userGroupName;
+    }
+
+    /**
+     * Set userGroupDesc
+     *
+     * @param string $userGroupDesc
+     *
+     * @return TUserGroup
+     */
+    public function setUserGroupDesc($userGroupDesc)
+    {
+        $this->userGroupDesc = $userGroupDesc;
+
+        return $this;
+    }
+
+    /**
+     * Get userGroupDesc
+     *
+     * @return string
+     */
+    public function getUserGroupDesc()
+    {
+        return $this->userGroupDesc;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     *
+     * @return TUserGroup
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * Get userGroupId
+     *
+     * @return string
+     */
+    public function getUserGroupId()
+    {
+        return $this->userGroupId;
+    }
+}

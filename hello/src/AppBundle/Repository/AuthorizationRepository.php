@@ -55,11 +55,11 @@ class AuthorizationRepository
 			a.menu AS menu, 
 			a.menu_pid AS menu_pid,
 			:userGroupID AS user_group_id,
-			CASE WHEN b.p_access IS NULL THEN 0 ELSE b.p_access END AS p_access, 
-			CASE WHEN b.p_create IS NULL THEN 0 ELSE b.p_create END AS p_create, 
-			CASE WHEN b.p_retrieve IS NULL THEN 0 ELSE b.p_retrieve END AS p_retrieve, 
-			CASE WHEN b.p_update IS NULL THEN 0 ELSE b.p_update END AS p_update, 
-			CASE WHEN b.p_delete IS NULL THEN 0 ELSE b.p_delete END AS p_delete
+			CASE WHEN b.p_access IS NULL THEN false ELSE b.p_access END AS p_access, 
+			CASE WHEN b.p_create IS NULL THEN false ELSE b.p_create END AS p_create, 
+			CASE WHEN b.p_retrieve IS NULL THEN false ELSE b.p_retrieve END AS p_retrieve, 
+			CASE WHEN b.p_update IS NULL THEN false ELSE b.p_update END AS p_update, 
+			CASE WHEN b.p_delete IS NULL THEN false ELSE b.p_delete END AS p_delete
 		FROM	
 			t_menu a
 		LEFT JOIN t_privilege b  on b.menu_id = a.menu_id and b.user_group_id = :userGroupID
