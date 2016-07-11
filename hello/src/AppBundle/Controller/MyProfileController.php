@@ -22,7 +22,7 @@ class MyProfileController extends BaseController
 
 	}
 
-	public function IndexAction()
+	public function indexAction()
 	{
 		$this->authSetup();
 		$users = $this->getDoctrine()

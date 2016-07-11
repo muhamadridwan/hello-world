@@ -1,11 +1,17 @@
 <?php 
+namespace AppBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface; 
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+
 class UserPrivilegeType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('menu_id', TextType::class);
-		$builder->add('menu', TextType::class);
-		$builder->add('menu_pid', TextType::class);
-		$builder->add('user_group_id', TextType::class);
+        $builder->add('menu_id', HiddenType::class);
+		$builder->add('menu', HiddenType::class);
+		$builder->add('menu_pid', HiddenType::class);
+		$builder->add('user_group_id', HiddenType::class);
 		$builder->add('p_access', CheckboxType::class, array(
 			    'required' => false
 			));

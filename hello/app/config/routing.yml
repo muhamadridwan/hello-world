@@ -8,6 +8,16 @@ logout:
   path: logout
 
 
+configuration:
+  path: configuration/
+  defaults: {_controller: AppBundle:MealCategory:index}
+mealCategoryIndex:
+  path: configuration/mealCategory/
+  defaults: {_controller: AppBundle:MealCategory:index}
+mealIndex:
+  path: configuration/meal/
+  defaults: {_controller: AppBundle:Meal:index}
+
 administration:
   path: administration/
   defaults: {_controller: AppBundle:Administration:userIndex}
@@ -81,7 +91,7 @@ userPrivilegeIndex:
   path: administration/userprivilege/
   defaults: {_controller: AppBundle:UserPrivilege:index}
 saveUserPrivilege:
-  path: administration/userprivilege/saveuserprivilege/
+  path: administration/userprivilege/saveuserprivilege/{userGroupId}
   defaults: {_controller: AppBundle:UserPrivilege:saveUserPrivilege}
 orders:
   path: orders/

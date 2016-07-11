@@ -1,19 +1,12 @@
 <?php 
 namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use AppBundle\Entity\TUserGroup;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use AppBundle\Entity\TPrivilege;
 use AppBundle\Form\Type\UserPrivilegeType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class UserPrivilegeController extends BaseController
 {
@@ -37,6 +30,7 @@ class UserPrivilegeController extends BaseController
             ->add('save', SubmitType::class, array('label' => 'Load'))
             ->getForm();
 		
+		
         if($request->getMethod()=='POST')
 		{
 		    $form->handleRequest($request);
@@ -45,15 +39,16 @@ class UserPrivilegeController extends BaseController
 		    $this->resp["userPrivilegeMenu"] = $this->container
 		    		->get('app.bundle.authorization.service')->getMenuPrivilageByUserGroupId(
 		    			$data["usergroup"]->getUserGroupId());
-					
-			$privilegeForm = $this->createFormBuilder($this->resp["userPrivilegeMenu"])
-				->add( 'privileges', 'collection', array('type'=> new UserPrivilegeType()))
+			$privCollection = array("privileges" => $this->resp["userPrivilegeMenu"]);		
+			$privilegeForm = $this->createFormBuilder($privCollection)
+				->add( 'privileges', CollectionType::class, array('entry_type'=> UserPrivilegeType::class))
+				->add('savePrivilege', SubmitType::class, array('label' => 'Save'))
 				->getForm();
 
-			// if ($formTickets->handleRequest( $this->getRequest() )->isValid()) {
-				// $data = $formTickets->getData();
-				// var_dump( $data );
-			// }
+			
+			// var_dump( $data );
+		
+			$this->resp["userGroupId"] = $data["usergroup"]->getUserGroupId();
 			$this->resp["privilegeForm"] = $privilegeForm->createView();
 
 		}
@@ -63,38 +58,31 @@ class UserPrivilegeController extends BaseController
 		return $this->render("administration/privilege/index.html.twig", $this->resp);
 	}
 
-	public function saveUserPrivilegeAction(Request $request)
+	public function saveUserPrivilegeAction($userGroupId, Request $request)
 	{
 		$this->authSetup();
-		$privilege = new TPrivilege();
-		$form = $this->createFormBuilder($privilege)
-            
-			->add('pAccess', CheckboxType::class, array(
-			    'required' => false
-			))
-			->add('pCreate', CheckboxType::class, array(
-			    'required' => false
-			))
-			->add('pRetrieve', CheckboxType::class, array(
-			    'required' => false
-			))
-			->add('pUpdate', CheckboxType::class, array(
-			    'required' => false
-			))
-			->add('pDelete', CheckboxType::class, array(
-			    'required' => false
-			))
-            ->add('save', SubmitType::class, array('label' => 'Save'))
-            ->getForm();
+		if($request->getMethod()=='POST')
+		{
+			$this->resp["userPrivilegeMenu"] = $this->container
+		    		->get('app.bundle.authorization.service')->getMenuPrivilageByUserGroupId(
+		    			$userGroupId);
+			$privCollection = array("privileges" => $this->resp["userPrivilegeMenu"]);		
+			$privilegeForm = $this->createFormBuilder($privCollection)
+							->add( 'privileges', CollectionType::class, array('entry_type'=> UserPrivilegeType::class))
+							->add('savePrivilege', SubmitType::class, array('label' => 'Save'))
+							->getForm();
 
-         $this->resp["form"] = $form->createView();
-		return $this->render("administration/privilege/privilege_form.html.twig", $this->resp);
-		//return $this->redirectToRoute("userPrivilegeIndex");
+			$privilegeForm->handleRequest($request);
+			$data = $privilegeForm->getData();
+			$this->container
+			    		->get('app.bundle.authorization.service')->savePrivileges($data, $userGroupId);
+
+		}
+		
+		return $this->redirectToRoute("userPrivilegeIndex");
+        
 		
 	}
-
-	
-
 	
 }
 ?>

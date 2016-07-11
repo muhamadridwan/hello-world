@@ -15,7 +15,7 @@
         {{ form_end(form) }}
     </div>
     {% if userPrivilegeMenu is defined %}
-    <form action="{{ path('saveUserPrivilege') }}" method="post" style="padding-bottom:5px;">
+    <form action="{{ path('saveUserPrivilege',{'userGroupId': userGroupId}) }}" method="post" style="padding-bottom:5px;">
     <table  class="table">
 		<thead>
 			<tr><th rowspan="2" width="32">No</th>
@@ -33,10 +33,14 @@
 		
         {% set idx = 1 %}
 		{% for p in privilegeForm.privileges %}
-			<tr "{{p.menu_pid.value}}">
+			<tr>
 			<td class="center">{{idx}}</td>
-			{% if p.menu_pid.value != 'P' %}&nbsp;&nbsp;&nbsp;&nbsp;{% endif %}{{p.menu.value}}</td>
-				{% if p.menu_pid.value != 'P' %}
+			<td>{% if p.menu_pid.vars.value != 'P' %}&nbsp;&nbsp;&nbsp;&nbsp;{% endif %}{{p.menu.vars.value}}
+			{{ form_widget(p.menu_id)}}
+			{{ form_widget(p.user_group_id)}}
+			
+			</td>
+				{% if p.menu_pid.vars.value != 'P' %}
 				
 				<td>{{ form_widget(p.p_access)}} </td>
 				<td>{{ form_widget(p.p_retrieve)}} </td>
@@ -51,12 +55,13 @@
 				<td colspan="4">&nbsp;</td>
 				{% endif %}
 			</tr>
-			
+			{% set idx = idx +1 %}
 		{% endfor %}
         
 		</tbody>
 	</table>
-    <button id="form_save" name="save" type="submit" style="margin-top:10px;" class="pull-right">Save</button>
+    {{ form_widget(privilegeForm.savePrivilege, {'attr': {'class': 'pull-right','style':'margin-top:10px;'}}) }}
+    
     </form>
     {% endif %}
 </div>

@@ -4,16 +4,20 @@ namespace AppBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\ResultSetMapping;
+
+
 class AuthorizationRepository 
 {
 	private $em;
 	private $menuRepo;
 	private $privilegeRepo;
+	private $usergroupRepo;
 	function __construct(EntityManager $em)
 	{
 		$this->em = $em;
 		$this->menuRepo = $this->em->getRepository("AppBundle:TMenu");
 		$this->privilegeRepo = $this->em->getRepository("AppBundle:TPrivilege");
+		$this->usergroupRepo = $this->em->getRepository("AppBundle:TUsergroup");
 	}
 
 	public function getAuthorizedMenu($userGroupID, $menuPID)
@@ -75,6 +79,64 @@ class AuthorizationRepository
 		$dbResult = $stmt->fetchAll();
 		//print_r($dbResult);
 		return $dbResult;
+	}
+
+	public function savePrivileges($data, $userGroupId)
+	{
+		$this->em->getConnection()->beginTransaction(); // suspend auto-commit
+		try 
+		{
+			$qb = $this->em->createQueryBuilder();
+		    $query = $qb->delete('AppBundle:TPrivilege', 'p')
+		            ->where('p.userGroup = :userGroup')
+		            ->setParameter('userGroup', $this->usergroupRepo->find($userGroupId))
+		            ->getQuery();
+
+			$query->execute();
+
+			foreach($data["privileges"] as $p)
+			{
+				$sql = "
+						INSERT INTO t_privilege 
+							(menu_id, user_group_id, p_access,
+							 p_create, p_retrieve, p_update, p_delete)
+						VALUES	
+							(:menu_id, :user_group_id, :p_access,
+							 :p_create, :p_retrieve, :p_update, :p_delete)
+						";
+
+				$stmt = $this->em->getConnection()->prepare($sql);
+				//$qb->setParameter('isOther', false, \PDO::PARAM_BOOL);
+				$stmt->bindParam( ":menu_id", $p["menu_id"]);
+				$stmt->bindParam( ":user_group_id", $p["user_group_id"]);
+				
+				$stmt->bindParam( ":p_access", $p["p_access"], \PDO::PARAM_BOOL );
+				$stmt->bindParam( ":p_create", $p["p_create"], \PDO::PARAM_BOOL );
+				$stmt->bindParam( ":p_retrieve", $p["p_retrieve"], \PDO::PARAM_BOOL );
+				$stmt->bindParam( ":p_update", $p["p_update"], \PDO::PARAM_BOOL );
+				$stmt->bindParam( ":p_delete", $p["p_delete"], \PDO::PARAM_BOOL );
+				
+				$params = array(
+					"menu_id"=> $p["menu_id"], 
+					"user_group_id" => $p["user_group_id"]
+					/*, 
+					/*"p_access" => $p["p_access"]=="true",
+					"p_create" => $p["p_create"]=="true", 
+					"p_retrieve" => $p["p_retrieve"]=="true", 
+					"p_update" => $p["p_update"]=="true", 
+					"p_delete" => $p["p_delete"]=="true"*/
+					);
+				
+				
+				$stmt->execute();
+			}
+
+		    $this->em->getConnection()->commit();
+		} catch (Exception $e) {
+		    $this->em->getConnection()->rollBack();
+		    throw $e;
+		}
+		
 	}
 }
 ?>

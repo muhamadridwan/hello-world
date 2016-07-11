@@ -22,6 +22,11 @@ class AuthorizationService
 	{
 		return $this->authRepo->getMenuPrivilegeByUsergoupId($userGroupId);
 	}
+
+	public function savePrivileges($data, $userGroupId)
+	{
+		return $this->authRepo->savePrivileges($data, $userGroupId);
+	}
 }
 
 ?>
