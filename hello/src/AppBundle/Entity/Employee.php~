@@ -386,4 +386,33 @@ class Employee
     {
         return $this->employeeId;
     }
+    /**
+     * @var \AppBundle\Entity\TUser
+     */
+    private $user;
+
+
+    /**
+     * Set user
+     *
+     * @param \AppBundle\Entity\TUser $user
+     *
+     * @return Employee
+     */
+    public function setUser(\AppBundle\Entity\TUser $user = null)
+    {
+        $this->user = $user;
+    
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \AppBundle\Entity\TUser
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
 }

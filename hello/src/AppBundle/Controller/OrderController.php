@@ -13,7 +13,11 @@ class OrderController extends BaseController
 
 	public function orderIndexAction()
 	{
-		return new Response("Sorry, Order page is under construction.");
+		$this->authSetup();
+		$mealCategory = $this->container->get('app.bundle.order.management.service')->getAllMealCategory();
+
+		$this->resp["mealCategory"] = $mealCategory;
+		return $this->render("orders/order/index.html.twig", $this->resp);
 	}
 
 	public function activeOrderIndexAction()

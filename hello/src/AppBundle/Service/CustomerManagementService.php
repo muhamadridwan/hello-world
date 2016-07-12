@@ -37,6 +37,11 @@ class CustomerManagementService
 	{
 		return $this->customerRepo->getAllCustomer();
 	}
+
+	public function getAllRestoTable()
+	{
+		return $this->customerRepo->getAllRestoTable();
+	}
 }
 
 ?>

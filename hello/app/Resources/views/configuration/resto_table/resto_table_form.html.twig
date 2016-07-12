@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+{% block title %}Restorant Table Management{% endblock %}
+{% block body %}
+{# if session.logged_in #}
+{% if error %}
+<div class="error">{{ error }}</div>
+{% endif %}
+<form enctype="multipart/form-data" action="{% if act == 'add' %}{{ path('addRestoTable') }} {% else %} {{ path('editRestoTable',{'id': customer.getCustomerId()}) }} {% endif %}" method=post class="laminarin-form">
+    <dl>
+        <dt>Table Name:</dt>
+        <dd>{{ form_widget(form.customerName) }}</dd>
+        <dd>{{ form_widget(form.save) }}
+            <a href="{{ path('restoTableIndex') }}"><button type="button" class="btn btn-primary pull-right">Back</button></a>
+        <br/>
+        </dd>
+    </dl>
+</form>
+
+  {# endif #}
+{% endblock %}

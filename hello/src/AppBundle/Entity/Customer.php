@@ -76,7 +76,10 @@ class Customer
      */
     private $customerId;
 
-
+    /**
+     * @var boolean
+     */
+    private $isRestoTable = false;
 
     /**
      * Set userId
@@ -322,5 +325,30 @@ class Customer
     public function getUser()
     {
         return $this->user;
+    }
+    
+
+    /**
+     * Set isRestoTable
+     *
+     * @param boolean $isRestoTable
+     *
+     * @return Customer
+     */
+    public function setIsRestoTable($isRestoTable)
+    {
+        $this->isRestoTable = $isRestoTable;
+
+        return $this;
+    }
+
+    /**
+     * Get isRestoTable
+     *
+     * @return boolean
+     */
+    public function getIsRestoTable()
+    {
+        return $this->isRestoTable;
     }
 }

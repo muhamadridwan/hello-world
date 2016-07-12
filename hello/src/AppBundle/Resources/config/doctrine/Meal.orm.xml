@@ -5,8 +5,8 @@
       <index name="ixfk_meal_meal_category" columns="category_id"/>
     </indexes>
     <unique-constraints>
-      <unique-constraint name="uq_meal_meal_id" columns="meal_id"/>
       <unique-constraint name="uq_meal_category_id" columns="category_id"/>
+      <unique-constraint name="uq_meal_meal_id" columns="meal_id"/>
     </unique-constraints>
     <id name="mealId" type="integer" column="meal_id">
       <generator strategy="SEQUENCE"/>
@@ -36,6 +36,11 @@
       <options>
         <option name="unsigned"/>
         <option name="default">0</option>
+      </options>
+    </field>
+    <field name="picture" type="string" column="picture" length="255" nullable="true">
+      <options>
+        <option name="fixed"/>
       </options>
     </field>
     <many-to-one field="category" target-entity="MealCategory" fetch="LAZY">
