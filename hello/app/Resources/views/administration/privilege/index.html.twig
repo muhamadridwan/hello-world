@@ -15,7 +15,8 @@
         {{ form_end(form) }}
     </div>
     {% if userPrivilegeMenu is defined %}
-    <form action="{{ path('saveUserPrivilege',{'userGroupId': userGroupId}) }}" method="post" style="padding-bottom:5px;">
+    <form action="{{ path('saveUserPrivilege',{'userGroupId': userGroupId}) }}" method="post" style="padding-bottom:5px; margin-bottom:10px;">
+	<div class="panel">
     <table  class="table">
 		<thead>
 			<tr><th rowspan="2" width="32">No</th>
@@ -60,7 +61,9 @@
         
 		</tbody>
 	</table>
-    {{ form_widget(privilegeForm.savePrivilege, {'attr': {'class': 'pull-right','style':'margin-top:10px;'}}) }}
+	{{ form_widget(privilegeForm.savePrivilege, {'attr': {'class': 'pull-right','style': 'margin-right:10px;'}}) }}
+	</div>
+    
     
     </form>
     {% endif %}
