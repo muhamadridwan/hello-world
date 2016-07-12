@@ -22,8 +22,8 @@ class CustomerRepository
 
 	public function deleteCustomer($customer_id)
 	{
-		$user = $this->getCustomerById($customer_id);
-		$this->em->remove($user);
+		$customer = $this->getCustomerById($customer_id);
+		$this->em->remove($customer);
 		$this->em->flush();
 	}
 
@@ -56,7 +56,18 @@ class CustomerRepository
 
 	public function getAllCustomer()
 	{
-		return $this->customerRepo->findAll();
+		$qb = $this->customerRepo->createQueryBuilder("c");
+		$qb->where($qb->expr()->eq("c.isRestoTable","false"));
+		
+		return $qb->getQuery()->getResult();
+	}
+
+	public function getAllRestoTable()
+	{
+		$qb = $this->customerRepo->createQueryBuilder("c");
+		$qb->where($qb->expr()->eq("c.isRestoTable","true"));
+		
+		return $qb->getQuery()->getResult();
 	}
 }
 ?>

@@ -165,8 +165,10 @@ class CustomerController extends BaseController
 	
 	public function deleteAction($id)
 	{
-		$picturePath = $this->container->get('app.bundle.customer.management.service')->getCustomerById($id);
+		$serverDir = $this->get('kernel')->getRootDir().'/../web/bundles/images/customer/';
+		$picturePath = $this->container->get('app.bundle.customer.management.service')->getCustomerById($id)->getPicture();
 		$this->container->get('app.bundle.customer.management.service')->deleteCustomer($id);
+		unlink($serverDir.$picturePath);
 		return $this->redirectToRoute("customerIndex");
 	}
 

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% block title %}Meal Management{% endblock %}
+{% block body %}
+{# if session.logged_in #}
+{% if error %}
+<div class="error">{{ error }}</div>
+{% endif %}
+<form enctype="multipart/form-data" action="{% if act == 'add' %}{{ path('addMeal') }} {% else %} {{ path('editMeal',{'id': meal.getMealId()}) }} {% endif %}" method=post class="laminarin-form">
+    <dl>
+        <dt>Meal Category:</dt>
+        <dd>{{ form_widget(form.category) }}</dd>
+        <dt>Meal Name:</dt>
+        <dd>{{ form_widget(form.mealName) }}</dd>
+        <dt>Desctiption:</dt>
+        <dd>{{ form_widget(form.mealDesc) }}</dd>
+        <dt>Price:</dt>
+        <dd>{{ form_widget(form.mealPrice) }}</dd>
+        <dt>Discount(%):</dt>
+        <dd>{{ form_widget(form.discount) }}</dd>
+        <dt>Picture:</dt>
+        <dd>{{ form_widget(form.picture) }}</dd>
+        <dd><img id="cust-pic-preview" class="img-thumbnail" width="200em" onerror="getDefaultImage(this)" src="{{asset('bundles/images/meal/')}}{{meal.getPicture()}}" />
+        </dd>
+        <dd>{{ form_widget(form.save) }}
+            <a href="{{ path('mealIndex') }}"><button type="button" class="btn btn-primary pull-right">Back</button></a>
+        <br/>
+        </dd>
+    </dl>
+</form>
+
+  {# endif #}
+{% endblock %}

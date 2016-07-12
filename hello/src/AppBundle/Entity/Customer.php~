@@ -294,4 +294,33 @@ class Customer
     {
         return $this->customerId;
     }
+    /**
+     * @var \AppBundle\Entity\TUser
+     */
+    private $user;
+
+
+    /**
+     * Set user
+     *
+     * @param \AppBundle\Entity\TUser $user
+     *
+     * @return Customer
+     */
+    public function setUser(\AppBundle\Entity\TUser $user = null)
+    {
+        $this->user = $user;
+    
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \AppBundle\Entity\TUser
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
 }

@@ -1,0 +1,29 @@
+
+{% extends 'base.html.twig' %}
+{% block title %}User Management{% endblock %}
+     
+{% block body %}
+<div class="navbar navbar-default navbar-fixed-left">
+    <ul class="nav navbar-nav">
+        {% for category in mealCategory %}
+            <li><a href="#">{{ category.getCategoryName }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+<div class="container">
+ <div class="row">
+   tese
+ </div>
+</div>
+<!--<ul class=entries>-->
+<div class="panel panel-default pull-left">
+    <ul class="list-group">
+        
+    </ul>
+</div>
+
+    
+{% endblock %}
+
+
+

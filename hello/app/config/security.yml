@@ -43,8 +43,9 @@ security:
         - { path: ^/administration/userprivilege, roles: ROLE_SUPERADMIN }
         - { path: ^/administration/employee, roles: [ROLE_ADMIN, ROLE_SUPERADMIN] }
         - { path: ^/administration/customer, roles: [ROLE_ADMIN, ROLE_SUPERADMIN] }
+        - { path: ^/configuration, roles: [ROLE_ADMIN, ROLE_SUPERADMIN] }
         #- { path: ^/orders, roles: ROLE_CUSTOMER }
-        - { path: ^/orders/order, roles: [ROLE_CUSTOMER]}
+        - { path: ^/orders/order, roles: [ROLE_ADMIN, ROLE_SUPERADMIN, ROLE_CUSTOMER]}
         - { path: ^/orders/activeOrder, roles: [ROLE_ADMIN, ROLE_SUPERADMIN, ROLE_CUSTOMER]}
         - { path: ^/orders/history, roles: [ROLE_ADMIN, ROLE_SUPERADMIN, ROLE_CUSTOMER]}
         

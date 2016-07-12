@@ -6,6 +6,10 @@ parameters:
     app.bundle.service.customer.management.class: AppBundle\Service\CustomerManagementService
     app.bundle.service.employee.management.class: AppBundle\Service\EmployeeManagementService
     app.bundle.service.usergroup.management.class: AppBundle\Service\UsergroupManagementService
+    app.bundle.service.meal.category.management.class: AppBundle\Service\MealCategoryManagementService
+    app.bundle.service.meal.management.class: AppBundle\Service\MealManagementService
+    app.bundle.service.order.management.class: AppBundle\Service\OrderManagementService
+    
     
 
 services:
@@ -23,6 +27,15 @@ services:
       arguments: ["@doctrine.orm.entity_manager"]
     app.bundle.usergroup.management.service:
       class: %app.bundle.service.usergroup.management.class%
+      arguments: ["@doctrine.orm.entity_manager"]
+    app.bundle.meal.category.management.service:
+      class: %app.bundle.service.meal.category.management.class%
+      arguments: ["@doctrine.orm.entity_manager"]
+    app.bundle.meal.management.service:
+      class: %app.bundle.service.meal.management.class%
+      arguments: ["@doctrine.orm.entity_manager"]
+    app.bundle.order.management.service:
+      class: %app.bundle.service.order.management.class%
       arguments: ["@doctrine.orm.entity_manager"]
     
 #     

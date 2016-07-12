@@ -67,6 +67,10 @@ class Meal
      */
     private $category;
 
+    /**
+     * @var string
+     */
+    private $picture;
 
 
     /**
@@ -221,5 +225,30 @@ class Meal
     public function getCategory()
     {
         return $this->category;
+    }
+
+
+    /**
+     * Set picture
+     *
+     * @param string $picture
+     *
+     * @return Meal
+     */
+    public function setPicture($picture)
+    {
+        $this->picture = $picture;
+
+        return $this;
+    }
+
+    /**
+     * Get picture
+     *
+     * @return string
+     */
+    public function getPicture()
+    {
+        return $this->picture;
     }
 }

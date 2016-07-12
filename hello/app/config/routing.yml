@@ -11,12 +11,57 @@ logout:
 configuration:
   path: configuration/
   defaults: {_controller: AppBundle:MealCategory:index}
+
+### Meal Category Routing ###
+
 mealCategoryIndex:
   path: configuration/mealCategory/
   defaults: {_controller: AppBundle:MealCategory:index}
+addMealCategory:
+  path: configuration/mealCategory/add/
+  defaults: {_controller: AppBundle:MealCategory:add}
+  methods:  [GET, POST]
+editMealCategory:
+  path: configuration/mealCategory/edit/{id}
+  defaults: {_controller: AppBundle:MealCategory:edit}
+  methods:  [GET, POST]
+deleteMealCategory:
+  path: configuration/mealCategory/del/{id}
+  defaults: {_controller: AppBundle:MealCategory:delete}
+
+### Meal Routing ###
+
 mealIndex:
   path: configuration/meal/
   defaults: {_controller: AppBundle:Meal:index}
+addMeal:
+  path: configuration/meal/add/
+  defaults: {_controller: AppBundle:Meal:add}
+  methods:  [GET, POST]
+editMeal:
+  path: configuration/meal/edit/{id}
+  defaults: {_controller: AppBundle:Meal:edit}
+  methods:  [GET, POST]
+deleteMeal:
+  path: configuration/meal/del/{id}
+  defaults: {_controller: AppBundle:Meal:delete}
+
+### Resto Table Routing ###
+
+restoTableIndex:
+  path: configuration/restoTable/
+  defaults: {_controller: AppBundle:RestoTable:index}
+addRestoTable:
+  path: configuration/restoTable/add/
+  defaults: {_controller: AppBundle:RestoTable:add}
+  methods:  [GET, POST]
+editRestoTable:
+  path: configuration/RestoTable/edit/{id}
+  defaults: {_controller: AppBundle:RestoTable:edit}
+  methods:  [GET, POST]
+deleteRestoTable:
+  path: configuration/RestoTable/del/{id}
+  defaults: {_controller: AppBundle:RestoTable:delete}
 
 administration:
   path: administration/

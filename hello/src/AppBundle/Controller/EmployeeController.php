@@ -152,8 +152,10 @@ class EmployeeController extends BaseController
 	
 	public function deleteAction($id)
 	{
-		$picturePath = $this->container->get('app.bundle.employee.management.service')->getEmployeeById($id);
+		$serverDir = $this->get('kernel')->getRootDir().'/../web/bundles/images/employee/';
+		$picturePath = $this->container->get('app.bundle.employee.management.service')->getEmployeeById($id)->getPicture();
 		$this->container->get('app.bundle.employee.management.service')->deleteEmployee($id);
+		unlink($serverDir.$picturePath);
 		return $this->redirectToRoute("employeeIndex");
 	}
 
