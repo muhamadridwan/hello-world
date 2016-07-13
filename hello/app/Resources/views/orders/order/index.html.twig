@@ -5,6 +5,8 @@
 {% block body %}
 <div class="row">
 	<div class="col-sm-2">
+			<a href="{{path('checkOutTheOrders')}}" class="btn btn-success" style="margin-bottom:25px;" role="button">Check Out</a> 
+                        
 			<div class="navbar navbar-inverse navbar-left meal-cat-nav" style="border-color:#fff">
 				<ul class="nav meal-cat-nav">
 					{% for category in mealCategory %}
@@ -16,7 +18,9 @@
 	</div>
 	<div class="col-sm-10">
         <div class="row">
-        {% for od in orderDetailForm.orderDetail %}
+		<form enctype="multipart/form-data" action="{{ path('pickTheMeal') }}" method="post">
+        {{ form_widget(orderDetailForm.category_id)}}
+		{% for od in orderDetailForm.orderDetail %}
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
                   <img src="{{asset(mealDir)}}{{od.vars.data['meal'].getPicture()}}" onerror="getDefaultImage(this)">
@@ -25,9 +29,12 @@
                     <p>{{od.vars.data['meal'].getMealDesc()}}</p>
                     <p>
                         {% if od.vars.data['meal'].getMealId() in listOfOrderedMeal|keys %}
-                        <a href="#" class="btn btn-default" role="button">Cancel</a> 
+                        <span class="alert-info">Has been ordered. Qty : {{od.vars.data['qty'] }}</span>
+						<a href="{{ path('cancelPickTheMeal', {'meal_id': od.vars.data['meal'].getMealId(), 'category_id': orderDetailForm.category_id.vars.data }) }}" class="btn btn-default pull-right" role="button">Cancel</a> 
                         {% else %}
-                        <a href="{{ path('pickTheMeal', {'meal_id': od.vars.data['meal'].getMealId(),'category_id': activeCategoryId}) }}" class="btn btn-primary" role="button">Order</a>                   
+						{{ form_widget(od.meal)}}
+						Quantity: {{ form_widget(od.qty)}}
+						{{ form_widget(od.save)}}                 
                         {% endif %}
                     </p>
                   </div>

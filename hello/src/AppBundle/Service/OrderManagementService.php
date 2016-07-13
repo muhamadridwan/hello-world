@@ -41,6 +41,7 @@ class OrderManagementService
 	{
 		$result = array();
 		$result['orderDetail'] = array();
+		$result['category_id'] = $category->getCategoryId();
 		$meals = $this->getAllMealByCategory($category);
 		$keys = array_keys($listOfOrderedMeal);
 		foreach($meals as $meal)
