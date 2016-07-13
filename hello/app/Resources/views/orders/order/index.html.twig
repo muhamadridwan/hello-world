@@ -5,61 +5,39 @@
 {% block body %}
 <div class="row">
 	<div class="col-sm-2">
-			<div class="navbar navbar-inverse navbar-left" style="border-color:#fff">
-				<ul class="nav navbar-nav">
+			<div class="navbar navbar-inverse navbar-left meal-cat-nav" style="border-color:#fff">
+				<ul class="nav meal-cat-nav">
 					{% for category in mealCategory %}
-						<li><a href="#">{{ category.getCategoryName }}</a></li>
+						<li><a href="{{ path('orderIndex', {'category_id': category.getCategoryId()}) }}" class="white-text {% if activeCategoryId == category.getCategoryId() %}active{%endif%}">{{ category.getCategoryName() }}</a></li>
 					{% endfor %}
 				</ul>
 			</div>
 		
 	</div>
 	<div class="col-sm-10">
-		
-			<div class="row">
-			  <div class="col-sm-6 col-md-4">
-				<div class="thumbnail">
-				  <img src="..." alt="...">
-				  <div class="caption">
-					<h3>Thumbnail label</h3>
-					<p>...</p>
-					<p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
-				  </div>
-				</div>
-			  </div>
-			  <div class="col-sm-6 col-md-4">
-				<div class="thumbnail">
-				  <img src="..." alt="...">
-				  <div class="caption">
-					<h3>Thumbnail label</h3>
-					<p>...</p>
-					<p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
-				  </div>
-				</div>
-			  </div>
-			  <div class="col-sm-6 col-md-4">
-				<div class="thumbnail">
-				  <img src="..." alt="...">
-				  <div class="caption">
-					<h3>Thumbnail label</h3>
-					<p>...</p>
-					<p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
-				  </div>
-				</div>
-			  </div>
-			  <div class="col-sm-6 col-md-4">
-				<div class="thumbnail">
-				  <img src="..." alt="...">
-				  <div class="caption">
-					<h3>Thumbnail label</h3>
-					<p>...</p>
-					<p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
-				  </div>
-				</div>
-			  </div>
-			</div>
-			
-			
+        <div class="row">
+        {% for od in orderDetailForm.orderDetail %}
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                  <img src="{{asset(mealDir)}}{{od.vars.data['meal'].getPicture()}}" onerror="getDefaultImage(this)">
+                  <div class="caption">
+                    <h3>{{od.vars.data['meal'].getMealName()}}</h3>
+                    <p>{{od.vars.data['meal'].getMealDesc()}}</p>
+                    <p>
+                        {% if od.vars.data['meal'].getMealId() in listOfOrderedMeal|keys %}
+                        <a href="#" class="btn btn-default" role="button">Cancel</a> 
+                        {% else %}
+                        <a href="{{ path('pickTheMeal', {'meal_id': od.vars.data['meal'].getMealId(),'category_id': activeCategoryId}) }}" class="btn btn-primary" role="button">Order</a>                   
+                        {% endif %}
+                    </p>
+                  </div>
+                </div>
+            </div>
+
+            
+            
+        {% endfor %}
+
 		</div>
 	</div>
 </div>

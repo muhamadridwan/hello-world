@@ -116,18 +116,6 @@ class AuthorizationRepository
 				$stmt->bindParam( ":p_update", $p["p_update"], \PDO::PARAM_BOOL );
 				$stmt->bindParam( ":p_delete", $p["p_delete"], \PDO::PARAM_BOOL );
 				
-				$params = array(
-					"menu_id"=> $p["menu_id"], 
-					"user_group_id" => $p["user_group_id"]
-					/*, 
-					/*"p_access" => $p["p_access"]=="true",
-					"p_create" => $p["p_create"]=="true", 
-					"p_retrieve" => $p["p_retrieve"]=="true", 
-					"p_update" => $p["p_update"]=="true", 
-					"p_delete" => $p["p_delete"]=="true"*/
-					);
-				
-				
 				$stmt->execute();
 			}
 

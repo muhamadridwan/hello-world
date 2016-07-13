@@ -49,5 +49,16 @@ class MealRepository
 	{
 		return $this->mealRepo->findAll();
 	}
+
+	public function getAllMealByCategory($category)
+	{
+		$qb = $this->mealRepo->createQueryBuilder("m");
+		$qb->where($qb->expr()->eq("m.category",":category"));
+
+		$qb->setParameters(array(
+			"category"=> $category));
+		
+		return $qb->getQuery()->getResult();
+	}
 }
 ?>

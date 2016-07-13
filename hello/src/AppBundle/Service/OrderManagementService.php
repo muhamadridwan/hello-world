@@ -21,6 +21,42 @@ class OrderManagementService
 	{
 		return $this->mealCategoryRepo->getAllMealCategory();
 	}
+
+	public function getAllMealByCategory($category)
+	{
+		if($category==null)
+		{
+			$category = $this->getMainMealCategory();
+		}
+
+		return $this->mealRepo->getAllMealByCategory($category);
+	}
+
+	public function getMainMealCategory()
+	{
+		return $this->mealCategoryRepo->getSingleMealCategoryByName("Main");
+	}
+
+	public function getOrderDetailMeal($listOfOrderedMeal, $category)
+	{
+		$result = array();
+		$result['orderDetail'] = array();
+		$meals = $this->getAllMealByCategory($category);
+		$keys = array_keys($listOfOrderedMeal);
+		foreach($meals as $meal)
+		{
+			$qty = 0;
+			if(in_array($meal->getMealId(), $keys))
+			{
+				$qty = $listOfOrderedMeal[$meal->getMealId()]['qty'];
+			}
+
+			array_push($result['orderDetail'],array('meal' => $meal, 'qty' => $qty));
+		}
+
+		return $result;
+		 
+	}
 	
 	public function addMealCategory($mealCategory)
 	{
@@ -34,6 +70,11 @@ class OrderManagementService
 
 	public function getMealCategoryById($id)
 	{
+		if($id == -1)
+		{
+			return $this->getMainMealCategory();	
+		}
+		
 		return $this->mealCategoryRepo->getMealCategoryById($id);
 	}
 

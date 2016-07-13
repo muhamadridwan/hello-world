@@ -41,6 +41,17 @@ class MealCategoryRepository
 		return $this->mealCategoryRepo->find($id);
 	}
 
+	public function getSingleMealCategoryByName($name)
+	{
+		$qb = $this->mealCategoryRepo->createQueryBuilder("c");
+		$qb->where($qb->expr()->like("c.categoryName",":name"));
+
+		$qb->setParameters(array(
+			"name"=> "%".$name."%"));
+		
+		return $qb->getQuery()->getSingleResult();
+	}
+
 	public function getAllMealCategory()
 	{
 		return $this->mealCategoryRepo->findAll();

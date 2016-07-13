@@ -142,8 +142,11 @@ orders:
   path: orders/
   defaults: {_controller: AppBundle:Order:orderIndex}
 orderIndex:
-  path: orders/order/
-  defaults: {_controller: AppBundle:Order:orderIndex}
+  path: orders/order/{category_id}
+  defaults: {_controller: AppBundle:Order:orderIndex, category_id: -1}
+pickTheMeal:
+  path: orders/order/pickTheMeal/{meal_id}/{category_id}
+  defaults: {_controller: AppBundle:Order:pickTheMeal}
 activeOrderIndex:
   path: orders/activeOrder/
   defaults: {_controller: AppBundle:Order:activeOrderIndex}
