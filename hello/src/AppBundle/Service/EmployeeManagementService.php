@@ -52,6 +52,11 @@ class EmployeeManagementService
 	{
 		return $this->employeeRepo->getEmployeeWhichIsNotAdmin();
 	}
+
+	public function getEmployeeByUser($user)
+	{
+		return $this->employeeRepo->getEmployeeByUser($user);
+	}
 }
 
 ?>

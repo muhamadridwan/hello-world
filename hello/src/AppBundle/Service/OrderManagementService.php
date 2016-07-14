@@ -3,18 +3,29 @@
 namespace AppBundle\Service;
 use AppBundle\Repository\MealCategoryRepository;
 use AppBundle\Repository\MealRepository;
+use AppBundle\Repository\CustomerRepository;
 use Doctrine\ORM\EntityManager;
+use AppBundle\Entity\CustomerOrder;
+use AppBundle\Entity\OrderDetail;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class OrderManagementService
 {
 	private $mealCategoryRepo;
 	private $mealRepo;
+	private $customerRepo;
 	private $em;
 	function __construct( EntityManager $em)
 	{
 		$this->em = $em;
 		$this->mealCategoryRepo = new MealCategoryRepository($this->em);
 		$this->mealRepo = new MealRepository($this->em);
+		$this->customerRepo = new CustomerRepository($this->em);
+	}
+
+	public function getAllMeal()
+	{
+		return $this->mealRepo->getAllMeal();
 	}
 
 	public function getAllMealCategory()
@@ -52,13 +63,46 @@ class OrderManagementService
 				$qty = $listOfOrderedMeal[$meal->getMealId()]['qty'];
 			}
 
-			array_push($result['orderDetail'],array('meal' => $meal, 'qty' => $qty));
+			$result['orderDetail'][$meal->getMealId()] = array('meal' => $meal, 'qty' => $qty);
 		}
 
 		return $result;
 		 
 	}
+
+	public function getDineInOrder($listOfOrderedMeal)
+	{
+		$result = array();
+		$custOrder = new CustomerOrder();
+		$custOrder->setOrderType(0);
+		$custOrder->setOrderType(strtotime(date('Y-m-d H:i:s')));
+		$custOrder->setPaymentMethod("CASH");
+		$custOrder->setOrderStatus(0);
+		
+		$result['custOrder'] = $custOrder;
+		$result['orderDetail'] = new ArrayCollection();
+		foreach($listOfOrderedMeal as $orderedMeal)
+		{
+			$orderDetail = new OrderDetail();
+			$orderDetail->setMeal($orderedMeal['meal']);
+			$orderDetail->setQty($orderedMeal['qty']);
+			$orderDetail->setTotalBeforeDiscount(
+				$orderedMeal['qty'] * $orderedMeal['meal']->getMealPrice());
+			$orderDetail->setTotalDiscount(
+				$orderDetail->getTotalBeforeDiscount() * $orderedMeal['meal']->getDiscount()/100);
+			$orderDetail->setTotal($orderDetail->getTotalBeforeDiscount() - $orderDetail->getTotalDiscount());
+			
+			$result['orderDetail']->add($orderDetail);	
+		}
+
+		return $result;
+	}
 	
+	public function getAllRestoTable()
+	{
+		return $this->customerRepo->getAllRestoTable();
+	}
+
 	public function addMealCategory($mealCategory)
 	{
 		$this->mealCategoryRepo->addMealCategory($mealCategory);

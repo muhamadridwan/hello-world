@@ -60,5 +60,16 @@ class MealRepository
 		
 		return $qb->getQuery()->getResult();
 	}
+
+	public function getAllMealByListOfMealId($listOfMealId)
+	{
+		$qb = $this->mealRepo->createQueryBuilder("m");
+		$qb->where($qb->expr()->in("m.mealId",":listOfMealId"));
+
+		$qb->setParameters(array(
+			"listOfMealId"=> $listOfMealId));
+		
+		return $qb->getQuery()->getResult();	
+	}
 }
 ?>

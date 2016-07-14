@@ -82,5 +82,22 @@ class EmployeeRepository
 
 		return $qb->getQuery()->getResult();
 	}
+
+	public function getEmployeeByUser($user)
+	{
+		try
+		{
+			$qb = $this->employeeRepo->createQueryBuilder("e");
+			$qb->where($qb->expr()->eq("e.user",":user"));
+
+			$qb->setParameters(array(
+				"user"=> $user));
+			
+			return $qb->getQuery()->getSingleResult();
+		}
+		catch(\Exception $e){
+		    return null;
+		}
+	}
 }
 ?>
