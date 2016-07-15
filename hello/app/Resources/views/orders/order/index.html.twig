@@ -18,7 +18,7 @@
 	</div>
 	<div class="col-sm-10">
         <div class="row">
-		<form enctype="multipart/form-data" action="{{ path('pickTheMeal') }}" method="post">
+		<form enctype="multipart/form-data" action="{{ path('pickTheMeal', {'category_id':orderDetailForm.category_id.vars.data}) }}" method="post">
         {{ form_widget(orderDetailForm.category_id)}}
 		{% for od in orderDetailForm.orderDetail %}
             <div class="col-sm-6 col-md-4">

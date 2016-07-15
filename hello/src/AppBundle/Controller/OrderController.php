@@ -10,7 +10,10 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use AppBundle\Form\Type\PickedMealType;
 use AppBundle\Form\Type\OrderDetailType;
+use AppBundle\Form\Type\CustomerOrderType;
 use AppBundle\Form\Type\CheckoutDetailType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class OrderController extends BaseController
 {
@@ -47,13 +50,13 @@ class OrderController extends BaseController
 		return $this->render("orders/order/index.html.twig", $this->resp);
 	}
 
-	public function pickTheMealAction(Request $request)
+	public function pickTheMealAction($category_id, Request $request)
 	{
 		$this->authSetup();
 		$orderManagementService = $this->container->get('app.bundle.order.management.service');
 		
-		$category = $orderManagementService->getMealCategoryById(-1);
 		$listOfOrderedMeal = $this->session->get('listOfOrderedMeal', array());
+		$category = $orderManagementService->getMealCategoryById($category_id);
 		$listOfOrderDetailMeal = $this->container->get('app.bundle.order.management.service')->getOrderDetailMeal($listOfOrderedMeal, $category);
 
 		$orderDetailForm = $this->createFormBuilder($listOfOrderDetailMeal)
@@ -67,6 +70,7 @@ class OrderController extends BaseController
 		{
 		    $orderDetailForm->handleRequest($request);
 			$formData = $orderDetailForm->getData();
+		    
 		    foreach($orderDetailForm->get('orderDetail') as $od)
 			{
 				if($od->get('save')->isClicked())
@@ -98,7 +102,7 @@ class OrderController extends BaseController
 		return $this->redirectToRoute('orderIndex', array('category_id'=>$category_id));
 	}
 	
-	public function checkOutTheOrdersAction()
+	public function checkOutTheOrdersAction(Request $request)
 	{
 		$this->authSetup();
 		$orderManagementService = $this->container->get('app.bundle.order.management.service');
@@ -106,22 +110,48 @@ class OrderController extends BaseController
 		
 		$listOfOrderedMeal = $this->session->get('listOfOrderedMeal', array());
 		$custOrder = $orderManagementService->getDineInOrder($listOfOrderedMeal);
-		$custOrder['custOrder']->setCashier($employeeManagementService->getEmployeeByUser($this->getUser()));
-		unset($custOrder['custOrder']);
+		$custOrder['custOrder'][0]->setCashier($employeeManagementService->getEmployeeByUser($this->getUser()));
+		
 		$custOrderForm = $this->createFormBuilder($custOrder)
-				->add('orderDetail', CollectionType::class, array('entry_type'=> OrderDetailType::class,'meals'=> $orderManagementService->getAllMeal()))
-				/*->add('custOrder', CollectionType::class, 
-					array('entry_type'=> CustomerOrderType::class, 
-						array(
+				->add('orderDetail', CollectionType::class, array('entry_type'=> OrderDetailType::class, 'entry_options'=> array('meals'=> $orderManagementService->getAllMeal()))) 
+				->add('custOrder', CollectionType::class, 
+					array('entry_type'=> CustomerOrderType::class,
+						'entry_options'=> array(
 							'restoTable' => $orderManagementService->getAllRestoTable(),
-							'cashier' => $employeeManagementService->getEmployeeWhichIsAdmin())))
-				*/->getForm();
+							'cashier' => $employeeManagementService->getEmployeeWhichIsAdmin()) 
+						))
+				->add('save', SubmitType::class, array('label' => 'Check Out',
+					'attr' => array(
+						'class'=>'btn btn-primary pull-right',
+						'style'=>'margin-right:10px;'
+						)))
+				->getForm();
 
-		$this->resp['mealDir'] = 'bundles/images/meal/';
-		$this->resp['activeCategoryId'] = $category->getCategoryId();
-		$this->resp['orderDetailForm'] = $orderDetailForm->createView();
+		if($request->getMethod()=='POST')
+		{
+		    $custOrderForm->handleRequest($request);
+			$formData = $custOrderForm->getData();
+		    
+		    /*foreach($orderDetailForm->get('orderDetail') as $od)
+			{
+				if($od->get('save')->isClicked())
+				{
+					$data = $od->getData();
+					if($data['qty'] >= 1)
+					{
+						$listOfOrderedMeal[$data['meal']->getMealId()]['meal'] = $data['meal'];
+						$listOfOrderedMeal[$data['meal']->getMealId()]['qty'] = $data['qty'];
+					}
+					
+				}
+			}
+			
+			$this->session->set('listOfOrderedMeal', $listOfOrderedMeal);*/
+		}
+		//$this->resp['activeCategoryId'] = $category->getCategoryId();
+		$this->resp['custOrderForm'] = $custOrderForm->createView();
 		$this->resp['listOfOrderedMeal'] = $listOfOrderedMeal;
-		return $this->render("orders/order/check_out_the_order.html.twig", $this->resp);
+		return $this->render("orders/order/check_out_the_orders.html.twig", $this->resp);
 	}
 
 	public function activeOrderIndexAction()

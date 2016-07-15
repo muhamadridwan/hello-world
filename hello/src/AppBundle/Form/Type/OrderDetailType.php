@@ -4,14 +4,14 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface; 
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
 
 
 class OrderDetailType extends AbstractType {
+	
     public function buildForm(FormBuilderInterface $builder, array $options) {
-    	var_dump($options);
+    	
         $builder->add('meal', EntityType::class, array(
 				    'class' => 'AppBundle:Meal',
 				    'choice_label' => 'mealName',
@@ -21,21 +21,18 @@ class OrderDetailType extends AbstractType {
 						'attr'=> array(
 							'min' => 0
 						)));
-		$builder->add('total', MoneyType::class, array(
+		$builder->add('total', IntegerType::class, array(
 						'disabled' => true,
-						'currency' => 'IDR',
 						'attr'=> array(
 							'class' => 'hidden'
 						)));
-		$builder->add('totalBeforeDiscount', MoneyType::class, array(
+		$builder->add('totalBeforeDiscount', IntegerType::class, array(
 						'disabled' => true,
-						'currency' => 'IDR',
 						'attr'=> array(
 							'class' => 'hidden'
 						)));
-		$builder->add('totalDiscount', MoneyType::class, array(
+		$builder->add('totalDiscount', IntegerType::class, array(
 						'disabled' => true,
-						'currency' => 'IDR',
 						'attr'=> array(
 							'class' => 'hidden'
 						)));
@@ -47,7 +44,7 @@ class OrderDetailType extends AbstractType {
     	parent::configureOptions($resolver);
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\OrderDetail',
-            'meals' => null
+            'meals' => array()
         ));
     }
 
@@ -57,14 +54,6 @@ class OrderDetailType extends AbstractType {
             'meals' => 'AppBundle\Entity\Meal',
         ));
     }*/
-
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setRequired(array(
-            'meals'
-        ));
-
-    }
     
 
     

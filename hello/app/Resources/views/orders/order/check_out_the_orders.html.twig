@@ -1,24 +1,78 @@
 {% extends 'base.html.twig' %}
-{% block title %}User Management{% endblock %}
+{% block title %}Check out the orders{% endblock %}
 {% block body %}
 {# if session.logged_in #}
-{% if error %}
-<div class="error">{{ error }}</div>
-{% endif %}
-<form enctype="multipart/form-data" action="{% if act == 'add' %}{{ path('addUser') }} {% else %} {{ path('editUser',{'id': user.id}) }} {% endif %}" method=post class="laminarin-form">
-    <dl>
-        <dt>Username:</dt>
-        <dd>{{ form_widget(form.username) }}</dd>
-        <dt>User Group:</dt>
-        <dd>{{ form_widget(form.userGroup) }}</dd>
-        <dt>Email:</dt>
-        <dd>{{ form_widget(form.email) }}</dd>
-        <dd>{{ form_widget(form.save) }}
-
-            <a href="{{ path('userIndex') }}"><button type="button" class="btn btn-primary pull-right">Back</button></a>
-        <br/></dd>
-    </dl>
-</form>
+<!--<ul class=entries>-->
+<div class="panel panel-default">
+    {{ form_start(custOrderForm) }}
+    <div class="panel-heading" style="padding:1em;padding-right:1em;">
+        {% for custOrder in custOrderForm.custOrder %}
+            <dl>
+                <dd>Table : {{ form_widget(custOrder.customer) }}</dd>
+                <dd>Cahier : {% if custOrder.cashier.vars.data %} {{custOrder.cashier.vars.data.getEmployeeName() }} {%endif%}{{ form_widget(custOrder.cashier) }}</dd>
+                <dd>Order Date : {{ custOrder.orderDate.vars.data|date('Y-m-d H:m:i', 'Asia/Jakarta') }}
+                        {{ form_widget(custOrder.orderDate) }}
+                </dd>
+                <dd>Payment Method : {{ form_widget(custOrder.paymentMethod) }}</dd>
+                <dd>{{ form_widget(custOrder.orderType) }}{{ form_widget(custOrder.orderStatus) }}</dd>
+            </dl>
+        {% endfor %}
+    </div>
+    <div style="padding-bottom:50px;">
+    <table  class="table">
+        <thead>
+            <tr>
+                <th width="32">No</th>
+                <th>Menu</th>
+                <th>Quatity</th>
+                <th>Price</th>
+                <th>Discount</th>
+                <th>Total</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+        {% set idx = 1 %}
+        {% set grandTotal = 0 %}
+        {% for od in custOrderForm.orderDetail %}
+            <tr>
+            <td class="center">{{idx}}</td>
+            <td>{{od.meal.vars.data.getMealName()}}{{ form_widget(od.meal)}}</td>
+            <td>{{ form_widget(od.qty)}}</td>
+            <td>{{od.meal.vars.data.getMealPrice()}}</td>
+            <td>{{od.meal.vars.data.getDiscount()}}</td>
+            <td>{{od.vars.data.getTotal()}}
+                {{ form_widget(od.total)}}
+                {{ form_widget(od.totalBeforeDiscount)}}
+                {{ form_widget(od.totalDiscount)}}
+            </td>
+            <td>
+                {# if session.logged_in #}
+                
+                <a href="#"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                {# endif #}
+            </td>
+            </tr>
+            {% set idx = idx +1 %}
+            {% set grandTotal = grandTotal + od.vars.data.getTotal() %}
+        {% endfor %}
+        <tr>
+            <td colspan="5"><strong>Grand Total</strong></td>
+            <td>{{grandTotal}}</td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+    {{ form_widget(custOrderForm.save) }}
+    </div>
+    
+        
+    
+    <!-- <a href="{{path('checkOutTheOrders')}}" class="btn btn-success pull-right" style="margin-right:10px;" role="button">Check Out</a>  -->
+    {{ form_end(custOrderForm) }}
+    
+</div>
 
   {# endif #}
 {% endblock %}

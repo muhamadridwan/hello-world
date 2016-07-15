@@ -14,6 +14,7 @@ class OrderManagementService
 	private $mealCategoryRepo;
 	private $mealRepo;
 	private $customerRepo;
+	private $orderDetailRepo;
 	private $em;
 	function __construct( EntityManager $em)
 	{
@@ -75,11 +76,12 @@ class OrderManagementService
 		$result = array();
 		$custOrder = new CustomerOrder();
 		$custOrder->setOrderType(0);
-		$custOrder->setOrderType(strtotime(date('Y-m-d H:i:s')));
+		$custOrder->setOrderDate(new \DateTime(date('Y-m-d H:m:i')));
 		$custOrder->setPaymentMethod("CASH");
 		$custOrder->setOrderStatus(0);
 		
-		$result['custOrder'] = $custOrder;
+		$result['custOrder'] = new ArrayCollection();
+		$result['custOrder']->add($custOrder);
 		$result['orderDetail'] = new ArrayCollection();
 		foreach($listOfOrderedMeal as $orderedMeal)
 		{
@@ -91,7 +93,7 @@ class OrderManagementService
 			$orderDetail->setTotalDiscount(
 				$orderDetail->getTotalBeforeDiscount() * $orderedMeal['meal']->getDiscount()/100);
 			$orderDetail->setTotal($orderDetail->getTotalBeforeDiscount() - $orderDetail->getTotalDiscount());
-			
+			$this->em->persist($orderDetail->getMeal());
 			$result['orderDetail']->add($orderDetail);	
 		}
 

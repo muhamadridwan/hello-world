@@ -145,7 +145,7 @@ orderIndex:
   path: orders/order/{category_id}
   defaults: {_controller: AppBundle:Order:orderIndex, category_id: -1}
 pickTheMeal:
-  path: orders/order/pickTheMeal/
+  path: orders/order/pickTheMeal/{category_id}
   defaults: {_controller: AppBundle:Order:pickTheMeal}
 cancelPickTheMeal:
   path: orders/order/cancelPickTheMeal/{meal_id}/{category_id}
