@@ -7,7 +7,7 @@
     <unique-constraints>
       <unique-constraint name="uq_user_order_order_id" columns="order_id"/>
     </unique-constraints>
-    <id name="orderId" type="string" column="order_id" length="64">
+    <id name="orderId" type="bigint" column="order_id">
       <generator strategy="SEQUENCE"/>
       <sequence-generator sequence-name="customer_order_order_id_seq" allocation-size="1" initial-value="1"/>
     </id>

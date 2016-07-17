@@ -2,10 +2,10 @@
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
   <entity name="AppBundle\Entity\OrderDetail" table="order_detail">
     <indexes>
-      <index name="ixfk_order_detail_customer_order" columns="order_id"/>
       <index name="ixfk_order_detail_meal" columns="meal_id"/>
+      <index name="ixfk_order_detail_customer_order" columns="order_id"/>
     </indexes>
-    <id name="orderDetailId" type="string" column="order_detail_id" length="64">
+    <id name="orderDetailId" type="bigint" column="order_detail_id">
       <generator strategy="SEQUENCE"/>
       <sequence-generator sequence-name="order_detail_order_detail_id_seq" allocation-size="1" initial-value="1"/>
     </id>

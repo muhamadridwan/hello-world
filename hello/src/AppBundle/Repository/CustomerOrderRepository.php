@@ -18,6 +18,7 @@ class CustomerOrderRepository
 	{
 		$this->em->persist($custOrder);
 		$this->em->flush();
+		return $custOrder;
 	}
 
 	public function deleteCustomerOrder($customer_order_id)
@@ -58,6 +59,20 @@ class CustomerOrderRepository
 			$qb->setParameters(array(
 				"orderType"=> $orderType));
 			
+			return $qb->getQuery()->getResult();
+		}
+		catch(\Exception $e){
+		    return array();
+		}
+	}
+	
+	public function getAllUndoneOrder()
+	{
+		try
+		{
+			$qb = $this->customerOrderRepo->createQueryBuilder("c");
+			$qb->where($qb->expr()->neq("c.orderStatus","5"));
+
 			return $qb->getQuery()->getResult();
 		}
 		catch(\Exception $e){

@@ -73,8 +73,6 @@ class CustomerOrder
      *
      * @ORM\Column(name="order_id", type="string", length=64)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
-     * @ORM\SequenceGenerator(sequenceName="customer_order_order_id_seq", allocationSize=1, initialValue=1)
      */
     private $orderId;
 
@@ -282,6 +280,20 @@ class CustomerOrder
         return $this->courier;
     }
 
+	/**
+     * Set orderId
+     *
+     * @param string $orderId
+     *
+     * @return CustomerOrder
+     */
+    public function setOrderId($orderId)
+    {
+        $this->orderId = $orderId;
+
+        return $this;
+    }
+	
     /**
      * Get orderId
      *

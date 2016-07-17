@@ -4,6 +4,8 @@ namespace AppBundle\Service;
 use AppBundle\Repository\MealCategoryRepository;
 use AppBundle\Repository\MealRepository;
 use AppBundle\Repository\CustomerRepository;
+use AppBundle\Repository\CustomerOrderRepository;
+use AppBundle\Repository\OrderDetailRepository;
 use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\CustomerOrder;
 use AppBundle\Entity\OrderDetail;
@@ -14,7 +16,9 @@ class OrderManagementService
 	private $mealCategoryRepo;
 	private $mealRepo;
 	private $customerRepo;
+	private $custOrderRepo;
 	private $orderDetailRepo;
+	
 	private $em;
 	function __construct( EntityManager $em)
 	{
@@ -22,8 +26,22 @@ class OrderManagementService
 		$this->mealCategoryRepo = new MealCategoryRepository($this->em);
 		$this->mealRepo = new MealRepository($this->em);
 		$this->customerRepo = new CustomerRepository($this->em);
+		$this->custOrderRepo = new CustomerOrderRepository($this->em);
+		$this->orderDetailRepo = new OrderDetailRepository($this->em);
 	}
 
+	public function getActiveOrders()
+	{
+		$result = array();
+		$result['custOrders'] = $this->custOrderRepo->getAllUndoneOrder();
+		foreach($result['custOrders'] as $c)
+		{
+			$result['orderDetails'][$c->getOrderId()] = $this->orderDetailRepo->getAllOrderDetailByCustomerOrder($c);
+		}
+		
+		return $result;
+	}
+	
 	public function getAllMeal()
 	{
 		return $this->mealRepo->getAllMeal();
@@ -75,6 +93,7 @@ class OrderManagementService
 	{
 		$result = array();
 		$custOrder = new CustomerOrder();
+		$custOrder->setOrderId(time());
 		$custOrder->setOrderType(0);
 		$custOrder->setOrderDate(new \DateTime(date('Y-m-d H:m:i')));
 		$custOrder->setPaymentMethod("CASH");
@@ -85,21 +104,34 @@ class OrderManagementService
 		$result['orderDetail'] = new ArrayCollection();
 		foreach($listOfOrderedMeal as $orderedMeal)
 		{
+			//var_dump($orderedMeal);
 			$orderDetail = new OrderDetail();
-			$orderDetail->setMeal($orderedMeal['meal']);
+			$orderDetail->setMeal($this->mealRepo->getMealById($orderedMeal['meal']->getMealId()));
 			$orderDetail->setQty($orderedMeal['qty']);
 			$orderDetail->setTotalBeforeDiscount(
 				$orderedMeal['qty'] * $orderedMeal['meal']->getMealPrice());
 			$orderDetail->setTotalDiscount(
 				$orderDetail->getTotalBeforeDiscount() * $orderedMeal['meal']->getDiscount()/100);
 			$orderDetail->setTotal($orderDetail->getTotalBeforeDiscount() - $orderDetail->getTotalDiscount());
-			$this->em->persist($orderDetail->getMeal());
+			//$this->em->persist($orderDetail->getMeal());
+			//$this->em->persist($orderDetail->getMeal()->getCategory());
 			$result['orderDetail']->add($orderDetail);	
 		}
 
 		return $result;
 	}
 	
+	public function saveOrder($data)
+	{
+		$custOrder = $data["custOrder"][0];
+		$custOrder = $this->custOrderRepo->addCustomerOrder($custOrder);
+		
+		foreach($data["orderDetail"] as $orderDetail)
+		{
+			$orderDetail->setOrder($custOrder);
+			$this->orderDetailRepo->addOrderDetail($orderDetail);
+		}
+	}
 	public function getAllRestoTable()
 	{
 		return $this->customerRepo->getAllRestoTable();

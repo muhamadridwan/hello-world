@@ -5,7 +5,6 @@
       <index name="ixfk_meal_meal_category" columns="category_id"/>
     </indexes>
     <unique-constraints>
-      <unique-constraint name="uq_meal_category_id" columns="category_id"/>
       <unique-constraint name="uq_meal_meal_id" columns="meal_id"/>
     </unique-constraints>
     <id name="mealId" type="integer" column="meal_id">
@@ -17,7 +16,7 @@
         <option name="fixed"/>
       </options>
     </field>
-    <field name="mealDesc" type="string" column="meal_desc" length="64" nullable="true">
+    <field name="mealDesc" type="string" column="meal_desc" length="500" nullable="true">
       <options>
         <option name="fixed"/>
       </options>

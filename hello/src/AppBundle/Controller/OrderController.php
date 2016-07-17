@@ -131,22 +131,9 @@ class OrderController extends BaseController
 		{
 		    $custOrderForm->handleRequest($request);
 			$formData = $custOrderForm->getData();
-		    
-		    /*foreach($orderDetailForm->get('orderDetail') as $od)
-			{
-				if($od->get('save')->isClicked())
-				{
-					$data = $od->getData();
-					if($data['qty'] >= 1)
-					{
-						$listOfOrderedMeal[$data['meal']->getMealId()]['meal'] = $data['meal'];
-						$listOfOrderedMeal[$data['meal']->getMealId()]['qty'] = $data['qty'];
-					}
-					
-				}
-			}
-			
-			$this->session->set('listOfOrderedMeal', $listOfOrderedMeal);*/
+			$orderManagementService->saveOrder($formData);
+		    $this->session->remove('listOfOrderedMeal');
+			return $this->redirectToRoute('orderIndex', array('category_id'=> -1));
 		}
 		//$this->resp['activeCategoryId'] = $category->getCategoryId();
 		$this->resp['custOrderForm'] = $custOrderForm->createView();
@@ -156,7 +143,11 @@ class OrderController extends BaseController
 
 	public function activeOrderIndexAction()
 	{
-		return new Response("Sorry, Active Order page is under construction.");
+		$this->authSetup();
+		$orderManagementService = $this->container->get('app.bundle.order.management.service');
+		
+		$this->resp['activeOrders'] = $orderManagementService->getActiveOrders();
+		return $this->render("orders/active_order/index.html.twig", $this->resp);
 	}
 
 	public function historyIndexAction()
