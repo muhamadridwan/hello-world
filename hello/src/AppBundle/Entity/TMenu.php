@@ -59,7 +59,7 @@ class TMenu
      *
      * @ORM\Column(name="is_active", type="boolean", nullable=false)
      */
-    private $isActive = true;
+    private $isActive = '1';
 
     /**
      * @var integer

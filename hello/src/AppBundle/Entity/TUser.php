@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * TUser
  *
@@ -32,7 +33,7 @@ class TUser implements UserInterface, \Serializable
      *
      * @ORM\Column(name="is_active", type="boolean", nullable=true)
      */
-    private $isActive = true;
+    private $isActive = '1';
 
     /**
      * @var string
@@ -193,7 +194,7 @@ class TUser implements UserInterface, \Serializable
         return $this->userGroup;
     }
 
-        public function getRoles()
+    public function getRoles()
     {
         return array($this->getUserGroup()->getUserGroupId());
     }

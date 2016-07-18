@@ -13,13 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Employee
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="user_id", type="integer", nullable=true)
-     */
-    private $userId;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="personal_id", type="string", length=32, nullable=true)
@@ -87,332 +80,28 @@ class Employee
      *
      * @ORM\Column(name="is_active", type="boolean", nullable=true)
      */
-    private $isActive = true;
+    private $isActive = '1';
 
     /**
      * @var string
      *
      * @ORM\Column(name="employee_id", type="string", length=32)
      * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="employee_employee_id_seq", allocationSize=1, initialValue=1)
      */
     private $employeeId;
 
-
-
-    /**
-     * Set userId
-     *
-     * @param integer $userId
-     *
-     * @return Employee
-     */
-    public function setUserId($userId)
-    {
-        $this->userId = $userId;
-
-        return $this;
-    }
-
-    /**
-     * Get userId
-     *
-     * @return integer
-     */
-    public function getUserId()
-    {
-        return $this->userId;
-    }
-
-    /**
-     * Set personalId
-     *
-     * @param string $personalId
-     *
-     * @return Employee
-     */
-    public function setPersonalId($personalId)
-    {
-        $this->personalId = $personalId;
-
-        return $this;
-    }
-
-    /**
-     * Get personalId
-     *
-     * @return string
-     */
-    public function getPersonalId()
-    {
-        return $this->personalId;
-    }
-
-    /**
-     * Set employeeName
-     *
-     * @param string $employeeName
-     *
-     * @return Employee
-     */
-    public function setEmployeeName($employeeName)
-    {
-        $this->employeeName = $employeeName;
-
-        return $this;
-    }
-
-    /**
-     * Get employeeName
-     *
-     * @return string
-     */
-    public function getEmployeeName()
-    {
-        return $this->employeeName;
-    }
-
-    /**
-     * Set employeeFullname
-     *
-     * @param string $employeeFullname
-     *
-     * @return Employee
-     */
-    public function setEmployeeFullname($employeeFullname)
-    {
-        $this->employeeFullname = $employeeFullname;
-
-        return $this;
-    }
-
-    /**
-     * Get employeeFullname
-     *
-     * @return string
-     */
-    public function getEmployeeFullname()
-    {
-        return $this->employeeFullname;
-    }
-
-    /**
-     * Set employeeAddress
-     *
-     * @param string $employeeAddress
-     *
-     * @return Employee
-     */
-    public function setEmployeeAddress($employeeAddress)
-    {
-        $this->employeeAddress = $employeeAddress;
-
-        return $this;
-    }
-
-    /**
-     * Get employeeAddress
-     *
-     * @return string
-     */
-    public function getEmployeeAddress()
-    {
-        return $this->employeeAddress;
-    }
-
-    /**
-     * Set phoneNumber
-     *
-     * @param string $phoneNumber
-     *
-     * @return Employee
-     */
-    public function setPhoneNumber($phoneNumber)
-    {
-        $this->phoneNumber = $phoneNumber;
-
-        return $this;
-    }
-
-    /**
-     * Get phoneNumber
-     *
-     * @return string
-     */
-    public function getPhoneNumber()
-    {
-        return $this->phoneNumber;
-    }
-
-    /**
-     * Set email
-     *
-     * @param string $email
-     *
-     * @return Employee
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * Get email
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * Set joinDate
-     *
-     * @param \DateTime $joinDate
-     *
-     * @return Employee
-     */
-    public function setJoinDate($joinDate)
-    {
-        $this->joinDate = $joinDate;
-
-        return $this;
-    }
-
-    /**
-     * Get joinDate
-     *
-     * @return \DateTime
-     */
-    public function getJoinDate()
-    {
-        return $this->joinDate;
-    }
-
-    /**
-     * Set resignDate
-     *
-     * @param \DateTime $resignDate
-     *
-     * @return Employee
-     */
-    public function setResignDate($resignDate)
-    {
-        $this->resignDate = $resignDate;
-
-        return $this;
-    }
-
-    /**
-     * Get resignDate
-     *
-     * @return \DateTime
-     */
-    public function getResignDate()
-    {
-        return $this->resignDate;
-    }
-
-    /**
-     * Set picture
-     *
-     * @param string $picture
-     *
-     * @return Employee
-     */
-    public function setPicture($picture)
-    {
-        $this->picture = $picture;
-
-        return $this;
-    }
-
-    /**
-     * Get picture
-     *
-     * @return string
-     */
-    public function getPicture()
-    {
-        return $this->picture;
-    }
-
-    /**
-     * Set isActive
-     *
-     * @param boolean $isActive
-     *
-     * @return Employee
-     */
-    public function setIsActive($isActive)
-    {
-        $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    /**
-     * Get isActive
-     *
-     * @return boolean
-     */
-    public function getIsActive()
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * Set employeeId
-     *
-     * @param string $employeeId
-     *
-     * @return Employee
-     */
-    public function setEmployeeId($employeeId)
-    {
-        $this->employeeId = $employeeId;
-
-        return $this;
-    }
-
-    /**
-     * Get employeeId
-     *
-     * @return string
-     */
-    public function getEmployeeId()
-    {
-        return $this->employeeId;
-    }
     /**
      * @var \AppBundle\Entity\TUser
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\TUser")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * })
      */
     private $user;
 
 
-    /**
-     * Set user
-     *
-     * @param \AppBundle\Entity\TUser $user
-     *
-     * @return Employee
-     */
-    public function setUser(\AppBundle\Entity\TUser $user = null)
-    {
-        $this->user = $user;
-    
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return \AppBundle\Entity\TUser
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
 }
+

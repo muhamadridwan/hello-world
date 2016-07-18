@@ -28,9 +28,9 @@ class CustomerOrderRepository
 		$this->em->flush();
 	}
 
-	public function getCustomerOrderById($employee_id)
+	public function getCustomerOrderById($customerOrderId)
 	{
-		return $this->customerOrderRepo->find($id);
+		return $this->customerOrderRepo->find($customerOrderId);
 
 	}
 
@@ -73,6 +73,21 @@ class CustomerOrderRepository
 			$qb = $this->customerOrderRepo->createQueryBuilder("c");
 			$qb->where($qb->expr()->neq("c.orderStatus","5"));
 
+			return $qb->getQuery()->getResult();
+		}
+		catch(\Exception $e){
+		    return array();
+		}
+	}
+
+	public function getOrderByStatus($status)
+	{
+		try
+		{
+			$qb = $this->customerOrderRepo->createQueryBuilder("c");
+			$qb->where($qb->expr()->eq("c.orderStatus",":status"));
+			$qb->setParameters(array(
+				"status"=> $status));
 			return $qb->getQuery()->getResult();
 		}
 		catch(\Exception $e){

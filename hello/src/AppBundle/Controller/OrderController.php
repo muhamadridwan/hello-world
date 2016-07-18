@@ -133,7 +133,7 @@ class OrderController extends BaseController
 			$formData = $custOrderForm->getData();
 			$orderManagementService->saveOrder($formData);
 		    $this->session->remove('listOfOrderedMeal');
-			return $this->redirectToRoute('orderIndex', array('category_id'=> -1));
+			return $this->redirectToRoute('activeOrderIndex');
 		}
 		//$this->resp['activeCategoryId'] = $category->getCategoryId();
 		$this->resp['custOrderForm'] = $custOrderForm->createView();
@@ -141,13 +141,74 @@ class OrderController extends BaseController
 		return $this->render("orders/order/check_out_the_orders.html.twig", $this->resp);
 	}
 
-	public function activeOrderIndexAction()
+	public function activeOrderIndexAction($order_status, Request $request)
+	{
+		$this->authSetup();
+
+		$activeOrderMenu = array();
+		$activeOrderMenu[0] = "New Order";
+		$activeOrderMenu[2] = "On Cooking";
+		$activeOrderMenu[4] = "Served Order";
+
+		$orderManagementService = $this->container->get('app.bundle.order.management.service');
+		//var_dump($customer_order_id);
+		$this->resp['activeOrders'] = $orderManagementService->getOrderByStatus($order_status);
+		$this->resp['activeOrderMenus'] = $activeOrderMenu;
+		$this->resp['orderStatus'] = $order_status;
+		
+		return $this->render("orders/active_order/index.html.twig", $this->resp);
+	}
+
+	public function cooksTheFoodAction($customer_order_id)
+	{
+		$this->authSetup();
+		$this->container->get('app.bundle.order.management.service')->cooksTheFood($customer_order_id);
+		return $this->redirectToRoute('activeOrderIndex', array('order_status'=>2));
+	}
+
+	public function servesTheFoodAction($customer_order_id)
+	{
+		$this->authSetup();
+		$this->container->get('app.bundle.order.management.service')->servesTheFood($customer_order_id);
+		return $this->redirectToRoute('activeOrderIndex', array('order_status'=>4));
+	}
+	
+	public function paymentAction($customer_order_id, Request $request)
 	{
 		$this->authSetup();
 		$orderManagementService = $this->container->get('app.bundle.order.management.service');
 		
-		$this->resp['activeOrders'] = $orderManagementService->getActiveOrders();
-		return $this->render("orders/active_order/index.html.twig", $this->resp);
+		$custOrderData = $orderManagementService->getOrderDetailByOrderId($customer_order_id);
+		//$custOrder['custOrder'][0]->setCashier($employeeManagementService->getEmployeeByUser($this->getUser()));
+		
+		//$this->resp['activeCategoryId'] = $category->getCategoryId();
+		$this->resp['custOrderData'] = $custOrderData;
+		//var_dump($custOrderData);
+		return $this->render("orders/active_order/payment_confirmation.html.twig", $this->resp);
+	}
+	
+	public function confirmPaymentAction($customer_order_id, Request $request)
+	{
+		$this->authSetup();
+		$orderManagementService = $this->container->get('app.bundle.order.management.service');
+		$employeeManagementService = $this->container->get('app.bundle.employee.management.service');
+		
+		$admin = $employeeManagementService->getEmployeeByUser($this->getUser());
+		if($admin != null)
+		{
+			setTransactionDone($customer_order_id, $admin);
+			return $this->redirectToRoute('activeOrderIndex', array('order_status'=>4));
+		}
+		else
+		{
+			$this->resp['error'] = "You must be login as admin to confirm the payment.";
+			$orderManagementService = $this->container->get('app.bundle.order.management.service');
+		
+			$custOrderData = $orderManagementService->getOrderDetailByOrderId($customer_order_id);
+			$this->resp['custOrderData'] = $custOrderData;
+			return $this->render("orders/active_order/payment_confirmation.html.twig", $this->resp);
+		}
+		
 	}
 
 	public function historyIndexAction()

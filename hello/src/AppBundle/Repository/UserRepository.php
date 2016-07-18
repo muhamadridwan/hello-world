@@ -72,15 +72,18 @@ class UserRepository
 	public function getAvailableAdmin()
 	{
 		$qb = $this->userRepo->createQueryBuilder("u");
-		$sub = $this->em->createQueryBuilder();
-		$sub->select('IDENTITY(e.user)')
-          ->from('AppBundle:Employee', 'e');
+		$listOfRegisteredUser = $this->em->createQueryBuilder()
+         ->select('IDENTITY(e.user)')
+         ->from('AppBundle:Employee', 'e')
+                 ->where($qb->expr()->isNotNull("e.user"))
+         ->getDQL();
 		$qb->innerJoin("AppBundle:TUserGroup", "grp", "WITH", "u.userGroup = grp");
 		
 		$qb->where($qb->expr()->eq("grp.userGroupId","'ROLE_ADMIN'"));
-		//$qb->andWhere($qb->expr()->notIn('u',  $sub->getDQL()));
+		$qb->andWhere($qb->expr()->notIn('u',  $listOfRegisteredUser));
 		
 		return $qb->getQuery()->getResult();
 	}
+	
 }
 ?>

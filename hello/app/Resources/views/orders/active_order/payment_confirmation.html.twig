@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+{% block title %}Payment Confirmation{% endblock %}
+{% block body %}
+{# if session.logged_in #}
+<!--<ul class=entries>-->
+{% if error %}
+<div class="alert-danger error">{{ error }}</div>
+{% endif %}
+<div class="panel panel-default">
+    <div class="panel-heading" style="padding:1em;padding-right:1em;">
+        
+            <dl>
+                <dd>Table : {{ custOrderData.custOrder.getCustomer().getCustomerName() }}</dd>
+                <dd>Cahier : {% if custOrderData.custOrder.cashier %} {{custOrderData.custOrder.cashier.getEmployeeName() }} {%endif%}</dd>
+                <dd>Order Date : {{ custOrderData.custOrder.orderDate|date('Y-m-d H:m:i', 'Asia/Jakarta') }}
+                </dd>
+                <dd>Payment Method : {{ custOrderData.custOrder.getPaymentMethod() }}</dd>
+            </dl>
+        
+    </div>
+    <div style="padding-bottom:50px;">
+    <table  class="table">
+        <thead>
+            <tr>
+                <th width="32">No</th>
+                <th>Menu</th>
+                <th>Quatity</th>
+                <th>Price</th>
+                <th>Discount</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+        
+        {% set idx = 1 %}
+        {% set grandTotal = 0 %}
+        {% for od in custOrderData.orderDetail %}
+            <tr>
+            <td class="center">{{idx}}</td>
+            <td>{{od.meal.getMealName()}}</td>
+            <td>{{ od.getQty()}}</td>
+            <td>{{od.meal.getMealPrice()}}</td>
+            <td>{{od.meal.getDiscount()}}</td>
+            <td>{{od.getTotal()}}</td>
+            </tr>
+            {% set idx = idx +1 %}
+            {% set grandTotal = grandTotal + od.getTotal() %}
+        {% endfor %}
+        <tr>
+            <td colspan="5"><strong>Grand Total</strong></td>
+            <td>{{grandTotal}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="{{path('confirmPayment', {'customer_order_id':custOrderData.custOrder.getOrderId()} )}}" class="btn btn-success pull-right" style="margin-right:10px;" role="button">Confirm Payment</a>
+    </div>
+    
+        
+    
+</div>
+
+  {# endif #}
+{% endblock %}

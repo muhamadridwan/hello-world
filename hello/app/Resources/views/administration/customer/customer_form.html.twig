@@ -22,7 +22,7 @@
         <dt>Email:</dt>
         <dd>{{ form_widget(form.email) }}</dd>
         <dt>Picture:</dt>
-        <dd>{{ form_widget(form.picture) }}</dd>
+        <dd>{{ form_widget(form.picture) }}{{ form_widget(form.pictureFile) }}</dd>
         <dd><img id="cust-pic-preview" class="img-thumbnail" width="200em" onerror="getDefaultImage(this)" src="{{asset('bundles/images/customer/')}}{{customer.getPicture()}}" />
         </dd>
         <dd>{{ form_widget(form.save) }}

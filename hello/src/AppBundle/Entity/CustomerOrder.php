@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CustomerOrder
  *
- * @ORM\Table(name="customer_order", uniqueConstraints={@ORM\UniqueConstraint(name="uq_user_order_order_id", columns={"order_id"})}, indexes={@ORM\Index(name="ixfk_customer_order_customer", columns={"customer_id"})})
+ * @ORM\Table(name="customer_order", uniqueConstraints={@ORM\UniqueConstraint(name="uq_user_order_order_id", columns={"order_id"})}, indexes={@ORM\Index(name="ixfk_customer_order_employee_02", columns={"confirmed_by"}), @ORM\Index(name="ixfk_customer_order_employee", columns={"cashier"}), @ORM\Index(name="ixfk_customer_order_customer", columns={"customer_id"})})
  * @ORM\Entity
  */
 class CustomerOrder
@@ -18,13 +18,6 @@ class CustomerOrder
      * @ORM\Column(name="order_date", type="datetime", nullable=false)
      */
     private $orderDate;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="cashier", type="string", length=32, nullable=true)
-     */
-    private $cashier;
 
     /**
      * @var integer
@@ -69,10 +62,12 @@ class CustomerOrder
     private $courier;
 
     /**
-     * @var string
+     * @var integer
      *
-     * @ORM\Column(name="order_id", type="string", length=64)
+     * @ORM\Column(name="order_id", type="bigint")
      * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="customer_order_order_id_seq", allocationSize=1, initialValue=1)
      */
     private $orderId;
 
@@ -85,6 +80,26 @@ class CustomerOrder
      * })
      */
     private $customer;
+
+    /**
+     * @var \AppBundle\Entity\Employee
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Employee")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="confirmed_by", referencedColumnName="employee_id")
+     * })
+     */
+    private $confirmedBy;
+
+    /**
+     * @var \AppBundle\Entity\Employee
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Employee")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="cashier", referencedColumnName="employee_id")
+     * })
+     */
+    private $cashier;
 
 
 
@@ -110,30 +125,6 @@ class CustomerOrder
     public function getOrderDate()
     {
         return $this->orderDate;
-    }
-
-    /**
-     * Set cashier
-     *
-     * @param string $cashier
-     *
-     * @return CustomerOrder
-     */
-    public function setCashier($cashier)
-    {
-        $this->cashier = $cashier;
-
-        return $this;
-    }
-
-    /**
-     * Get cashier
-     *
-     * @return string
-     */
-    public function getCashier()
-    {
-        return $this->cashier;
     }
 
     /**
@@ -256,6 +247,34 @@ class CustomerOrder
         return $this->orderStatus;
     }
 
+    public function getOrderStatusDesc()
+    {
+        switch ($this->orderStatus) {
+            case 0:
+                return "Ordered";
+                break;
+            case 1:
+                return "Waiting for confirmation";
+                break;
+            case 2:
+                return "Cooking";
+                break;
+            case 3:
+                return "On delivery";
+                break;
+            case 4:
+                return "Enjoying the meal";
+                break;
+            case 5:
+                return "Done";
+                break;
+            default:
+                return "Waiting for check-out";
+                break;
+        }
+
+    }
+
     /**
      * Set courier
      *
@@ -280,24 +299,10 @@ class CustomerOrder
         return $this->courier;
     }
 
-	/**
-     * Set orderId
-     *
-     * @param string $orderId
-     *
-     * @return CustomerOrder
-     */
-    public function setOrderId($orderId)
-    {
-        $this->orderId = $orderId;
-
-        return $this;
-    }
-	
     /**
      * Get orderId
      *
-     * @return string
+     * @return integer
      */
     public function getOrderId()
     {
@@ -326,5 +331,53 @@ class CustomerOrder
     public function getCustomer()
     {
         return $this->customer;
+    }
+
+    /**
+     * Set confirmedBy
+     *
+     * @param \AppBundle\Entity\Employee $confirmedBy
+     *
+     * @return CustomerOrder
+     */
+    public function setConfirmedBy(\AppBundle\Entity\Employee $confirmedBy = null)
+    {
+        $this->confirmedBy = $confirmedBy;
+
+        return $this;
+    }
+
+    /**
+     * Get confirmedBy
+     *
+     * @return \AppBundle\Entity\Employee
+     */
+    public function getConfirmedBy()
+    {
+        return $this->confirmedBy;
+    }
+
+    /**
+     * Set cashier
+     *
+     * @param \AppBundle\Entity\Employee $cashier
+     *
+     * @return CustomerOrder
+     */
+    public function setCashier(\AppBundle\Entity\Employee $cashier = null)
+    {
+        $this->cashier = $cashier;
+
+        return $this;
+    }
+
+    /**
+     * Get cashier
+     *
+     * @return \AppBundle\Entity\Employee
+     */
+    public function getCashier()
+    {
+        return $this->cashier;
     }
 }

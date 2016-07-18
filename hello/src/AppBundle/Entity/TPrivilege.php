@@ -17,35 +17,35 @@ class TPrivilege
      *
      * @ORM\Column(name="p_access", type="boolean", nullable=false)
      */
-    private $pAccess = true;
+    private $pAccess = '1';
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="p_create", type="boolean", nullable=false)
      */
-    private $pCreate = true;
+    private $pCreate = '1';
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="p_retrieve", type="boolean", nullable=false)
      */
-    private $pRetrieve = true;
+    private $pRetrieve = '1';
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="p_update", type="boolean", nullable=false)
      */
-    private $pUpdate = true;
+    private $pUpdate = '1';
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="p_delete", type="boolean", nullable=false)
      */
-    private $pDelete = true;
+    private $pDelete = '1';
 
     /**
      * @var integer

@@ -155,8 +155,20 @@ checkOutTheOrders:
   defaults: {_controller: AppBundle:Order:checkOutTheOrders}
 
 activeOrderIndex:
-  path: orders/activeOrder/
-  defaults: {_controller: AppBundle:Order:activeOrderIndex}
+  path: orders/activeOrder/{order_status}
+  defaults: {_controller: AppBundle:Order:activeOrderIndex, order_status: 0}
+cooksTheFood:
+  path: orders/cooksTheFood/{customer_order_id}
+  defaults: {_controller: AppBundle:Order:cooksTheFood}
+servesTheFood:
+  path: orders/servesTheFood/{customer_order_id}
+  defaults: {_controller: AppBundle:Order:servesTheFood}
+paymentIndex:
+  path: orders/payment/{customer_order_id}
+  defaults: {_controller: AppBundle:Order:payment}
+confirmPayment:
+  path: orders/confirmPayment/{customer_order_id}
+  defaults: {_controller: AppBundle:Order:confirmPayment}  
 orderHistoryIndex:
   path: orders/history/
   defaults: {_controller: AppBundle:Order:historyIndex}

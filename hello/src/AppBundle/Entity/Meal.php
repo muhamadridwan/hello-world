@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Meal
  *
- * @ORM\Table(name="meal", uniqueConstraints={@ORM\UniqueConstraint(name="uq_meal_category_id", columns={"category_id"}), @ORM\UniqueConstraint(name="uq_meal_meal_id", columns={"meal_id"})}, indexes={@ORM\Index(name="ixfk_meal_meal_category", columns={"category_id"})})
+ * @ORM\Table(name="meal", uniqueConstraints={@ORM\UniqueConstraint(name="uq_meal_meal_id", columns={"meal_id"})}, indexes={@ORM\Index(name="ixfk_meal_meal_category", columns={"category_id"})})
  * @ORM\Entity
  */
 class Meal
@@ -22,7 +22,7 @@ class Meal
     /**
      * @var string
      *
-     * @ORM\Column(name="meal_desc", type="string", length=64, nullable=true)
+     * @ORM\Column(name="meal_desc", type="string", length=500, nullable=true)
      */
     private $mealDesc;
 
@@ -48,6 +48,13 @@ class Meal
     private $discount = '0';
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="picture", type="string", length=255, nullable=true)
+     */
+    private $picture;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="meal_id", type="integer")
@@ -67,10 +74,6 @@ class Meal
      */
     private $category;
 
-    /**
-     * @var string
-     */
-    private $picture;
 
 
     /**
@@ -194,6 +197,30 @@ class Meal
     }
 
     /**
+     * Set picture
+     *
+     * @param string $picture
+     *
+     * @return Meal
+     */
+    public function setPicture($picture)
+    {
+        $this->picture = $picture;
+
+        return $this;
+    }
+
+    /**
+     * Get picture
+     *
+     * @return string
+     */
+    public function getPicture()
+    {
+        return $this->picture;
+    }
+
+    /**
      * Get mealId
      *
      * @return integer
@@ -225,30 +252,5 @@ class Meal
     public function getCategory()
     {
         return $this->category;
-    }
-
-
-    /**
-     * Set picture
-     *
-     * @param string $picture
-     *
-     * @return Meal
-     */
-    public function setPicture($picture)
-    {
-        $this->picture = $picture;
-
-        return $this;
-    }
-
-    /**
-     * Get picture
-     *
-     * @return string
-     */
-    public function getPicture()
-    {
-        return $this->picture;
     }
 }

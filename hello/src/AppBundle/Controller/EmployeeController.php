@@ -5,6 +5,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\TUser;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -39,7 +40,9 @@ class EmployeeController extends BaseController
             ->add('employeeAddress', TextType::class)
             ->add('phoneNumber', TextType::class)
             ->add('email', TextType::class)
-            ->add('picture', FileType::class, array(
+            ->add('picture', HiddenType::class)
+            ->add('pictureFile', FileType::class, array(
+            		'mapped' => false,
             		'attr' => array(
             			'class'=> 'uploadfile',
             			'elm-view' => '#cust-pic-preview'
@@ -65,12 +68,24 @@ class EmployeeController extends BaseController
 		    }
 		    else
 		    {
-		    	$picture = $form['picture']->getData();
+		    	$picture = $form['pictureFile']->getData();
 		    	$serverDir = $this->get('kernel')->getRootDir().'/../web/bundles/images/employee/';		    	
 		    	
-		    	$filename = $newEmployee->getEmployeeId()."-".time().".".$picture->getClientOriginalExtension();
-		    	$picture->move($serverDir, $filename);
-		    	$newEmployee->setPicture($filename);
+		    	try
+		    	{
+		    		if($picture!=null)
+		    		{
+			    		$filename = $newEmployee->getEmployeeId()."-".time().".".$picture->getClientOriginalExtension();
+			    		$picture->move($serverDir, $filename);
+			    		$newEmployee->setPicture($filename);	
+		    		}
+		    		
+		    	}
+		    	catch(\Exception $e)
+		    	{
+		    		$error = "Failed to upload picture.";
+		    	}
+		    	
 		        $this->container->get('app.bundle.employee.management.service')->addEmployee($newEmployee);
 		        return $this->redirectToRoute("employeeIndex");
 		    } 
@@ -102,8 +117,11 @@ class EmployeeController extends BaseController
             ->add('employeeAddress', TextType::class)
             ->add('phoneNumber', TextType::class)
             ->add('email', TextType::class)
-            ->add('picture', FileType::class, array(
-            		'data_class' => null,
+            ->add('picture', HiddenType::class)
+            ->add('pictureFile', FileType::class, array(
+            		'mapped' => false,
+            		'required'=> false,
+            		//'data_class' => null,
             		'attr' => array(
             			'class'=> 'uploadfile',
             			'elm-view' => '#cust-pic-preview'
@@ -125,12 +143,25 @@ class EmployeeController extends BaseController
 		    }
 		    else
 		    {
-		    	$picture = $form['picture']->getData();
+		    	$picture = $form['pictureFile']->getData();
 		    	$serverDir = $this->get('kernel')->getRootDir().'/../web/bundles/images/employee/';		    	
 		    	
-		    	$filename = $employee->getEmployeeId()."-".time().".".$picture->getClientOriginalExtension();
-		    	$picture->move($serverDir, $filename);
-		    	$modifiedEmployee->setPicture($filename);
+		    	try
+		    	{
+		    		if($picture!=null)
+		    		{
+			    		$filename = $employee->getEmployeeId()."-".time().".".$picture->getClientOriginalExtension();
+				    	$picture->move($serverDir, $filename);
+				    	unlink($serverDir.$modifiedEmployee->getPicture());
+				    	$modifiedEmployee->setPicture($filename);	
+		    		}
+		    		
+		    	}
+		    	catch(\Exception $e)
+		    	{
+		    		$error = "Failed to upload picture.";
+		    	}
+		    	
 
 		        $this->container->get('app.bundle.employee.management.service')->editEmployee($employee, $modifiedEmployee);
 		        return $this->redirectToRoute("employeeIndex");

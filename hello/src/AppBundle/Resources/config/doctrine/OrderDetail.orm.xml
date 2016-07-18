@@ -2,8 +2,8 @@
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
   <entity name="AppBundle\Entity\OrderDetail" table="order_detail">
     <indexes>
-      <index name="ixfk_order_detail_meal" columns="meal_id"/>
       <index name="ixfk_order_detail_customer_order" columns="order_id"/>
+      <index name="ixfk_order_detail_meal" columns="meal_id"/>
     </indexes>
     <id name="orderDetailId" type="bigint" column="order_detail_id">
       <generator strategy="SEQUENCE"/>
@@ -31,14 +31,14 @@
         <option name="unsigned"/>
       </options>
     </field>
-    <many-to-one field="order" target-entity="CustomerOrder" fetch="LAZY">
-      <join-columns>
-        <join-column name="order_id" referenced-column-name="order_id"/>
-      </join-columns>
-    </many-to-one>
     <many-to-one field="meal" target-entity="Meal" fetch="LAZY">
       <join-columns>
         <join-column name="meal_id" referenced-column-name="meal_id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="order" target-entity="CustomerOrder" fetch="LAZY">
+      <join-columns>
+        <join-column name="order_id" referenced-column-name="order_id"/>
       </join-columns>
     </many-to-one>
   </entity>

@@ -31,7 +31,7 @@ class TUserGroup
      *
      * @ORM\Column(name="is_active", type="boolean", nullable=true)
      */
-    private $isActive = true;
+    private $isActive = '1';
 
     /**
      * @var string
@@ -115,20 +115,20 @@ class TUserGroup
         return $this->isActive;
     }
 
-	/**
+    /**
      * Set userGroupId
      *
      * @param string $userGroupId
      *
      * @return TUserGroup
      */
-    public function setUserGroupId($userGroupId)
+    public function setEmployeeId($userGroupId)
     {
         $this->userGroupId = $userGroupId;
 
         return $this;
     }
-	
+    
     /**
      * Get userGroupId
      *

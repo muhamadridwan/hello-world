@@ -5,6 +5,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\TUser;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -44,7 +45,10 @@ class CustomerController extends BaseController
             ->add('customerAddress', TextType::class)
             ->add('phoneNumber', TextType::class)
             ->add('email', TextType::class)
-            ->add('picture', FileType::class, array(
+            ->add('picture', HiddenType::class)
+            ->add('pictureFile', FileType::class, array(
+            		'required' => false,
+            		'mapped' => false,
             		'attr' => array(
             			'class'=> 'uploadfile',
             			'elm-view' => '#cust-pic-preview'
@@ -70,12 +74,23 @@ class CustomerController extends BaseController
 		    }
 		    else
 		    {
-		    	$picture = $form['picture']->getData();
+		    	$picture = $form['pictureFile']->getData();
 		    	$serverDir = $this->get('kernel')->getRootDir().'/../web/bundles/images/customer/';		    	
+		    	try
+		    	{
+		    		if($picture!=null)
+		    		{
+		    			$filename = $newCustomer->getCustomerId()."-".time().".".$picture->getClientOriginalExtension();
+				    	$picture->move($serverDir, $filename);
+				    	$newCustomer->setPicture($filename);	
+		    		}
+		    		
+		    	}
+		    	catch(\Exception $e)
+		    	{
+		    		$error = "Failed to upload picture.";
+		    	}
 		    	
-		    	$filename = $newCustomer->getCustomerId()."-".time().".".$picture->getClientOriginalExtension();
-		    	$picture->move($serverDir, $filename);
-		    	$newCustomer->setPicture($filename);
 		        $this->container->get('app.bundle.customer.management.service')->addCustomer($newCustomer);
 		        return $this->redirectToRoute("customerIndex");
 		    } 
@@ -107,17 +122,15 @@ class CustomerController extends BaseController
 				    'choices' => $userService->getAllCustomerUser(),
 				    'choice_label' => 'username'))
 		            
-            /*->add('userId', EntityType::class, array(
-				    'class' => 'AppBundle:TUser',
-				    'choices' => $userService->getAllCustomerUser(),
-				    'choice_label' => 'username'))*/
             ->add('customerName', TextType::class)
             ->add('customerFullname', TextType::class)
             ->add('customerAddress', TextType::class)
             ->add('phoneNumber', TextType::class)
             ->add('email', TextType::class)
-            ->add('picture', FileType::class, array(
-            		'data_class' => null,
+            ->add('picture', HiddenType::class)
+            ->add('pictureFile', FileType::class, array(
+            		'required' => false,
+            		'mapped' => false,
             		'attr' => array(
             			'class'=> 'uploadfile',
             			'elm-view' => '#cust-pic-preview'
@@ -139,12 +152,25 @@ class CustomerController extends BaseController
 		    }
 		    else
 		    {
-		        $picture = $form['picture']->getData();
+		        $picture = $form['pictureFile']->getData();
 		    	$serverDir = $this->get('kernel')->getRootDir().'/../web/bundles/images/customer/';		    	
 		    	
-		    	$filename = $customer->getCustomerId()."-".time().".".$picture->getClientOriginalExtension();
-		    	$picture->move($serverDir, $filename);
-		    	$modifiedCustomer->setPicture($filename);
+		    	try
+		    	{
+		    		if($picture!=null)
+		    		{
+		    			$filename = $customer->getCustomerId()."-".time().".".$picture->getClientOriginalExtension();
+				    	$picture->move($serverDir, $filename);
+				    	unlink($serverDir.$modifiedCustomer->getPicture());
+				    	$modifiedCustomer->setPicture($filename);	
+		    		}
+		    		
+		    	}
+		    	catch(\Exception $e)
+		    	{
+		    		$error = "Failed to upload picture.";
+		    	}
+		    	
 		        $this->container->get('app.bundle.customer.management.service')->editCustomer($customer, $modifiedCustomer);
 		        return $this->redirectToRoute("customerIndex");
 		    }

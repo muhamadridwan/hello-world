@@ -42,7 +42,7 @@ class CustomerRepository
 
 	public function editCustomer($customer, $modifiedCustomer)
 	{
-		$customer->setUserId($modifiedCustomer->getUserId());
+		$customer->setUser($modifiedCustomer->getUser());
 		$customer->setPersonalId($modifiedCustomer->getPersonalId());
 		$customer->setCustomerName($modifiedCustomer->getCustomerName());
 		$customer->setCustomerFullname($modifiedCustomer->getCustomerFullname());

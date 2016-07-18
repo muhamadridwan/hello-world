@@ -41,7 +41,46 @@ class OrderManagementService
 		
 		return $result;
 	}
+
+	public function getOrderByStatus($status)
+	{
+		$result = array();
+		$result['custOrders'] = $this->custOrderRepo->getOrderByStatus($status);
+		foreach($result['custOrders'] as $c)
+		{
+			$result['orderDetails'][$c->getOrderId()] = $this->orderDetailRepo->getAllOrderDetailByCustomerOrder($c);
+		}
+		
+		return $result;
+	}
 	
+	public function getCustomerOrderById($custOrderId)
+	{
+		return $this->custOrderRepo->getCustomerOrderById($custOrderId);
+	}
+
+	public function cooksTheFood($custOrderId)
+	{
+		$custOrder = $this->getCustomerOrderById($custOrderId);
+		$custOrder->setOrderStatus(2);
+		$this->em->flush();
+	}
+
+	public function servesTheFood($custOrderId)
+	{
+		$custOrder = $this->getCustomerOrderById($custOrderId);
+		$custOrder->setOrderStatus(4);
+		$this->em->flush();
+	}
+
+	public function setTransactionDone($custOrderId, $admin)
+	{
+		$custOrder = $this->getCustomerOrderById($custOrderId);
+		$custOrder->setOrderStatus(5);
+		$custOrder->setConfirmedBy($admin);
+		$this->em->flush();
+	}
+
 	public function getAllMeal()
 	{
 		return $this->mealRepo->getAllMeal();
@@ -89,11 +128,19 @@ class OrderManagementService
 		 
 	}
 
+	public function getOrderDetailByOrderId($custOrderId)
+	{
+		$result = array();
+		$result['custOrder'] = $this->getCustomerOrderById($custOrderId);
+		$result['orderDetail'] = $this->orderDetailRepo->getAllOrderDetailByCustomerOrder($result['custOrder']);
+		return $result;
+	}
+
 	public function getDineInOrder($listOfOrderedMeal)
 	{
 		$result = array();
 		$custOrder = new CustomerOrder();
-		$custOrder->setOrderId(time());
+		//$custOrder->setOrderId(time());
 		$custOrder->setOrderType(0);
 		$custOrder->setOrderDate(new \DateTime(date('Y-m-d H:m:i')));
 		$custOrder->setPaymentMethod("CASH");
@@ -124,6 +171,7 @@ class OrderManagementService
 	public function saveOrder($data)
 	{
 		$custOrder = $data["custOrder"][0];
+		$custOrder->setOrderStatus(0);
 		$custOrder = $this->custOrderRepo->addCustomerOrder($custOrder);
 		
 		foreach($data["orderDetail"] as $orderDetail)

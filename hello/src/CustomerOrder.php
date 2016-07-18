@@ -13,14 +13,14 @@ use Doctrine\ORM\Mapping as ORM;
 class CustomerOrder
 {
     /**
-     * @var string
+     * @var integer
      *
-     * @ORM\Column(name="order_id", type="string", length=64, nullable=false)
+     * @ORM\Column(name="order_id", type="bigint", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="customer_order_order_id_seq", allocationSize=1, initialValue=1)
      */
-    private $orderId;
+    private $orderId = '"customer_order_order_id_seq"';
 
     /**
      * @var \DateTime
@@ -77,6 +77,13 @@ class CustomerOrder
      * @ORM\Column(name="courier", type="string", length=32, nullable=true)
      */
     private $courier;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="confirmed_by", type="string", length=32, nullable=true)
+     */
+    private $confirmedBy;
 
     /**
      * @var \Customer

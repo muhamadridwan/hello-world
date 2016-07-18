@@ -13,13 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Customer
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="user_id", type="integer", nullable=true)
-     */
-    private $userId;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="personal_id", type="string", length=32, nullable=true)
@@ -69,6 +62,13 @@ class Customer
     private $picture;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_resto_table", type="boolean", nullable=false)
+     */
+    private $isRestoTable = false;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="customer_id", type="string", length=32)
@@ -77,33 +77,16 @@ class Customer
     private $customerId;
 
     /**
-     * @var boolean
-     */
-    private $isRestoTable = false;
-
-    /**
-     * Set userId
+     * @var \AppBundle\Entity\TUser
      *
-     * @param integer $userId
-     *
-     * @return Customer
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\TUser")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * })
      */
-    public function setUserId($userId)
-    {
-        $this->userId = $userId;
+    private $user;
 
-        return $this;
-    }
 
-    /**
-     * Get userId
-     *
-     * @return integer
-     */
-    public function getUserId()
-    {
-        return $this->userId;
-    }
 
     /**
      * Set personalId
@@ -274,61 +257,6 @@ class Customer
     }
 
     /**
-     * Set customerId
-     *
-     * @param string $customerId
-     *
-     * @return Customer
-     */
-    public function setCustomerId($customerId)
-    {
-        $this->customerId = $customerId;
-
-        return $this;
-    }
-
-
-    /**
-     * Get customerId
-     *
-     * @return string
-     */
-    public function getCustomerId()
-    {
-        return $this->customerId;
-    }
-    /**
-     * @var \AppBundle\Entity\TUser
-     */
-    private $user;
-
-
-    /**
-     * Set user
-     *
-     * @param \AppBundle\Entity\TUser $user
-     *
-     * @return Customer
-     */
-    public function setUser(\AppBundle\Entity\TUser $user = null)
-    {
-        $this->user = $user;
-    
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return \AppBundle\Entity\TUser
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-    
-
-    /**
      * Set isRestoTable
      *
      * @param boolean $isRestoTable
@@ -350,5 +278,53 @@ class Customer
     public function getIsRestoTable()
     {
         return $this->isRestoTable;
+    }
+
+    /**
+     * Set customerId
+     *
+     * @param string $customerId
+     *
+     * @return Customer
+     */
+    public function setCustomerId($customerId)
+    {
+        $this->customerId = $customerId;
+
+        return $this;
+    }
+
+    /**
+     * Get customerId
+     *
+     * @return string
+     */
+    public function getCustomerId()
+    {
+        return $this->customerId;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \AppBundle\Entity\TUser $user
+     *
+     * @return Customer
+     */
+    public function setUser(\AppBundle\Entity\TUser $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \AppBundle\Entity\TUser
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

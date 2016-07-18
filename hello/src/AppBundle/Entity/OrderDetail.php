@@ -41,9 +41,9 @@ class OrderDetail
     private $totalBeforeDiscount;
 
     /**
-     * @var string
+     * @var integer
      *
-     * @ORM\Column(name="order_detail_id", type="string", length=64)
+     * @ORM\Column(name="order_detail_id", type="bigint")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="SEQUENCE")
      * @ORM\SequenceGenerator(sequenceName="order_detail_order_detail_id_seq", allocationSize=1, initialValue=1)
@@ -171,7 +171,7 @@ class OrderDetail
     /**
      * Get orderDetailId
      *
-     * @return string
+     * @return integer
      */
     public function getOrderDetailId()
     {
@@ -225,4 +225,5 @@ class OrderDetail
     {
         return $this->order;
     }
+
 }

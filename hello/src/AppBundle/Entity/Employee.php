@@ -13,13 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
 class Employee
 {
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="user_id", type="integer", nullable=true)
-     */
-    private $userId;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="personal_id", type="string", length=32, nullable=true)
@@ -87,7 +80,7 @@ class Employee
      *
      * @ORM\Column(name="is_active", type="boolean", nullable=true)
      */
-    private $isActive = true;
+    private $isActive = '1';
 
     /**
      * @var string
@@ -97,31 +90,17 @@ class Employee
      */
     private $employeeId;
 
-
-
     /**
-     * Set userId
+     * @var \AppBundle\Entity\TUser
      *
-     * @param integer $userId
-     *
-     * @return Employee
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\TUser")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * })
      */
-    public function setUserId($userId)
-    {
-        $this->userId = $userId;
+    private $user;
 
-        return $this;
-    }
 
-    /**
-     * Get userId
-     *
-     * @return integer
-     */
-    public function getUserId()
-    {
-        return $this->userId;
-    }
 
     /**
      * Set personalId
@@ -386,11 +365,6 @@ class Employee
     {
         return $this->employeeId;
     }
-    /**
-     * @var \AppBundle\Entity\TUser
-     */
-    private $user;
-
 
     /**
      * Set user
@@ -402,7 +376,7 @@ class Employee
     public function setUser(\AppBundle\Entity\TUser $user = null)
     {
         $this->user = $user;
-    
+
         return $this;
     }
 
