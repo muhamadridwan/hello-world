@@ -23,6 +23,12 @@ class EmployeeRepository
 	public function deleteEmployee($employee_id)
 	{
 		$employee = $this->getEmployeeById($employee_id);
+
+		if($employee==null)
+		{
+			return "There is no employee with id ".$employee_id.".";
+		}
+		
 		$this->em->remove($employee);
 		$this->em->flush();
 	}
@@ -41,7 +47,13 @@ class EmployeeRepository
 
 	public function setUser($employee_id, $user)
 	{
-		$this->getEmployeeById($employee_id)->setUser($user);
+		$employee = $this->getEmployeeById($employee_id);
+		if($employee == null)
+		{
+			return "There is no employee with id ".$employee_id;
+		}
+
+		$employee->setUser($user);
 		$this->em->flush();
 	}
 

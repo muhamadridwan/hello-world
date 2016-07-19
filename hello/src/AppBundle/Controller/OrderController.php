@@ -17,11 +17,9 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class OrderController extends BaseController
 {
-	private $session;
 	function __construct()
 	{
 		parent::__construct();
-		$this->session = new Session();
 	}
 
 	public function orderIndexAction($category_id, Request $request)
@@ -181,7 +179,7 @@ class OrderController extends BaseController
 		$custOrderData = $orderManagementService->getOrderDetailByOrderId($customer_order_id);
 		//$custOrder['custOrder'][0]->setCashier($employeeManagementService->getEmployeeByUser($this->getUser()));
 		
-		//$this->resp['activeCategoryId'] = $category->getCategoryId();
+		
 		$this->resp['custOrderData'] = $custOrderData;
 		//var_dump($custOrderData);
 		return $this->render("orders/active_order/payment_confirmation.html.twig", $this->resp);
@@ -196,24 +194,40 @@ class OrderController extends BaseController
 		$admin = $employeeManagementService->getEmployeeByUser($this->getUser());
 		if($admin != null)
 		{
-			setTransactionDone($customer_order_id, $admin);
+			$this->session->getFlashBag()->add('success', 'Payment is successful.');
+			$orderManagementService->setTransactionDone($customer_order_id, $admin);
 			return $this->redirectToRoute('activeOrderIndex', array('order_status'=>4));
 		}
-		else
-		{
-			$this->resp['error'] = "You must be login as admin to confirm the payment.";
-			$orderManagementService = $this->container->get('app.bundle.order.management.service');
+
+
+		$this->session->getFlashBag()->add('error',"You must be an employee and login as admin to confirm the payment.");
+		$orderManagementService = $this->container->get('app.bundle.order.management.service');
 		
-			$custOrderData = $orderManagementService->getOrderDetailByOrderId($customer_order_id);
-			$this->resp['custOrderData'] = $custOrderData;
-			return $this->render("orders/active_order/payment_confirmation.html.twig", $this->resp);
-		}
+		$custOrderData = $orderManagementService->getOrderDetailByOrderId($customer_order_id);
+		$this->resp['custOrderData'] = $custOrderData;
+		return $this->render("orders/active_order/payment_confirmation.html.twig", $this->resp);
+		
 		
 	}
 
-	public function historyIndexAction()
+	public function historyIndexAction(Request $request)
 	{
-		return new Response("Sorry, history Order page is under construction.");
+		$this->authSetup();
+
+		$orderManagementService = $this->container->get('app.bundle.order.management.service');
+		$this->resp['orderHistory'] = $orderManagementService->getOrderHistory();
+		
+		return $this->render("orders/order_history/index.html.twig", $this->resp);
+	}
+
+	public function detailHistoryIndexAction($customer_order_id, Request $request)
+	{
+		$this->authSetup();
+		$orderManagementService = $this->container->get('app.bundle.order.management.service');
+		
+		$custOrderData = $orderManagementService->getOrderDetailByOrderId($customer_order_id);
+		$this->resp['custOrderData'] = $custOrderData;
+		return $this->render("orders/order_history/detail_order.html.twig", $this->resp);
 	}
 }
 

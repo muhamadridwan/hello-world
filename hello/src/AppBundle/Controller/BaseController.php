@@ -5,15 +5,17 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Service\AuthorizationService;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class BaseController extends Controller
 {
 	protected $userData = array();
 	protected $resp = array();
-	protected $authService;
-	protected $container;
+	protected $session;
 	function __construct()
-	{}
+	{
+		$this->session = new Session();
+	}
 
 	protected function authSetup()
 	{

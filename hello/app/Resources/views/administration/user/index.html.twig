@@ -3,9 +3,25 @@
 {% block title %}User Management{% endblock %}
      
 {% block body %}
-
+<h2 class="page-header" style="margin-top:10px;">User Management</h2>
 <!--<ul class=entries>-->
 <div class="panel panel-default">
+    {% set successMessages = app.session.flashbag.get('success') %}
+    {% if successMessages %}
+        <div class="alert-success success">
+        {% for flashMessage in successMessages %}
+            {{ flashMessage }}
+        {% endfor %} 
+        </div>
+    {% endif %}
+    {% set errorMessages = app.session.flashbag.get('error') %}
+    {% if errorMessages %}
+        <div class="alert-danger error">
+        {% for flashMessage in errorMessages %}
+            {{ flashMessage }}
+        {% endfor %} 
+        </div>
+    {% endif %}
     <div class="panel-heading" style="height:3em;padding:0.2em;padding-right:1em;">
     {# if session.logged_in #}
     <a href="{{ path('addUser') }}"><button type="button" class="btn btn-primary pull-right">Add</button></a>
@@ -31,7 +47,7 @@
             <td>{{ user.email }}</td>
             {#<td>
             
-            <img class="img-thumbnail center-block" width="100em" src="{{asset('bundles/images/user/')}}{{user.getPicture()}}" />
+            <img class="img-thumbnail center-block" width="100em" onerror="getDefaultImage(this)" src="{{asset('bundles/images/user/')}}{{user.getPicture()}}" />
             
             </td>#}
             <td>

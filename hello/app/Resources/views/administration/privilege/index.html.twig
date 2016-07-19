@@ -1,11 +1,27 @@
 
 {% extends 'base.html.twig' %}
-{% block title %}User Group Management{% endblock %}
+{% block title %}User Privilege Management{% endblock %}
      
 {% block body %}
-
+<h2 class="page-header" style="margin-top:10px;">User Privilege Management</h2>
 <!--<ul class=entries>-->
 <div class="panel panel-default">
+    {% set successMessages = app.session.flashbag.get('success') %}
+    {% if successMessages %}
+        <div class="alert-success success">
+        {% for flashMessage in successMessages %}
+            {{ flashMessage }}
+        {% endfor %} 
+        </div>
+    {% endif %}
+    {% set errorMessages = app.session.flashbag.get('error') %}
+    {% if errorMessages %}
+        <div class="alert-danger error">
+        {% for flashMessage in errorMessages %}
+            {{ flashMessage }}
+        {% endfor %} 
+        </div>
+    {% endif %}
     <div class="panel-heading" style="height:3em;padding:0.2em;padding-right:1em;">
         {#<form enctype="multipart/form-data" action="{{ path('loadUserPrivilege') }}" method="post" >
             

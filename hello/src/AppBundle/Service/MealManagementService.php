@@ -21,7 +21,7 @@ class MealManagementService
 
 	public function deleteMeal($meal_id)
 	{
-		$this->mealRepo->deleteMeal($meal_id);
+		return $this->mealRepo->deleteMeal($meal_id);
 	}
 
 	public function getMealById($meal_id)

@@ -23,6 +23,11 @@ class MealRepository
 	public function deleteMeal($meal_id)
 	{
 		$meal = $this->getMealById($meal_id);
+		if($meal==null)
+		{
+			return "There is no meal with id ".$id.".";
+		}
+		
 		$this->em->remove($meal);
 		$this->em->flush();
 	}

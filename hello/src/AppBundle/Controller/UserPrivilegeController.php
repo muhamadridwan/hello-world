@@ -12,13 +12,14 @@ class UserPrivilegeController extends BaseController
 {
 
 	function __construct()
-	{}
+	{
+		parent::__construct();
+	}
 
 	public function indexAction(Request $request)
 	{
 		$this->authSetup();
 		$usergroups = $this->container->get('app.bundle.usergroup.management.service')->getAllUsergroup();
-
         $form = $this->createFormBuilder()
             ->add('usergroup', EntityType::class, array(
 				    'class' => 'AppBundle:TUserGroup',
@@ -44,20 +45,16 @@ class UserPrivilegeController extends BaseController
 				->add( 'privileges', CollectionType::class, array('entry_type'=> UserPrivilegeType::class))
 				->add('savePrivilege', SubmitType::class, array('label' => 'Save'))
 				->getForm();
-
 			
 			// var_dump( $data );
 		
 			$this->resp["userGroupId"] = $data["usergroup"]->getUserGroupId();
 			$this->resp["privilegeForm"] = $privilegeForm->createView();
-
 		}
-
         $this->resp["form"] = $form->createView();
 		
 		return $this->render("administration/privilege/index.html.twig", $this->resp);
 	}
-
 	public function saveUserPrivilegeAction($userGroupId, Request $request)
 	{
 		$this->authSetup();
@@ -71,17 +68,43 @@ class UserPrivilegeController extends BaseController
 							->add( 'privileges', CollectionType::class, array('entry_type'=> UserPrivilegeType::class))
 							->add('savePrivilege', SubmitType::class, array('label' => 'Save'))
 							->getForm();
-
 			$privilegeForm->handleRequest($request);
 			$data = $privilegeForm->getData();
 			$this->container
 			    		->get('app.bundle.authorization.service')->savePrivileges($data, $userGroupId);
-
+			$this->session->getFlashBag()->add('success', 'Update user group privilege for user group '.$userGroupId.' is successful.');
+		        
 		}
 		
 		return $this->redirectToRoute("userPrivilegeIndex");
         
 		
+	}
+
+	private function getUserGroupForm($userGroupId)
+	{
+		$usergroup = $this->container->get('app.bundle.usergroup.management.service')->getUsergroupByIdOrDefault($userGroupId);
+		var_dump($usergroup);
+		return $this->createFormBuilder()
+        ->add('usergroup', EntityType::class, array(
+			    'class' => 'AppBundle:TUserGroup',
+			    'data' => $usergroup,
+			    'choice_label' => 'userGroupName'))
+        ->add('save', SubmitType::class, array('label' => 'Load'))
+        ->getForm();
+	}
+
+	private function getUserPrivilegeForm($userGroupId)
+	{
+		$this->resp["userPrivilegeMenu"] = $this->container
+		    		->get('app.bundle.authorization.service')->getMenuPrivilageByUserGroupId(
+		    			$userGroupId);
+		$privCollection = array("privileges" => $this->resp["userPrivilegeMenu"]);		
+		return $this->createFormBuilder($privCollection)
+							->add( 'privileges', CollectionType::class, array('entry_type'=> UserPrivilegeType::class))
+							->add('savePrivilege', SubmitType::class, array('label' => 'Save'))
+							->getForm();
+
 	}
 	
 }

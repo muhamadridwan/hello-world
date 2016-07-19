@@ -3,9 +3,25 @@
 {% block title %}Customer Management{% endblock %}
      
 {% block body %}
-
+<h2 class="page-header" style="margin-top:10px;">Customer Management</h2>
 <!--<ul class=entries>-->
 <div class="panel panel-default">
+    {% set successMessages = app.session.flashbag.get('success') %}
+    {% if successMessages %}
+        <div class="alert-success success">
+        {% for flashMessage in successMessages %}
+            {{ flashMessage }}
+        {% endfor %} 
+        </div>
+    {% endif %}
+    {% set errorMessages = app.session.flashbag.get('error') %}
+    {% if errorMessages %}
+        <div class="alert-danger error">
+        {% for flashMessage in errorMessages %}
+            {{ flashMessage }}
+        {% endfor %} 
+        </div>
+    {% endif %}
     <div class="panel-heading" style="height:3em;padding:0.2em;padding-right:1em;">
     
     <a href="{{ path('addCustomer') }}"><button type="button" class="btn btn-primary pull-right">Add</button></a>
@@ -28,7 +44,7 @@
         {% for customer in customers %}
         <tr>
             <td>{{idx}}</td>
-            <td>{{ customer.customerId }}</td>
+            <td>{{ customer.getCustomerId() }}</td>
             <td>
                 {% if customer.getUser() %}
                     {{ customer.getUser().getUsername() }}
@@ -36,13 +52,13 @@
                     -
                 {% endif %}
             </td>
-            <td>{{ customer.customerFullname }}</td>
-            <td>{{ customer.customerAddress }}</td>
-            <td>{{ customer.phoneNumber }}</td>
-            <td>{{ customer.email }}</td>
+            <td>{{ customer.getCustomerFullname() }}</td>
+            <td>{{ customer.getCustomerAddress() }}</td>
+            <td>{{ customer.getPhoneNumber() }}</td>
+            <td>{{ customer.getEmail() }}</td>
             <td>
             
-            <img class="img-thumbnail center-block" width="100em" src="{{asset('bundles/images/customer/')}}{{customer.getPicture()}}" />
+            <img class="img-thumbnail center-block" width="100em" onerror="getDefaultImage(this)" src="{{asset('bundles/images/customer/')}}{{customer.getPicture()}}" />
             
             </td>
             <td>

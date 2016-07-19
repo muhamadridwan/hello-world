@@ -20,7 +20,7 @@ class CustomerManagementService
 
 	public function deleteCustomer($customer_id)
 	{
-		$this->customerRepo->deleteCustomer($customer_id);
+		return $this->customerRepo->deleteCustomer($customer_id);
 	}
 
 	public function getCustomerById($customer_id)

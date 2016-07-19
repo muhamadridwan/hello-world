@@ -20,7 +20,7 @@ class EmployeeManagementService
 
 	public function deleteEmployee($employee_id)
 	{
-		$this->employeeRepo->deleteEmployee($employee_id);
+		return $this->employeeRepo->deleteEmployee($employee_id);
 	}
 
 	public function getEmployeeById($employee_id)

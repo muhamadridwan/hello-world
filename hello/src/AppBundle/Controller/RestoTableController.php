@@ -11,10 +11,10 @@ use AppBundle\Entity\Customer;
 
 class RestoTableController extends BaseController
 {
-
-	
 	function __construct()
-	{}
+	{
+		parent::__construct();
+	}
 
 	public function indexAction()
 	{
@@ -29,12 +29,12 @@ class RestoTableController extends BaseController
 	{
 		$this->authSetup();
 		$customer = new Customer();
-        	
+        $errors = "";
+
         $form = $this->createFormBuilder($customer)
             ->add('customerName', TextType::class)
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->getForm();
-		$error = "";
 
 		if($request->getMethod()=='POST')
 		{
@@ -49,20 +49,17 @@ class RestoTableController extends BaseController
 		    $validator = $this->get('validator');
     		$errors = $validator->validate($newCustomer);
 
-		    if (count($errors) > 0) {
-		        $error = (string) $errors;
+		    if (count($errors) == 0) {
+		        $this->container->get('app.bundle.customer.management.service')->addCustomer($newCustomer);
+		        $this->session->getFlashBag()->add('success', 'Add new resto table is successful.');
+				return $this->redirectToRoute("restoTableIndex");
 		    }
-		    else
-		    {
-		    	$this->container->get('app.bundle.customer.management.service')->addCustomer($newCustomer);
-		        return $this->redirectToRoute("restoTableIndex");
-		    } 
 		}
 
         $this->resp["form"] = $form->createView();
         $this->resp["customer"] = $customer;
         $this->resp["act"] = "add";
-        $this->resp['error'] = $error;
+        $this->resp['errors'] = $errors;
 		return $this->render("configuration/resto_table/resto_table_form.html.twig", $this->resp);
 		
 	}
@@ -70,12 +67,12 @@ class RestoTableController extends BaseController
 	public function editAction($id,Request $request)
 	{
 		$this->authSetup();
-		$error = "";
+		$errors = "";
 
 		$customer = $this->container->get('app.bundle.customer.management.service')->getCustomerById($id);
         
         if (!$customer) {
-	        $error = 'No customer found for customer id '.$id;   
+	        $errors[0]['message'] = 'No customer found for customer id '.$id;   
 	    }
         $form = $this->createFormBuilder($customer)
             ->add('customerName', TextType::class)
@@ -91,33 +88,33 @@ class RestoTableController extends BaseController
 		    $validator = $this->get('validator');
     		$errors = $validator->validate($modifiedCustomer);
 
-		    if (count($errors) > 0) {
-		        $error = (string) $errors;
-		    }
-		    else
-		    {
+		    if (count($errors) == 0) {
 		        $this->container->get('app.bundle.customer.management.service')->editCustomer($customer, $modifiedCustomer);
-		        return $this->redirectToRoute("restoTableIndex");
+		        $this->session->getFlashBag()->add('success', 'Add new resto table is successful.');
+				return $this->redirectToRoute("restoTableIndex");
 		    }
 		    
 		} 
-		else
-		{
 			
-			$this->resp["form"] = $form->createView();
-	        $this->resp["customer"] = $customer;
-	        $this->resp["act"] = "edit";
-	        $this->resp['error'] = $error;
-			return $this->render("configuration/resto_table/resto_table_form.html.twig", $this->resp);
-		}
-
+		$this->resp["form"] = $form->createView();
+        $this->resp["customer"] = $customer;
+        $this->resp["act"] = "edit";
+        $this->resp['errors'] = $errors;
+		return $this->render("configuration/resto_table/resto_table_form.html.twig", $this->resp);
 	}
 
 	
 	public function deleteAction($id)
 	{
-		$this->container->get('app.bundle.customer.management.service')->deleteCustomer($id);
-		return $this->redirectToRoute("customerIndex");
+		$errorMessage = $this->container->get('app.bundle.customer.management.service')->deleteCustomer($id);
+		if($errorMessage){
+			$this->session->getFlashBag()->add('error', $errorMessage);
+		}
+		else{
+			$this->session->getFlashBag()->add('success', 'Delete Resto Table is successful. Resto table with id '.$id.' has been removed.');
+		}
+		
+		return $this->redirectToRoute("restoTableIndex");
 	}
 
 	

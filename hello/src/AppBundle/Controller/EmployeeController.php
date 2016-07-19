@@ -1,22 +1,21 @@
 <?php 
 namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\TUser;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use AppBundle\Entity\TUser;
 use AppBundle\Entity\Employee;
 
 class EmployeeController extends BaseController
 {
-
-	
 	function __construct()
-	{}
+	{
+		parent::__construct();
+	}
 
 	public function indexAction()
 	{
@@ -32,16 +31,17 @@ class EmployeeController extends BaseController
 		$this->authSetup();
 		$userService = $this->container->get('app.bundle.user.management.service');
 		$employee = new Employee();
-        	
+        $errors = "";
         $form = $this->createFormBuilder($employee)
-            ->add('personalId', TextType::class)
+            ->add('personalId', TextType::class, array('required'=>false))
             ->add('employeeName', TextType::class)
-            ->add('employeeFullname', TextType::class)
-            ->add('employeeAddress', TextType::class)
-            ->add('phoneNumber', TextType::class)
-            ->add('email', TextType::class)
-            ->add('picture', HiddenType::class)
+            ->add('employeeFullname', TextType::class, array('required'=>false))
+            ->add('employeeAddress', TextType::class, array('required'=>false))
+            ->add('phoneNumber', TextType::class, array('required'=>false))
+            ->add('email', TextType::class, array('required'=>false))
+            ->add('picture', HiddenType::class, array('required'=>false))
             ->add('pictureFile', FileType::class, array(
+            		'required'=>false,
             		'mapped' => false,
             		'attr' => array(
             			'class'=> 'uploadfile',
@@ -49,7 +49,7 @@ class EmployeeController extends BaseController
             			)))
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->getForm();
-		$error = "";
+		
 
 		if($request->getMethod()=='POST')
 		{
@@ -63,12 +63,8 @@ class EmployeeController extends BaseController
 		    $validator = $this->get('validator');
     		$errors = $validator->validate($newEmployee);
 
-		    if (count($errors) > 0) {
-		        $error = (string) $errors;
-		    }
-		    else
-		    {
-		    	$picture = $form['pictureFile']->getData();
+		    if (count($errors) == 0) {
+		        $picture = $form['pictureFile']->getData();
 		    	$serverDir = $this->get('kernel')->getRootDir().'/../web/bundles/images/employee/';		    	
 		    	
 		    	try
@@ -79,22 +75,25 @@ class EmployeeController extends BaseController
 			    		$picture->move($serverDir, $filename);
 			    		$newEmployee->setPicture($filename);	
 		    		}
+
+		    		$this->container->get('app.bundle.employee.management.service')->addEmployee($newEmployee);
+		        	$this->session->getFlashBag()->add('success', 'Add new employee is successful.');
+					return $this->redirectToRoute("employeeIndex");
 		    		
 		    	}
 		    	catch(\Exception $e)
 		    	{
-		    		$error = "Failed to upload picture.";
+		    		$errors[0]['message'] = "Failed to upload picture.";
 		    	}
 		    	
-		        $this->container->get('app.bundle.employee.management.service')->addEmployee($newEmployee);
-		        return $this->redirectToRoute("employeeIndex");
-		    } 
+		        
+		    }
 		}
 
         $this->resp["form"] = $form->createView();
         $this->resp["employee"] = $employee;
         $this->resp["act"] = "add";
-        $this->resp['error'] = $error;
+        $this->resp['errors'] = $errors;
 		return $this->render("administration/employee/employee_form.html.twig", $this->resp);
 		
 	}
@@ -102,22 +101,23 @@ class EmployeeController extends BaseController
 	public function editAction($id,Request $request)
 	{
 		$this->authSetup();
-		$error = "";
+		$errors = "";
 		$userService = $this->container->get('app.bundle.user.management.service');
 
 		$employee = $this->container->get('app.bundle.employee.management.service')->getEmployeeById($id);
         
         if (!$employee) {
-	        $error = 'No employee found for employee id '.$id;   
+	        $errors[0]['message'] = 'No employee found for employee id '.$id;   
 	    }
+
         $form = $this->createFormBuilder($employee)
-            ->add('personalId', TextType::class)
+            ->add('personalId', TextType::class, array('required'=>false))
             ->add('employeeName', TextType::class)
-            ->add('employeeFullname', TextType::class)
-            ->add('employeeAddress', TextType::class)
-            ->add('phoneNumber', TextType::class)
-            ->add('email', TextType::class)
-            ->add('picture', HiddenType::class)
+            ->add('employeeFullname', TextType::class, array('required'=>false))
+            ->add('employeeAddress', TextType::class, array('required'=>false))
+            ->add('phoneNumber', TextType::class, array('required'=>false))
+            ->add('email', TextType::class, array('required'=>false))
+            ->add('picture', HiddenType::class, array('required'=>false))
             ->add('pictureFile', FileType::class, array(
             		'mapped' => false,
             		'required'=> false,
@@ -138,12 +138,8 @@ class EmployeeController extends BaseController
 		    $validator = $this->get('validator');
     		$errors = $validator->validate($modifiedEmployee);
 
-		    if (count($errors) > 0) {
-		        $error = (string) $errors;
-		    }
-		    else
-		    {
-		    	$picture = $form['pictureFile']->getData();
+		    if (count($errors) == 0) {
+		        $picture = $form['pictureFile']->getData();
 		    	$serverDir = $this->get('kernel')->getRootDir().'/../web/bundles/images/employee/';		    	
 		    	
 		    	try
@@ -152,31 +148,36 @@ class EmployeeController extends BaseController
 		    		{
 			    		$filename = $employee->getEmployeeId()."-".time().".".$picture->getClientOriginalExtension();
 				    	$picture->move($serverDir, $filename);
-				    	unlink($serverDir.$modifiedEmployee->getPicture());
+				    	
+				    	if($employee->getPicture()){
+							try{
+								unlink($serverDir.$employee->getPicture());
+							}
+							catch(\Exception $e){}
+						}
+				    	
 				    	$modifiedEmployee->setPicture($filename);	
 		    		}
+
+		    		$this->container->get('app.bundle.employee.management.service')->editEmployee($employee, $modifiedEmployee);
+		        	$this->session->getFlashBag()->add('success', 'Update employee is successful. Employee with id '.$id.' has been updated.');
+		        	return $this->redirectToRoute("employeeIndex");
 		    		
 		    	}
 		    	catch(\Exception $e)
 		    	{
-		    		$error = "Failed to upload picture.";
+		    		$errors[0]['message'] = "Failed to upload picture.";
 		    	}
-		    	
-
-		        $this->container->get('app.bundle.employee.management.service')->editEmployee($employee, $modifiedEmployee);
-		        return $this->redirectToRoute("employeeIndex");
 		    }
 		    
 		} 
-		else
-		{
 			
-			$this->resp["form"] = $form->createView();
-	        $this->resp["employee"] = $employee;
-	        $this->resp["act"] = "edit";
-	        $this->resp['error'] = $error;
-			return $this->render("administration/employee/employee_form.html.twig", $this->resp);
-		}
+		$this->resp["form"] = $form->createView();
+        $this->resp["employee"] = $employee;
+        $this->resp["act"] = "edit";
+        $this->resp['errors'] = $errors;
+		return $this->render("administration/employee/employee_form.html.twig", $this->resp);
+		
 
 	}
 
@@ -185,8 +186,22 @@ class EmployeeController extends BaseController
 	{
 		$serverDir = $this->get('kernel')->getRootDir().'/../web/bundles/images/employee/';
 		$picturePath = $this->container->get('app.bundle.employee.management.service')->getEmployeeById($id)->getPicture();
-		$this->container->get('app.bundle.employee.management.service')->deleteEmployee($id);
-		unlink($serverDir.$picturePath);
+		
+		$errorMessage = $this->container->get('app.bundle.employee.management.service')->deleteEmployee($id);
+		if($errorMessage){
+			$this->session->getFlashBag()->add('error', $errorMessage);
+		}
+		else{
+			if($picturePath){
+				try{
+					unlink($serverDir.$picturePath);
+				}
+				catch(\Exception $e){}
+			}
+			
+			$this->session->getFlashBag()->add('success', 'Delete employee is successful. Employee with id '.$id.' has been removed.');
+		}
+		
 		return $this->redirectToRoute("employeeIndex");
 	}
 

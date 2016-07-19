@@ -20,7 +20,7 @@ class UsergroupManagementService
 
 	public function deleteUsergroup($id)
 	{
-		$this->usergroupRepo->deleteUsergroup($id);
+		return $this->usergroupRepo->deleteUsergroup($id);
 	}
 
 	public function getUsergroupById($id)
@@ -36,6 +36,11 @@ class UsergroupManagementService
 	public function getAllUsergroup()
 	{
 		return $this->usergroupRepo->getAllUsergroup();
+	}
+
+	public function getUsergroupByIdOrDefault($id)
+	{
+		return $this->usergroupRepo->getUsergroupByIdOrDefault($id);
 	}
 
 }

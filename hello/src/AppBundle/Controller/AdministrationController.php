@@ -18,16 +18,6 @@ class AdministrationController extends BaseController
 		parent::__construct();
 	}
 
-	public function usergroupIndex()
-	{
-		return new Response("sorry, this page is under construction.");
-	}
-
-	public function userPrivilegeIndex()
-	{
-		return new Response("sorry, this page is under construction.");
-	}
-
 	public function adminIndexAction()
 	{
 		$this->authSetup();
@@ -57,7 +47,7 @@ class AdministrationController extends BaseController
             
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->getForm();
-		$error = "";
+		$errors = "";
 
 		if($request->getMethod()=='POST')
 		{
@@ -66,20 +56,40 @@ class AdministrationController extends BaseController
 		    $data = $form->getData();
 		    $user = $data['user'];
 		    $employee = $data['employee'];
-	    	$this->container->get('app.bundle.employee.management.service')->setUser($employee->getEmployeeId(), $user);
-	        return $this->redirectToRoute("adminIndex");
+
+		    if($user != null && $employee != null )
+		    {
+		    	$errorMessage = $this->container->get('app.bundle.employee.management.service')->setUser($employee->getEmployeeId(), $user);
+				if($errorMessage){
+					$errors[0]['message'] = $errorMessage;
+				}
+				else{
+					$this->session->getFlashBag()->add('success', 'Add web admin is successful.');
+					return $this->redirectToRoute("adminIndex");
+				}
+		        
+		    }
+
+		    $errors[0]['message'] = "User and employee should not be blank.";
 	     
 		}
 
         $this->resp["form"] = $form->createView();
-        $this->resp['error'] = $error;
+        $this->resp['errors'] = $errors;
 		return $this->render("administration/admin/admin_form.html.twig", $this->resp);
 		
 	}
 	
 	public function deleteAdminAction($id)
 	{
-		$this->container->get('app.bundle.employee.management.service')->SetUser($id, null);
+		$errorMessage = $this->container->get('app.bundle.employee.management.service')->setUser($id, null);
+		if($errorMessage){
+			$this->session->getFlashBag()->add('error', $errorMessage);
+		}
+		else{
+			$this->session->getFlashBag()->add('success', 'Delete web admin is successful.');
+		}
+		
 		return $this->redirectToRoute("adminIndex");
 	}
 	

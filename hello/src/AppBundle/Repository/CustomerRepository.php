@@ -23,6 +23,11 @@ class CustomerRepository
 	public function deleteCustomer($customer_id)
 	{
 		$customer = $this->getCustomerById($customer_id);
+		if($customer==null)
+		{
+			return "There is no customer with id ".$id.".";
+		}
+		
 		$this->em->remove($customer);
 		$this->em->flush();
 	}

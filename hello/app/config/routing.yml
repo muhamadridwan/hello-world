@@ -172,6 +172,9 @@ confirmPayment:
 orderHistoryIndex:
   path: orders/history/
   defaults: {_controller: AppBundle:Order:historyIndex}
+detailHistoryIndex:
+  path: orders/history/detail/{customer_order_id}
+  defaults: {_controller: AppBundle:Order:detailHistoryIndex}
 
 myProfileIndex:
   path: myprofile/

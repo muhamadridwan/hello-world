@@ -5,19 +5,20 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use AppBundle\Entity\MealCategory;
 use AppBundle\Entity\Meal;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class MealController extends BaseController
 {
-
-	
 	function __construct()
-	{}
+	{
+		parent::__construct();
+	}
 
 	public function indexAction()
 	{
@@ -33,24 +34,28 @@ class MealController extends BaseController
 		$this->authSetup();
 		$mealCategoryService = $this->container->get('app.bundle.meal.category.management.service');
 		$meal = new Meal();
-        
+        $errors = "";
+
         $form = $this->createFormBuilder($meal)
             ->add('category', EntityType::class, array(
 				    'class' => 'AppBundle:MealCategory',
 				    'choices' => $mealCategoryService->getAllMealCategory(),
 				    'choice_label' => 'categoryName'))
             ->add('mealName', TextType::class)
-            ->add('mealDesc', TextareaType::class)
-            ->add('mealPrice', NumberType::class)
-            ->add('discount', NumberType::class)
-            ->add('picture', FileType::class, array(
+            ->add('mealDesc', TextareaType::class, array('required'=>false))
+            ->add('mealPrice', IntegerType::class)
+            ->add('discount', IntegerType::class, array('required'=>false))
+            ->add('picture', HiddenType::class, array('required'=>false))
+            ->add('pictureFile', FileType::class, array(
+            		'mapped' => false,
+            		'required'=>false,
             		'attr' => array(
             			'class'=> 'uploadfile',
             			'elm-view' => '#cust-pic-preview'
             			)))
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->getForm();
-		$error = "";
+		
 
 		if($request->getMethod()=='POST')
 		{
@@ -61,26 +66,35 @@ class MealController extends BaseController
 		    $validator = $this->get('validator');
     		$errors = $validator->validate($newMeal);
 
-		    if (count($errors) > 0) {
-		        $error = (string) $errors;
-		    }
-		    else
-		    {
-		    	$picture = $form['picture']->getData();
+		    if (count($errors) == 0) {
+
+		    	$picture = $form['pictureFile']->getData();
 		    	$serverDir = $this->get('kernel')->getRootDir().'/../web/bundles/images/meal/';		    	
 		    	
-		    	$filename = $newMeal->getMealName()."-".time().".".$picture->getClientOriginalExtension();
-		    	$picture->move($serverDir, $filename);
-		    	$newMeal->setPicture($filename);
-		        $this->container->get('app.bundle.meal.management.service')->addMeal($newMeal);
-		        return $this->redirectToRoute("mealIndex");
-		    } 
+		    	try
+		    	{
+		    		if($picture!=null)
+		    		{
+		    			$filename = $newMeal->getMealName()."-".time().".".$picture->getClientOriginalExtension();
+				    	$picture->move($serverDir, $filename);
+				    	$newMeal->setPicture($filename);	
+		    		}
+
+		    		$this->container->get('app.bundle.meal.management.service')->addMeal($newMeal);
+					$this->session->getFlashBag()->add('success', 'Add new meal is successful.');
+					return $this->redirectToRoute("mealIndex");
+		    	}
+		    	catch(\Exception $e)
+		    	{
+		    		$errors[0]['message'] = "Failed to upload picture.";
+		    	}
+		    }
 		}
 
         $this->resp["form"] = $form->createView();
         $this->resp["meal"] = $meal;
         $this->resp["act"] = "add";
-        $this->resp['error'] = $error;
+        $this->resp['errors'] = $errors;
 		return $this->render("configuration/meal/meal_form.html.twig", $this->resp);
 		
 	}
@@ -88,12 +102,12 @@ class MealController extends BaseController
 	public function editAction($id,Request $request)
 	{
 		$this->authSetup();
-		$error = "";
+		$errors = "";
 		$mealCategoryService = $this->container->get('app.bundle.meal.category.management.service');
 		$meal = $this->container->get('app.bundle.meal.management.service')->getMealById($id);
         
         if (!$meal) {
-	        $error = 'No meal found for meal id '.$id;   
+	        $errors[0]['message'] = 'No meal found for meal id '.$id;   
 	    }
 
         $form = $this->createFormBuilder($meal)
@@ -102,10 +116,13 @@ class MealController extends BaseController
 				    'choices' => $mealCategoryService->getAllMealCategory(),
 				    'choice_label' => 'categoryName'))
             ->add('mealName', TextType::class)
-            ->add('mealDesc', TextareaType::class)
-            ->add('mealPrice', NumberType::class)
-            ->add('discount', NumberType::class)
-            ->add('picture', FileType::class, array(
+            ->add('mealDesc', TextareaType::class, array('required'=>false))
+            ->add('mealPrice', IntegerType::class)
+            ->add('discount', IntegerType::class, array('required'=>false))
+            ->add('picture', HiddenType::class, array('required'=>false))
+            ->add('pictureFile', FileType::class, array(
+            		'mapped' => false,
+            		'required'=>false,
             		'data_class' => null,
             		'attr' => array(
             			'class'=> 'uploadfile',
@@ -123,32 +140,44 @@ class MealController extends BaseController
 		    $validator = $this->get('validator');
     		$errors = $validator->validate($modifiedMeal);
 
-		    if (count($errors) > 0) {
-		        $error = (string) $errors;
-		    }
-		    else
-		    {
-		        $picture = $form['picture']->getData();
+		    if (count($errors) == 0) {
+		        
+		        $picture = $form['pictureFile']->getData();
 		    	$serverDir = $this->get('kernel')->getRootDir().'/../web/bundles/images/meal/';		    	
 		    	
-		    	$filename = $meal->getMealName()."-".time().".".$picture->getClientOriginalExtension();
-		    	$picture->move($serverDir, $filename);
-		    	$modifiedMeal->setPicture($filename);
-		        $this->container->get('app.bundle.meal.management.service')->editMeal($meal, $modifiedMeal);
-		        return $this->redirectToRoute("mealIndex");
+		    	try
+		    	{
+		    		if($picture!=null)
+		    		{
+		    			$filename = $meal->getMealName()."-".time().".".$picture->getClientOriginalExtension();
+				    	$picture->move($serverDir, $filename);
+				    	if($meal->getPicture()){
+							try{
+								unlink($serverDir.$meal->getPicture());
+							}
+							catch(\Exception $e){}
+						}
+				    	$modifiedMeal->setPicture($filename);	
+		    		}
+
+		    		$this->container->get('app.bundle.meal.management.service')->editMeal($meal, $modifiedMeal);
+		        	$this->session->getFlashBag()->add('success', 'Update meal is successful. Meal with id '.$id.' has been updated.');
+		        	return $this->redirectToRoute("mealIndex");
+		    		
+		    	}
+		    	catch(\Exception $e)
+		    	{
+		    		$errors[0]['message'] = "Failed to upload picture.";
+		    	}
 		    }
 		    
-		} 
-		else
-		{
-			
-			$this->resp["form"] = $form->createView();
-	        $this->resp["meal"] = $meal;
-	        $this->resp["act"] = "edit";
-	        $this->resp['error'] = $error;
-			return $this->render("configuration/meal/meal_form.html.twig", $this->resp);
 		}
-
+			
+		$this->resp["form"] = $form->createView();
+        $this->resp["meal"] = $meal;
+        $this->resp["act"] = "edit";
+        $this->resp['errors'] = $errors;
+		return $this->render("configuration/meal/meal_form.html.twig", $this->resp);
 	}
 
 	
@@ -157,8 +186,21 @@ class MealController extends BaseController
 		$serverDir = $this->get('kernel')->getRootDir().'/../web/bundles/images/meal/';		    	
 		$picturePath = $this->container->get('app.bundle.meal.management.service')->getMealById($id)->getPicture();
 
-		$this->container->get('app.bundle.meal.management.service')->deleteMeal($id);
-		unlink($serverDir.$picturePath);
+		$errorMessage = $this->container->get('app.bundle.meal.management.service')->deleteMeal($id);
+		if($errorMessage){
+			$this->session->getFlashBag()->add('error', $errorMessage);
+		}
+		else{
+			if($picturePath){
+				try{
+					unlink($serverDir.$picturePath);
+				}
+				catch(\Exception $e){}
+			}
+			
+			$this->session->getFlashBag()->add('success', 'Delete meal is successful. Meal with id '.$id.' has been removed.');
+		}
+
 		return $this->redirectToRoute("mealIndex");
 	}
 

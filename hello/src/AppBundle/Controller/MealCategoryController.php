@@ -14,7 +14,6 @@ class MealCategoryController extends BaseController
 	function __construct()
 	{
 		parent::__construct();
-
 	}
 
 	public function indexAction()
@@ -33,10 +32,10 @@ class MealCategoryController extends BaseController
         	
         $form = $this->createFormBuilder($mealCategory)
             ->add('categoryName', TextType::class)
-            ->add('categoryDesc', TextareaType::class)
+            ->add('categoryDesc', TextareaType::class, array('required'=>false))
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->getForm();
-		$error = "";
+		$errors = "";
 
 		if($request->getMethod()=='POST')
 		{
@@ -46,19 +45,16 @@ class MealCategoryController extends BaseController
 		    $validator = $this->get('validator');
     		$errors = $validator->validate($newMealCategory);
 
-		    if (count($errors) > 0) {
-		        $error = (string) $errors;
-		    }
-		    else
-		    {
+		    if (count($errors) == 0) {
 		        $this->container->get('app.bundle.meal.category.management.service')->addMealCategory($newMealCategory);
+		        $this->session->getFlashBag()->add('success', 'Add new category is successful.');
 		        return $this->redirectToRoute("mealCategoryIndex");
-		    } 
+		    }
 		}
 
         $this->resp["form"] = $form->createView();
         $this->resp["act"] = "add";
-        $this->resp['error'] = $error;
+        $this->resp['errors'] = $errors;
 		return $this->render("configuration/meal_category/meal_category_form.html.twig", $this->resp);
 		
 	}
@@ -68,15 +64,16 @@ class MealCategoryController extends BaseController
 
 
 		$this->authSetup();
-		$error = "";
+		$errors = "";
 
 		$mealCategory = $this->container->get('app.bundle.meal.category.management.service')->getMealCategoryById($id);
         if (!$mealCategory) {
-	        $error = 'No meal category found for id '.$id;   
+	        $errors[0]['message'] = 'No meal category found for id '.$id;   
 	    }
+
         $form = $this->createFormBuilder($mealCategory)
             ->add('categoryName', TextType::class)
-            ->add('categoryDesc', TextareaType::class)
+            ->add('categoryDesc', TextareaType::class, array('required'=>false))
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->getForm();
 		
@@ -88,32 +85,34 @@ class MealCategoryController extends BaseController
 		    $validator = $this->get('validator');
     		$errors = $validator->validate($modifiedMealCategory);
 
-		    if (count($errors) > 0) {
-		        $error = (string) $errors;
-		    }
-		    else
-		    {
+		    if (count($errors) == 0) {
 		        $this->container->get('app.bundle.meal.category.management.service')->editMealCategory($mealCategory, $modifiedMealCategory);
+		        $this->session->getFlashBag()->add('success', 'Update category is successful. Meal category with id '.$id.' has been updated.');
 		        return $this->redirectToRoute("mealCategoryIndex");
 		    }
-		    
 		} 
-		else
-		{
-			
-			$this->resp["form"] = $form->createView();
-			$this->resp["mealCategory"] = $mealCategory;
-	        $this->resp["act"] = "edit";
-	        $this->resp['error'] = $error;
-			return $this->render("configuration/meal_category/meal_category_form.html.twig", $this->resp);
-		}
+
+		$this->resp["form"] = $form->createView();
+		$this->resp["mealCategory"] = $mealCategory;
+        $this->resp["act"] = "edit";
+        $this->resp['errors'] = $errors;
+		return $this->render("configuration/meal_category/meal_category_form.html.twig", $this->resp);
+		
 
 	}
 
 	
 	public function deleteAction($id)
 	{
-		$this->container->get('app.bundle.meal.category.management.service')->deleteMealCategory($id);
+		$errorMessage = $this->container->get('app.bundle.meal.category.management.service')->deleteMealCategory($id);
+
+		if($errorMessage){
+			$this->session->getFlashBag()->add('error', $errorMessage);
+		}
+		else{
+			$this->session->getFlashBag()->add('success', 'Delete category is successful. Meal category with id '.$id.' has been removed.');
+		}
+
 		return $this->redirectToRoute("mealCategoryIndex");
 	}
 

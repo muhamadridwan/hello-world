@@ -3,8 +3,13 @@
 {% block body %}
 {# if session.logged_in #}
 <!--<ul class=entries>-->
-{% if error %}
-<div class="alert-danger error">{{ error }}</div>
+{% set errorMessages = app.session.flashbag.get('error') %}
+{% if errorMessages %}
+    <div class="alert-danger error">
+    {% for flashMessage in errorMessages %}
+        {{ flashMessage }}
+    {% endfor %} 
+    </div>
 {% endif %}
 <div class="panel panel-default">
     <div class="panel-heading" style="padding:1em;padding-right:1em;">

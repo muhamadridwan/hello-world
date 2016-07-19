@@ -18,6 +18,16 @@ class TUser implements UserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(name="username", type="string", length=32, nullable=false)
+     * @Assert\Length(
+     *      max = 32,
+     *      maxMessage = "Username cannot be longer than {{ limit }} characters"
+     * )
+     * @Assert\NotNull(
+     *      message="Username should not be null."
+     * )
+     * @Assert\NotBlank(
+     *      message="Username should not be blank."
+     * )
      */
     private $username;
 
@@ -25,6 +35,16 @@ class TUser implements UserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(name="password", type="string", length=64, nullable=false)
+     * @Assert\Length(
+     *      max = 64,
+     *      maxMessage = "Password cannot be longer than {{ limit }} characters"
+     * )
+     * @Assert\NotNull(
+     *      message="Password should not be null."
+     * )
+     * @Assert\NotBlank(
+     *      message="Password should not be blank."
+     * )
      */
     private $password;
 
@@ -33,12 +53,16 @@ class TUser implements UserInterface, \Serializable
      *
      * @ORM\Column(name="is_active", type="boolean", nullable=true)
      */
-    private $isActive = '1';
+    private $isActive = true;
 
     /**
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=32, nullable=true)
+     * @Assert\Length(
+     *      max = 32,
+     *      maxMessage = "Email cannot be longer than {{ limit }} characters"
+     * )
      */
     private $email;
 

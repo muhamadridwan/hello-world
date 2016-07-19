@@ -35,34 +35,20 @@ class UserController extends BaseController
 	{
 		$this->authSetup();
 		$user = new TUser();
-        	
+		$errors = "";
+
         $form = $this->createFormBuilder($user)
             ->add('username', TextType::class)
             ->add('userGroup', EntityType::class, array(
-				    // query choices from this entity
 				    'class' => 'AppBundle:TUserGroup',
-				    // use the User.username property as the visible option string
 				    'choice_label' => 'userGroupName'))
-            ->add('email', TextType::class)
+            ->add('email', TextType::class, array('required'=>false))
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->getForm();
-		$error = "";
+		
 
 		if($request->getMethod()=='POST')
 		{
-
-			/*$image = $request->files->get('picture');
-		    if($image)
-		    {
-		    	$fileName = $image->getClientOriginalName();
-		    	$image->move($this->get('kernel')->getRootDir().'/../web/bundles/images/user/', $fileName);
-
-		    	$user->setPicture($fileName);
-		    
-		    }
-		    $user->setUsername($request->request->get("username"));
-		    */
-
 		    $form->handleRequest($request);
 		    $newUser = $form->getData();
 		    $encoder = $this->container->get('security.password_encoder');
@@ -71,43 +57,36 @@ class UserController extends BaseController
 		    $validator = $this->get('validator');
     		$errors = $validator->validate($newUser);
 
-		    if (count($errors) > 0) {
-		        $error = (string) $errors;
-		    }
-		    else
-		    {
+		    if (count($errors) == 0) {
 		        $this->container->get('app.bundle.user.management.service')->addUser($newUser);
+		        $this->session->getFlashBag()->add('success', 'Add new user is successful.');
 		        return $this->redirectToRoute("userIndex");
-		    } 
+		    }
 		}
 
         $this->resp["form"] = $form->createView();
         $this->resp["user"] = $user;
         $this->resp["act"] = "add";
-        $this->resp['error'] = $error;
+        $this->resp['errors'] = $errors;
 		return $this->render("administration/user/user_form.html.twig", $this->resp);
 		
 	}
 
 	public function editAction($id,Request $request)
 	{
-
-
 		$this->authSetup();
-		$error = "";
+		$errors = "";
 
 		$user = $this->container->get('app.bundle.user.management.service')->getUserById($id);
         if (!$user) {
-	        $error = 'No user found for username '.$id;   
+	        $errors[0]['message'] = 'No user found for username with id '.$id;   
 	    }
         $form = $this->createFormBuilder($user)
             ->add('username', TextType::class)
             ->add('userGroup', EntityType::class, array(
-				    // query choices from this entity
-				    'class' => 'AppBundle:TUserGroup',
-				    // use the User.username property as the visible option string
+            		'class' => 'AppBundle:TUserGroup',
 				    'choice_label' => 'userGroupName'))
-            ->add('email', TextType::class)
+            ->add('email', TextType::class, array('required'=>false))
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->getForm();
 		
@@ -119,23 +98,18 @@ class UserController extends BaseController
 		    $validator = $this->get('validator');
     		$errors = $validator->validate($modifiedUser);
 
-		    if (count($errors) > 0) {
-		        $error = (string) $errors;
-		    }
-		    else
-		    {
+		    if (count($errors) == 0) {
 		        $this->container->get('app.bundle.user.management.service')->editUser($user, $modifiedUser);
+		        $this->session->getFlashBag()->add('success', 'Update user is successful. User with id '.$id.' has been updated.');
 		        return $this->redirectToRoute("userIndex");
 		    }
 		    
 		} 
-		
-		
-			
+
 		$this->resp["form"] = $form->createView();
         $this->resp["user"] = $user;
         $this->resp["act"] = "edit";
-        $this->resp['error'] = $error;
+        $this->resp['errors'] = $errors;
 		return $this->render("administration/user/user_form.html.twig", $this->resp);
 	
 
@@ -144,7 +118,14 @@ class UserController extends BaseController
 	
 	public function deleteAction($id)
 	{
-		$this->container->get('app.bundle.user.management.service')->deleteUser($id);
+		$errorMessage = $this->container->get('app.bundle.user.management.service')->deleteUser($id);
+		if($errorMessage){
+			$this->session->getFlashBag()->add('error', $errorMessage);
+		}
+		else{
+			$this->session->getFlashBag()->add('success', 'Delete user is successful. User with id '.$id.' has been removed.');
+		}
+		
 		return $this->redirectToRoute("userIndex");
 	}
 

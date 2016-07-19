@@ -21,7 +21,7 @@ class MealCategoryManagementService
 
 	public function deleteMealCategory($id)
 	{
-		$this->mealCategoryRepo->deleteMealCategory($id);
+		return $this->mealCategoryRepo->deleteMealCategory($id);
 	}
 
 	public function getMealCategoryById($id)

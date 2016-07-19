@@ -36,11 +36,12 @@ class UsergroupController extends BaseController
 	{
 		$this->authSetup();
 		$usergroup = new TUserGroup();
-        	
+        $errors = "";
+
         $form = $this->createFormBuilder($usergroup)
             ->add('userGroupId', TextType::class)
             ->add('userGroupName', TextType::class)
-            ->add('userGroupDesc', TextType::class)
+            ->add('userGroupDesc', TextType::class, array('required'=>false))
             ->add('isActive', ChoiceType::class, array(
 			    'choices'  => array(
 			        'Active' => 1,
@@ -53,7 +54,7 @@ class UsergroupController extends BaseController
 			))*/
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->getForm();
-		$error = "";
+		
 
 		if($request->getMethod()=='POST')
 		{
@@ -63,38 +64,34 @@ class UsergroupController extends BaseController
 		    $validator = $this->get('validator');
     		$errors = $validator->validate($newUsergroup);
 
-		    if (count($errors) > 0) {
-		        $error = (string) $errors;
-		    }
-		    else
-		    {
+		    if (count($errors) == 0) {
 		        $this->container->get('app.bundle.usergroup.management.service')->addUsergroup($newUsergroup);
-		        return $this->redirectToRoute("usergroupIndex");
-		    } 
+		        $this->session->getFlashBag()->add('success', 'Add new user group is successful.');
+				return $this->redirectToRoute("usergroupIndex");
+		    }
 		}
 
         $this->resp["form"] = $form->createView();
         $this->resp["act"] = "add";
-        $this->resp['error'] = $error;
+        $this->resp['errors'] = $errors;
 		return $this->render("administration/usergroup/usergroup_form.html.twig", $this->resp);
 		
 	}
 
 	public function editAction($id,Request $request)
 	{
-
-
 		$this->authSetup();
-		$error = "";
+		$errors = "";
 
 		$usergroup = $this->container->get('app.bundle.usergroup.management.service')->getUsergroupById($id);
         if (!$usergroup) {
-	        $error = 'No usergroup found for id '.$id;   
+	        $errors[0]['message'] = 'No user group found with id '.$id;   
 	    }
+
         $form = $this->createFormBuilder($usergroup)
             ->add('userGroupId', TextType::class)
             ->add('userGroupName', TextType::class)
-            ->add('userGroupDesc', TextType::class)
+            ->add('userGroupDesc', TextType::class, array('required'=>false))
             ->add('isActive', ChoiceType::class, array(
 			    'choices'  => array(
 			        'Active' => 1,
@@ -112,32 +109,32 @@ class UsergroupController extends BaseController
 		    $validator = $this->get('validator');
     		$errors = $validator->validate($modifiedUsergroup);
 
-		    if (count($errors) > 0) {
-		        $error = (string) $errors;
-		    }
-		    else
-		    {
+		    if (count($errors) == 0) {
 		        $this->container->get('app.bundle.usergroup.management.service')->editUsergroup($usergroup, $modifiedUsergroup);
+		        $this->session->getFlashBag()->add('success', 'Update user group is successful. User group with id '.$id.' has been updated.');
 		        return $this->redirectToRoute("usergroupIndex");
 		    }
 		    
-		} 
-		else
-		{
-			
-			$this->resp["form"] = $form->createView();
-			$this->resp["usergroup"] = $usergroup;
-	        $this->resp["act"] = "edit";
-	        $this->resp['error'] = $error;
-			return $this->render("administration/usergroup/usergroup_form.html.twig", $this->resp);
 		}
-
+			
+		$this->resp["form"] = $form->createView();
+		$this->resp["usergroup"] = $usergroup;
+        $this->resp["act"] = "edit";
+        $this->resp['errors'] = $errors;
+		return $this->render("administration/usergroup/usergroup_form.html.twig", $this->resp);
 	}
 
 	
 	public function deleteAction($id)
 	{
-		$this->container->get('app.bundle.usergroup.management.service')->deleteUsergroup($id);
+		$errorMessage = $this->container->get('app.bundle.usergroup.management.service')->deleteUsergroup($id);
+		if($errorMessage){
+			$this->session->getFlashBag()->add('error', $errorMessage);
+		}
+		else{
+			$this->session->getFlashBag()->add('success', 'Delete user group is successful. User group with id '.$id.' has been removed.');
+		}
+		
 		return $this->redirectToRoute("usergroupIndex");
 	}
 

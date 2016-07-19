@@ -20,7 +20,7 @@ class UserManagementService
 
 	public function deleteUser($id)
 	{
-		$this->userRepo->deleteUser($id);
+		return $this->userRepo->deleteUser($id);
 	}
 
 	public function getUserById($id)

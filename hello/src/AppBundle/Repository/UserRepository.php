@@ -23,6 +23,12 @@ class UserRepository
 	public function deleteUser($id)
 	{
 		$user = $this->userRepo->find($id);
+
+		if($user==null)
+		{
+			return "There is no user with id ".$id.".";
+		}
+		
 		$this->em->remove($user);
 		$this->em->flush();
 	}

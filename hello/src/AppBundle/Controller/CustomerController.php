@@ -14,10 +14,10 @@ use AppBundle\Entity\Customer;
 
 class CustomerController extends BaseController
 {
-
-	
 	function __construct()
-	{}
+	{
+		parent::__construct();
+	}
 
 	public function indexAction()
 	{
@@ -33,19 +33,20 @@ class CustomerController extends BaseController
 		$this->authSetup();
 		$userService = $this->container->get('app.bundle.user.management.service');
 		$customer = new Customer();
-        	
+		$errors = "";
+
         $form = $this->createFormBuilder($customer)
-            ->add('personalId', TextType::class)
+            ->add('personalId', TextType::class, array('required'=>false))
 			->add('user', EntityType::class, array(
 				    'class' => 'AppBundle:TUser',
 				    'choices' => $userService->getAllCustomerUser(),
 				    'choice_label' => 'username'))
             ->add('customerName', TextType::class)
-            ->add('customerFullname', TextType::class)
-            ->add('customerAddress', TextType::class)
-            ->add('phoneNumber', TextType::class)
-            ->add('email', TextType::class)
-            ->add('picture', HiddenType::class)
+            ->add('customerFullname', TextType::class, array('required'=>false))
+            ->add('customerAddress', TextType::class, array('required'=>false))
+            ->add('phoneNumber', TextType::class, array('required'=>false))
+            ->add('email', TextType::class, array('required'=>false))
+            ->add('picture', HiddenType::class, array('required'=>false))
             ->add('pictureFile', FileType::class, array(
             		'required' => false,
             		'mapped' => false,
@@ -55,7 +56,7 @@ class CustomerController extends BaseController
             			)))
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->getForm();
-		$error = "";
+		
 
 		if($request->getMethod()=='POST')
 		{
@@ -69,13 +70,10 @@ class CustomerController extends BaseController
 		    $validator = $this->get('validator');
     		$errors = $validator->validate($newCustomer);
 
-		    if (count($errors) > 0) {
-		        $error = (string) $errors;
-		    }
-		    else
-		    {
-		    	$picture = $form['pictureFile']->getData();
+		    if (count($errors) == 0) {
+		        $picture = $form['pictureFile']->getData();
 		    	$serverDir = $this->get('kernel')->getRootDir().'/../web/bundles/images/customer/';		    	
+		    	
 		    	try
 		    	{
 		    		if($picture!=null)
@@ -84,22 +82,24 @@ class CustomerController extends BaseController
 				    	$picture->move($serverDir, $filename);
 				    	$newCustomer->setPicture($filename);	
 		    		}
-		    		
+
+		    		$this->container->get('app.bundle.customer.management.service')->addCustomer($newCustomer);
+		        	$this->session->getFlashBag()->add('success', 'Add new customer is successful.');
+					return $this->redirectToRoute("customerIndex");
+		        	
 		    	}
 		    	catch(\Exception $e)
 		    	{
-		    		$error = "Failed to upload picture.";
+		    		$errors[0]['message'] = "Failed to upload picture.";
 		    	}
-		    	
-		        $this->container->get('app.bundle.customer.management.service')->addCustomer($newCustomer);
-		        return $this->redirectToRoute("customerIndex");
-		    } 
+		        
+		    }
 		}
 
         $this->resp["form"] = $form->createView();
         $this->resp["customer"] = $customer;
         $this->resp["act"] = "add";
-        $this->resp['error'] = $error;
+        $this->resp['errors'] = $errors;
 		return $this->render("administration/customer/customer_form.html.twig", $this->resp);
 		
 	}
@@ -107,27 +107,27 @@ class CustomerController extends BaseController
 	public function editAction($id,Request $request)
 	{
 		$this->authSetup();
-		$error = "";
+		$errors = "";
 		$userService = $this->container->get('app.bundle.user.management.service');
 
 		$customer = $this->container->get('app.bundle.customer.management.service')->getCustomerById($id);
         
         if (!$customer) {
-	        $error = 'No customer found for customer id '.$id;   
+	        $errors[0]['message'] = 'No customer found with id '.$id;  
 	    }
+
         $form = $this->createFormBuilder($customer)
-            ->add('personalId', TextType::class)
-            ->add('user', EntityType::class, array(
+        	->add('personalId', TextType::class, array('required'=>false))
+			->add('user', EntityType::class, array(
 				    'class' => 'AppBundle:TUser',
 				    'choices' => $userService->getAllCustomerUser(),
 				    'choice_label' => 'username'))
-		            
             ->add('customerName', TextType::class)
-            ->add('customerFullname', TextType::class)
-            ->add('customerAddress', TextType::class)
-            ->add('phoneNumber', TextType::class)
-            ->add('email', TextType::class)
-            ->add('picture', HiddenType::class)
+            ->add('customerFullname', TextType::class, array('required'=>false))
+            ->add('customerAddress', TextType::class, array('required'=>false))
+            ->add('phoneNumber', TextType::class, array('required'=>false))
+            ->add('email', TextType::class, array('required'=>false))
+            ->add('picture', HiddenType::class, array('required'=>false))
             ->add('pictureFile', FileType::class, array(
             		'required' => false,
             		'mapped' => false,
@@ -147,11 +147,7 @@ class CustomerController extends BaseController
 		    $validator = $this->get('validator');
     		$errors = $validator->validate($modifiedCustomer);
 
-		    if (count($errors) > 0) {
-		        $error = (string) $errors;
-		    }
-		    else
-		    {
+		    if (count($errors) == 0) {
 		        $picture = $form['pictureFile']->getData();
 		    	$serverDir = $this->get('kernel')->getRootDir().'/../web/bundles/images/customer/';		    	
 		    	
@@ -161,30 +157,36 @@ class CustomerController extends BaseController
 		    		{
 		    			$filename = $customer->getCustomerId()."-".time().".".$picture->getClientOriginalExtension();
 				    	$picture->move($serverDir, $filename);
-				    	unlink($serverDir.$modifiedCustomer->getPicture());
+
+				    	if($customer->getPicture()){
+							try{
+								unlink($serverDir.$customer->getPicture());
+							}
+							catch(\Exception $e){}
+						}
+						
 				    	$modifiedCustomer->setPicture($filename);	
 		    		}
-		    		
+
+		    		$this->container->get('app.bundle.customer.management.service')->editCustomer($customer, $modifiedCustomer);
+		        	$this->session->getFlashBag()->add('success', 'Update customer is successful. Customer with id '.$id.' has been updated.');
+					return $this->redirectToRoute("customerIndex");
+		        	
 		    	}
 		    	catch(\Exception $e)
 		    	{
-		    		$error = "Failed to upload picture.";
+		    		$errors[0]['message'] = "Failed to upload picture.";
 		    	}
-		    	
-		        $this->container->get('app.bundle.customer.management.service')->editCustomer($customer, $modifiedCustomer);
-		        return $this->redirectToRoute("customerIndex");
 		    }
 		    
-		} 
-		else
-		{
-			
-			$this->resp["form"] = $form->createView();
-	        $this->resp["customer"] = $customer;
-	        $this->resp["act"] = "edit";
-	        $this->resp['error'] = $error;
-			return $this->render("administration/customer/customer_form.html.twig", $this->resp);
 		}
+			
+		$this->resp["form"] = $form->createView();
+        $this->resp["customer"] = $customer;
+        $this->resp["act"] = "edit";
+        $this->resp['errors'] = $errors;
+		return $this->render("administration/customer/customer_form.html.twig", $this->resp);
+		
 
 	}
 
@@ -193,8 +195,22 @@ class CustomerController extends BaseController
 	{
 		$serverDir = $this->get('kernel')->getRootDir().'/../web/bundles/images/customer/';
 		$picturePath = $this->container->get('app.bundle.customer.management.service')->getCustomerById($id)->getPicture();
-		$this->container->get('app.bundle.customer.management.service')->deleteCustomer($id);
-		unlink($serverDir.$picturePath);
+		
+		$errorMessage = $this->container->get('app.bundle.customer.management.service')->deleteCustomer($id);
+		if($errorMessage){
+			$this->session->getFlashBag()->add('error', $errorMessage);
+		}
+		else{
+			if($picturePath){
+				try{
+					unlink($serverDir.$picturePath);
+				}
+				catch(\Exception $e){}
+			}
+			
+			$this->session->getFlashBag()->add('success', 'Delete customer is successful. Customer with id '.$id.' has been removed.');
+		}
+
 		return $this->redirectToRoute("customerIndex");
 	}
 

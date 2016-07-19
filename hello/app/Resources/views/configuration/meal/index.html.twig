@@ -1,11 +1,27 @@
 
 {% extends 'base.html.twig' %}
-{% block title %}User Group Management{% endblock %}
+{% block title %}Meal Management{% endblock %}
      
 {% block body %}
-
+<h2 class="page-header" style="margin-top:10px;">Meal Management</h2>
 <!--<ul class=entries>-->
 <div class="panel panel-default">
+    {% set successMessages = app.session.flashbag.get('success') %}
+    {% if successMessages %}
+        <div class="alert-success success">
+        {% for flashMessage in successMessages %}
+            {{ flashMessage }}
+        {% endfor %} 
+        </div>
+    {% endif %}
+    {% set errorMessages = app.session.flashbag.get('error') %}
+    {% if errorMessages %}
+        <div class="alert-danger error">
+        {% for flashMessage in errorMessages %}
+            {{ flashMessage }}
+        {% endfor %} 
+        </div>
+    {% endif %}
     <div class="panel-heading" style="height:3em;padding:0.2em;padding-right:1em;">
     {# if session.logged_in #}
     <a href="{{ path('addMeal') }}"><button type="button" class="btn btn-primary pull-right">Add</button></a>
@@ -34,7 +50,7 @@
             <td>{{ meal.getDiscount() }}</td>
             <td>
             
-            <img class="img-thumbnail center-block" width="100em" src="{{asset('bundles/images/meal/')}}{{meal.getPicture()}}" />
+            <img class="img-thumbnail center-block" width="100em" onerror="getDefaultImage(this)" src="{{asset('bundles/images/meal/')}}{{meal.getPicture()}}" />
             
             </td>
             <td>

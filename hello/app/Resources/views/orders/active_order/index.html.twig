@@ -19,6 +19,14 @@
     </div>
     <div class="col-sm-10">
         <div class="row" style="margin-right:15px;">
+        {% set successMessages = app.session.flashbag.get('success') %}
+        {% if successMessages %}
+            <div class="alert-success success">
+            {% for flashMessage in successMessages %}
+                {{ flashMessage }}
+            {% endfor %} 
+            </div>
+        {% endif %}
         <table class="table">
             <tr>
                 <th>No</th>

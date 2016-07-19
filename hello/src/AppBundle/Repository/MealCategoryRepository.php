@@ -24,6 +24,11 @@ class MealCategoryRepository
 	public function deleteMealCategory($id)
 	{
 		$category = $this->getMealCategoryById($id);
+		if($category==null)
+		{
+			return "There is no category with id ".$id.".";
+		}
+
 		$this->em->remove($category);
 		$this->em->flush();
 	}

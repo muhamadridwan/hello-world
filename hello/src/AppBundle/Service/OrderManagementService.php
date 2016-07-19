@@ -53,6 +53,11 @@ class OrderManagementService
 		
 		return $result;
 	}
+
+	public function getOrderHistory()
+	{
+		return $this->getOrderByStatus(5);
+	}
 	
 	public function getCustomerOrderById($custOrderId)
 	{
