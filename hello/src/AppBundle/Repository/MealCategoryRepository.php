@@ -29,8 +29,16 @@ class MealCategoryRepository
 			return "There is no category with id ".$id.".";
 		}
 
-		$this->em->remove($category);
-		$this->em->flush();
+		try
+		{
+			$this->em->remove($category);
+			$this->em->flush();
+		}
+		catch(\Exception $e)
+		{
+			return $e->getMessage();
+		}
+		
 	}
 
 	public function editMealCategory($mealCategory, $modifiedMealCategory)

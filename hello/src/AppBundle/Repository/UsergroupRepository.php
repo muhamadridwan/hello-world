@@ -28,8 +28,15 @@ class UsergroupRepository
 			return "There is no user group with id ".$id.".";
 		}
 
-		$this->em->remove($usergroup);
-		$this->em->flush();
+		try
+		{
+			$this->em->remove($usergroup);
+			$this->em->flush();
+		}
+		catch(\Exception $e)
+		{
+			return $e->getMessage();
+		}
 	}
 
 	public function getUsergroupById($id)
@@ -77,6 +84,14 @@ class UsergroupRepository
 	{
 		$qb = $this->usergroupRepo->createQueryBuilder("u")->setMaxResults(1);
 		$result = $qb->getQuery()->getResult();
+		if(sizeof($result)>0)
+		{
+			return $result[0];
+		}
+		else
+		{
+			return null;
+		}
 		return $result;
 	}
 

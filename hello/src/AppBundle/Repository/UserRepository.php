@@ -29,8 +29,16 @@ class UserRepository
 			return "There is no user with id ".$id.".";
 		}
 		
-		$this->em->remove($user);
-		$this->em->flush();
+		try
+		{
+			$this->em->remove($user);
+			$this->em->flush();
+		}
+		catch(\Exception $e)
+		{
+			return $e->getMessage();
+		}
+		
 	}
 
 	public function getUserByUsername($username)

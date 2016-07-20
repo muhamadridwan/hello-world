@@ -29,8 +29,15 @@ class EmployeeRepository
 			return "There is no employee with id ".$employee_id.".";
 		}
 		
-		$this->em->remove($employee);
-		$this->em->flush();
+		try
+		{
+			$this->em->remove($employee);
+			$this->em->flush();
+		}
+		catch(\Exception $e)
+		{
+			return $e->getMessage();
+		}
 	}
 
 	public function getEmployeeById($employee_id)

@@ -11,10 +11,12 @@ class BaseController extends Controller
 {
 	protected $userData = array();
 	protected $resp = array();
+	protected $maxData = 10;
 	protected $session;
 	function __construct()
 	{
 		$this->session = new Session();
+		//$this->maxData = $this->container->getParameter('max_data');
 	}
 
 	protected function authSetup()

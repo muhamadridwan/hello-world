@@ -133,11 +133,17 @@ deleteUsergroup:
   path: administration/usergroup/del/{id}
   defaults: {_controller: AppBundle:Usergroup:delete}
 userPrivilegeIndex:
-  path: administration/userprivilege/
-  defaults: {_controller: AppBundle:UserPrivilege:index}
+  path: administration/userprivilege/{user_group_id}
+  defaults: {_controller: AppBundle:UserPrivilege:index, user_group_id: -1}
 saveUserPrivilege:
   path: administration/userprivilege/saveuserprivilege/{userGroupId}
   defaults: {_controller: AppBundle:UserPrivilege:saveUserPrivilege}
+
+changePasswordIndex:
+  path: myProfile/changePassword/
+  defaults: {_controller: AppBundle:Security:changePasswordIndex}
+
+
 orders:
   path: orders/
   defaults: {_controller: AppBundle:Order:orderIndex}

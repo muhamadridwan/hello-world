@@ -24,8 +24,21 @@ class CustomerOrderRepository
 	public function deleteCustomerOrder($customer_order_id)
 	{
 		$custOrder = $this->getCustomerOrderById($customer_order_id);
-		$this->em->remove($custOrder);
-		$this->em->flush();
+		
+		if($custOrder==null)
+		{
+			return "There is no order with id ".$customer_order_id.".";
+		}
+
+		try
+		{
+			$this->em->remove($custOrder);
+			$this->em->flush();
+		}
+		catch(\Exception $e)
+		{
+			return $e->getMessage();
+		}
 	}
 
 	public function getCustomerOrderById($customerOrderId)

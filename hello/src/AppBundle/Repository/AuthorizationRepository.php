@@ -120,7 +120,7 @@ class AuthorizationRepository
 			}
 
 		    $this->em->getConnection()->commit();
-		} catch (Exception $e) {
+		} catch (\Exception $e) {
 		    $this->em->getConnection()->rollBack();
 		    throw $e;
 		}

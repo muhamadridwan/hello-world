@@ -27,9 +27,16 @@ class CustomerRepository
 		{
 			return "There is no customer with id ".$id.".";
 		}
-		
-		$this->em->remove($customer);
-		$this->em->flush();
+
+		try
+		{
+			$this->em->remove($customer);
+			$this->em->flush();
+		}
+		catch(\Exception $e)
+		{
+			return $e->getMessage();
+		}
 	}
 
 	public function getCustomerById($customer_id)

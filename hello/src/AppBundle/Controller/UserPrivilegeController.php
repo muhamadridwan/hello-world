@@ -16,41 +16,46 @@ class UserPrivilegeController extends BaseController
 		parent::__construct();
 	}
 
-	public function indexAction(Request $request)
+	public function indexAction($user_group_id, Request $request)
 	{
 		$this->authSetup();
+		
 		$usergroups = $this->container->get('app.bundle.usergroup.management.service')->getAllUsergroup();
-        $form = $this->createFormBuilder()
+        $defaultUserGroup = $this->container->get('app.bundle.usergroup.management.service')->getUsergroupByIdOrDefault($user_group_id);
+		$form = $this->createFormBuilder()
             ->add('usergroup', EntityType::class, array(
 				    'class' => 'AppBundle:TUserGroup',
 				    'attr' => array(
             			'onchange'=> 'getUserPrivilegeMenu()'
             			),
 				    'choices' => $usergroups,
+				    'data' => $defaultUserGroup,
 				    'choice_label' => 'userGroupName'))
             ->add('save', SubmitType::class, array('label' => 'Load'))
             ->getForm();
 		
-		
-        if($request->getMethod()=='POST')
+		$userGroupId = $defaultUserGroup->getUserGroupId();
+		if($request->getMethod()=='POST')
 		{
-		    $form->handleRequest($request);
-		    $data = $form->getData();
-		    
-		    $this->resp["userPrivilegeMenu"] = $this->container
-		    		->get('app.bundle.authorization.service')->getMenuPrivilageByUserGroupId(
-		    			$data["usergroup"]->getUserGroupId());
-			$privCollection = array("privileges" => $this->resp["userPrivilegeMenu"]);		
-			$privilegeForm = $this->createFormBuilder($privCollection)
-				->add( 'privileges', CollectionType::class, array('entry_type'=> UserPrivilegeType::class))
-				->add('savePrivilege', SubmitType::class, array('label' => 'Save'))
-				->getForm();
-			
-			// var_dump( $data );
-		
-			$this->resp["userGroupId"] = $data["usergroup"]->getUserGroupId();
-			$this->resp["privilegeForm"] = $privilegeForm->createView();
+			$form->handleRequest($request);
+			$data = $form->getData();
+
+			$userGroupId = $data["usergroup"]->getUserGroupId();
 		}
+		    
+	    $this->resp["userPrivilegeMenu"] = $this->container
+	    		->get('app.bundle.authorization.service')->getMenuPrivilageByUserGroupId(
+	    			$userGroupId);
+		$privCollection = array("privileges" => $this->resp["userPrivilegeMenu"]);		
+		$privilegeForm = $this->createFormBuilder($privCollection)
+			->add( 'privileges', CollectionType::class, array('entry_type'=> UserPrivilegeType::class))
+			->add('savePrivilege', SubmitType::class, array('label' => 'Save'))
+			->getForm();
+	
+		$this->resp["userGroupId"] = $userGroupId;
+		$this->resp["privilegeForm"] = $privilegeForm->createView();
+		
+
         $this->resp["form"] = $form->createView();
 		
 		return $this->render("administration/privilege/index.html.twig", $this->resp);
@@ -76,35 +81,7 @@ class UserPrivilegeController extends BaseController
 		        
 		}
 		
-		return $this->redirectToRoute("userPrivilegeIndex");
-        
-		
-	}
-
-	private function getUserGroupForm($userGroupId)
-	{
-		$usergroup = $this->container->get('app.bundle.usergroup.management.service')->getUsergroupByIdOrDefault($userGroupId);
-		var_dump($usergroup);
-		return $this->createFormBuilder()
-        ->add('usergroup', EntityType::class, array(
-			    'class' => 'AppBundle:TUserGroup',
-			    'data' => $usergroup,
-			    'choice_label' => 'userGroupName'))
-        ->add('save', SubmitType::class, array('label' => 'Load'))
-        ->getForm();
-	}
-
-	private function getUserPrivilegeForm($userGroupId)
-	{
-		$this->resp["userPrivilegeMenu"] = $this->container
-		    		->get('app.bundle.authorization.service')->getMenuPrivilageByUserGroupId(
-		    			$userGroupId);
-		$privCollection = array("privileges" => $this->resp["userPrivilegeMenu"]);		
-		return $this->createFormBuilder($privCollection)
-							->add( 'privileges', CollectionType::class, array('entry_type'=> UserPrivilegeType::class))
-							->add('savePrivilege', SubmitType::class, array('label' => 'Save'))
-							->getForm();
-
+		return $this->redirectToRoute('userPrivilegeIndex', array('user_group_id'=>$userGroupId));
 	}
 	
 }

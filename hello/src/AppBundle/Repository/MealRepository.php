@@ -28,8 +28,16 @@ class MealRepository
 			return "There is no meal with id ".$id.".";
 		}
 		
-		$this->em->remove($meal);
-		$this->em->flush();
+		try
+		{
+			$this->em->remove($meal);
+			$this->em->flush();
+		}
+		catch(\Exception $e)
+		{
+			return $e->getMessage();
+		}
+		
 	}
 
 	public function getMealById($meal_id)
@@ -53,6 +61,21 @@ class MealRepository
 	public function getAllMeal()
 	{
 		return $this->mealRepo->findAll();
+	}
+
+	public function getMeals()
+	{
+		return $this->mealRepo->createQueryBuilder("m")
+		->setFirstResult(0)
+		->setMaxResults(5)
+		->getQuery()->getResult();
+	}
+
+	public function getCountAllMeal()
+	{
+		$qb = $this->mealRepo->createQueryBuilder("m");
+		$qb->select($qb->expr()->count('m.mealId'));
+		return $qb->getQuery()->getSingleScalarResult();
 	}
 
 	public function getAllMealByCategory($category)

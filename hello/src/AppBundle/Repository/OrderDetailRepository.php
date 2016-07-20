@@ -23,8 +23,21 @@ class OrderDetailRepository
 	public function deleteOrderDetail($order_detail_id)
 	{
 		$orderDetail = $this->getOrderDetailById($order_detail_id);
-		$this->em->remove($orderDetail);
-		$this->em->flush();
+		if($orderDetail==null)
+		{
+			return "There is no order detail with id ".$order_detail_id.".";
+		}
+		
+		try
+		{
+			$this->em->remove($orderDetail);
+			$this->em->flush();
+		}
+		catch(\Exception $e)
+		{
+			return $e->getMessage();
+		}
+		
 	}
 
 	public function getOrderDetailById($employee_id)
