@@ -22,10 +22,10 @@ class HomeController extends BaseController
     {
         $this->authSetup();
 		//print_r($this->userData['menu']);
-        $user = new TUser();
+        /*$user = new TUser();
 		
 		$encoder = $this->container->get('security.password_encoder');
-		$encoded = $encoder->encodePassword($user, "laminarin");
+		$encoded = $encoder->encodePassword($user, "laminarin");*/
 		//print_r($encoded);
 		//return new Response($encoded);
         $this->resp['base_dir'] = realpath($this->getParameter('kernel.root_dir').'/..');
