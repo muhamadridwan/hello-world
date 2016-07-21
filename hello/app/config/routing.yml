@@ -112,11 +112,11 @@ addEmployee:
   defaults: {_controller: AppBundle:Employee:add}
   methods:  [GET, POST]
 editEmployee:
-  path: administration/Employee/edit/{id}
+  path: administration/employee/edit/{id}
   defaults: {_controller: AppBundle:Employee:edit}
   methods:  [GET, POST]
 deleteEmployee:
-  path: administration/Employee/del/{id}
+  path: administration/employee/del/{id}
   defaults: {_controller: AppBundle:Employee:delete}
 usergroupIndex:
   path: administration/usergroup/

@@ -37,18 +37,20 @@ security:
     access_control:
         # require ROLE_ADMIN for /admin*
         #- { path: ^/administration, roles: [ROLE_ADMIN, ROLE_SUPERADMIN] }
+        - { path: ^/configuration, roles: [ROLE_ADMIN, ROLE_SUPERADMIN] }
         - { path: ^/administration/admin, roles: ROLE_SUPERADMIN }
         - { path: ^/administration/user, roles: ROLE_SUPERADMIN }
         - { path: ^/administration/usergroup, roles: ROLE_SUPERADMIN }
         - { path: ^/administration/userprivilege, roles: ROLE_SUPERADMIN }
         - { path: ^/administration/employee, roles: [ROLE_ADMIN, ROLE_SUPERADMIN] }
         - { path: ^/administration/customer, roles: [ROLE_ADMIN, ROLE_SUPERADMIN] }
-        - { path: ^/configuration, roles: [ROLE_ADMIN, ROLE_SUPERADMIN] }
         #- { path: ^/orders, roles: ROLE_CUSTOMER }
-        - { path: ^/orders/order, roles: [ROLE_ADMIN, ROLE_SUPERADMIN, ROLE_CUSTOMER]}
+        - { path: ^/orders/order, roles: [ROLE_ADMIN, ROLE_CUSTOMER]}
+        - { path: ^/orders/cooksTheFood, roles: ROLE_KITCHEN_ADMIN }
+        - { path: ^/orders/servesTheFood, roles: ROLE_KITCHEN_ADMIN }
+        - { path: ^/orders/payment, roles: ROLE_ADMIN }
+        - { path: ^/orders/confirmPayment, roles: ROLE_ADMIN }
         - { path: ^/orders/activeOrder, roles: [ROLE_ADMIN, ROLE_SUPERADMIN, ROLE_CUSTOMER]}
         - { path: ^/orders/history, roles: [ROLE_ADMIN, ROLE_SUPERADMIN, ROLE_CUSTOMER]}
-        
-
-    
+        - { path: ^/myprofile, roles: [ROLE_ADMIN, ROLE_SUPERADMIN, ROLE_CUSTOMER, ROLE_KITCHEN_ADMIN]}  
 
