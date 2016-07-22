@@ -84,7 +84,7 @@ class MealController extends BaseController
 					$this->session->getFlashBag()->add('success', 'Add new meal is successful.');
 					return $this->redirectToRoute("mealIndex");
 		    	}
-		    	catch(\Exception $e)
+		    	catch(Exception $e)
 		    	{
 		    		$errors[0]['message'] = "Failed to upload picture.";
 		    	}

@@ -63,8 +63,82 @@ class MealRepository
 		return $this->mealRepo->findAll();
 	}
 
-	public function getMeals()
+	public function getMeals($pagingInfo = null)
 	{
+		/*if ($pagingInfo != null)
+        {
+        	$pagingInfo->totalRows = $this->getCountAllMeal();
+        	$pagingInfo->totalPage = ceil(($pagingInfo->totalRows / $pagingInfo->totalRowsOnPage));
+        	
+        }*/
+		/*// This code is only to set pagination view data
+            string pagingQuery = "";
+            string pagingCondition = "";
+            string outletQeury = "";
+            if (pagingInfo != null)
+            {
+                pagingInfo.TotalRows = (int)ExecuteScalarQuery(
+                                        string.Format(
+                                "SELECT COUNT(A.OutletID) AS Total FROM ( "+SQLQueries.GetOutlets+" ) A ",
+                                searchParams.Territory ?? "",
+                                searchParams.BlockCode ?? "",
+                                searchParams.OutletName ?? "",
+                                searchParams.OwnerName ?? "",
+                                searchParams.Address ?? "",
+                                searchParams.LocalId ?? "",
+                                searchParams.IsGPSValid ?? "",
+                                searchParams.CreatedDateFrom == null ? "" : searchParams.CreatedDateFrom.Value.Date.ToString("yyyy-MM-dd"),
+                                searchParams.CreatedDateTo == null ? "" : searchParams.CreatedDateTo.Value.Date.ToString("yyyy-MM-dd"),
+                                //searchParams.Area ?? "",
+                                //searchParams.IsMapBeenUpdated != null ? searchParams.ToString() : "",
+                                searchParams.UserID ?? "",
+                                searchParams.OutletType ?? "",
+                                //string.IsNullOrEmpty(searchParams.IsManagerReview) ? "-1" : searchParams.IsManagerReview,
+                                pagingQuery,
+                                pagingCondition
+                                ));
+                pagingCondition = " ORDER BY  o.CheckIn DESC";
+                pagingInfo.TotalPage = (int)Math.Ceiling(((double)pagingInfo.TotalRows / pagingInfo.TotalRowsOnPage));
+                
+                pagingQuery = " * FROM (  SELECT  ROW_NUMBER() OVER(ORDER BY o.CreatedDate2 DESC) AS NUMBER, ";
+                pagingCondition = string.Format(" ) o WHERE o.NUMBER  "+
+                                                    " BETWEEN (({0} - 1)  * {1} + 1) "+
+                                                    " AND ({0} * {1})  "+pagingCondition, pagingInfo.CurrentPage, pagingInfo.TotalRowsOnPage);
+            }
+
+            // This is the main query
+            
+            outletQeury = string.Format(
+                                SQLQueries.GetOutlets,
+                                searchParams.Territory ?? "",
+                                searchParams.BlockCode ?? "",
+                                searchParams.OutletName ?? "",
+                                searchParams.OwnerName ?? "",
+                                searchParams.Address ?? "",
+                                searchParams.LocalId ?? "",
+                                searchParams.IsGPSValid ?? "",
+                                searchParams.CreatedDateFrom == null ? "" : searchParams.CreatedDateFrom.Value.Date.ToString("yyyy-MM-dd"),
+                                searchParams.CreatedDateTo == null ? "" : searchParams.CreatedDateTo.Value.Date.ToString("yyyy-MM-dd"),
+                                //searchParams.Area ?? "",
+                                //searchParams.IsMapBeenUpdated != null ? searchParams.ToString() : "",
+                                searchParams.UserID ?? "",
+                                searchParams.OutletType ?? "",
+                                //string.IsNullOrEmpty(searchParams.IsManagerReview) ? "-1" : searchParams.IsManagerReview,
+                                pagingQuery,
+                                pagingCondition
+                                );
+            
+            List<OutletView> outletDataList = GetDataFromQuery<OutletView>(outletQeury);
+
+            if (pagingInfo != null)
+            {
+                List<int> numbers = outletDataList.Select(x => x.Number).ToList<int>();
+                //pagingInfo.StartRowsNumber = numbers.Min();
+                //pagingInfo.EndRowsNumber = numbers.Max();
+                SetPagingMinMax(pagingInfo, numbers);
+            }
+
+            return outletDataList;*/
 		return $this->mealRepo->createQueryBuilder("m")
 		->setFirstResult(0)
 		->setMaxResults(5)

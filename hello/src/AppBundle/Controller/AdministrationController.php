@@ -37,7 +37,9 @@ class AdministrationController extends BaseController
             ->add('user', EntityType::class, array(
 				    'class' => 'AppBundle:TUser',
 				    'choices' => $userService->getAvailableAdmin(),
-				    'choice_label' => 'username'))
+				    'choice_label' => function ($user) {
+								        return $user->getUsername()." - (".$user->getUserGroup()->getUserGroupName().")  ";
+								    }))
             ->add('employee', EntityType::class, array(
 				    'class' => 'AppBundle:Employee',
 				    'choices' => $employeeService->getEmployeeWhichIsNotAdmin(),

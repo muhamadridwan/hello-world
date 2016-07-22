@@ -93,7 +93,7 @@ class UserRepository
          ->getDQL();
 		$qb->innerJoin("AppBundle:TUserGroup", "grp", "WITH", "u.userGroup = grp");
 		
-		$qb->where($qb->expr()->eq("grp.userGroupId","'ROLE_ADMIN'"));
+		$qb->where($qb->expr()->orX($qb->expr()->eq("grp.userGroupId","'ROLE_ADMIN'"),$qb->expr()->eq("grp.userGroupId","'ROLE_KITCHEN_ADMIN'")));
 		$qb->andWhere($qb->expr()->notIn('u',  $listOfRegisteredUser));
 		
 		return $qb->getQuery()->getResult();

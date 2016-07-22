@@ -1,6 +1,6 @@
 # This file is auto-generated during the composer install
 parameters:
-    database_host: 192.168.56.103
+    database_host: 192.168.56.101
     database_port: 32768
     database_name: symfony-hello
     database_user: postgres
