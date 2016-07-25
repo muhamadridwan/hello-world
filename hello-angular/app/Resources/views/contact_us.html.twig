@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<h1>Contact Us</h1>
+<!--<ul class=entries>-->
+<div ng-controller="ContactUsCtrl" style="padding:20px;">
+    <div class="row">
+        <div class="span4">
+            <div><strong>Address : </strong>{[{company.street}]} - {[{company.city}]}
+            </div>
+            <div><strong>Zipcode : </strong>{[{company.zipcode}]}</div>
+            <div><strong>Email : </strong>{[{company.email}]}</div>
+            <div><strong>Phone Number : </strong>{[{company.phone}]}</div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="{{asset('bundles/js/controllers/ContactUsCtrl.js')}}"></script>
+{% endblock %}

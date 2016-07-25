@@ -55,3 +55,4 @@ h2              { font-size: 1.2em; }
 .white-text {color: #fff !important;}
 .white-text:hover, .white-text:focus, .white-text.active {background-color: #eee !important; color: #343434 !important;}
 
+ul { list-style-type: none; }

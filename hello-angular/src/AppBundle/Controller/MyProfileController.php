@@ -25,11 +25,8 @@ class MyProfileController extends BaseController
 	public function indexAction()
 	{
 		$this->authSetup();
-		$users = $this->getDoctrine()
-        ->getRepository('AppBundle:TUser')->findAll('Agus');
-        
-		$this->resp["users"] = $users;
-		return $this->render("user/index.html.twig", $this->resp);
+        $this->resp['base_dir'] = realpath($this->getParameter('kernel.root_dir').'/..');
+        return $this->render('my_profile/profile.html.twig',$this->resp );
 	}
 
 	

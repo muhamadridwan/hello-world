@@ -32,6 +32,13 @@ class HomeController extends BaseController
         return $this->render('default/index.html.twig',$this->resp );
     }
 
+    public function contactUsAction(Request $request)
+    {
+        $this->authSetup();
+        $this->resp['base_dir'] = realpath($this->getParameter('kernel.root_dir').'/..');
+        return $this->render('contact_us.html.twig',$this->resp );
+    }
+
     /*$image = $request->files->get('picture');
 		    if($image)
 		    {

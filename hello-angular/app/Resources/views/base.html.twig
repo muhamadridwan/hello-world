@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="app">
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}welcome{% endblock %}</title>
@@ -11,6 +11,13 @@
 
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <script type="text/javascript" src="{{ asset('bundles/lib/jquery-2.2.3.min.js') }}"></script>
+            <script type="text/javascript" src="{{asset('bundles/lib/bootstrap.min.js')}}"></script>
+            <script type="text/javascript" src="{{asset('bundles/lib/angular-1.5.8/angular.min.js')}}"></script>
+            <script type="text/javascript" src="{{asset('bundles/js/app.js')}}"></script>
+            <script type="text/javascript" src="{{asset('bundles/js/laminarin.js')}}"></script>
+            <script type="text/javascript" src="{{asset('bundles/js/controllers/HomeCtrl.js')}}"></script>
+            
     </head>
     <body>
         <nav class="navbar navbar-default bg-dark-brown nav-border">
@@ -22,7 +29,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand c-white" href="{{path('homepage')}}">Laminarin</a>
+                <a class="navbar-brand c-white" href="{{path('homepage')}}" ng-controller="HomeCtrl">Laminarin {[{helloMessage}]}</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -77,20 +84,17 @@
         </div><!-- /.container-fluid -->
     </nav>
     <div class="page">
-        
+        {% set noticeMessages = app.session.flashbag.get('notice') %}
+        {% if noticeMessages %}
         <div class=metanav>
             {% for flash_message in app.session.flashBag.get('notice') %}
             <div class=flash>{{ flash_message }}</div>
             {% endfor %}
         </div>
-        
+        {% endif %}
         {% block body %}{% endblock %}
     </div>
         
-        {% block javascripts %}
-            <script type="text/javascript" src="{{ asset('bundles/js/jquery-2.2.3.min.js') }}"></script>
-            <script type="text/javascript" src="{{asset('bundles/js/bootstrap.min.js')}}"></script>
-            <script type="text/javascript" src="{{asset('bundles/js/laminarin.js')}}"></script>
-        {% endblock %}
+        {% block javascripts %}{% endblock %}
     </body>
 </html>

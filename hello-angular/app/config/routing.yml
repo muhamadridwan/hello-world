@@ -139,9 +139,6 @@ saveUserPrivilege:
   path: administration/userprivilege/saveuserprivilege/{userGroupId}
   defaults: {_controller: AppBundle:UserPrivilege:saveUserPrivilege}
 
-changePasswordIndex:
-  path: myProfile/changePassword/
-  defaults: {_controller: AppBundle:Security:changePasswordIndex}
 
 
 orders:
@@ -185,3 +182,9 @@ detailHistoryIndex:
 myProfileIndex:
   path: myprofile/
   defaults: {_controller: AppBundle:MyProfile:index}
+changePasswordIndex:
+  path: myProfile/changePassword/
+  defaults: {_controller: AppBundle:Security:changePasswordIndex}
+contactUsIndex:
+  path: contactUs/
+  defaults: {_controller: AppBundle:Home:contactUs}
