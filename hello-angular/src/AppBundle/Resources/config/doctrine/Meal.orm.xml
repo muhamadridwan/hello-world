@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\Meal" table="meal">
+    <indexes>
+      <index name="ixfk_meal_meal_category" columns="category_id"/>
+    </indexes>
+    <unique-constraints>
+      <unique-constraint name="uq_meal_meal_id" columns="meal_id"/>
+    </unique-constraints>
+    <id name="mealId" type="integer" column="meal_id">
+      <generator strategy="SEQUENCE"/>
+      <sequence-generator sequence-name="meal_meal_id_seq" allocation-size="1" initial-value="1"/>
+    </id>
+    <field name="mealName" type="string" column="meal_name" length="32" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="mealDesc" type="string" column="meal_desc" length="500" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="mealDescIndo" type="string" column="meal_desc_indo" length="64" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="mealPrice" type="integer" column="meal_price" nullable="false">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="discount" type="integer" column="discount" nullable="true">
+      <options>
+        <option name="unsigned"/>
+        <option name="default">0</option>
+      </options>
+    </field>
+    <field name="picture" type="string" column="picture" length="255" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <many-to-one field="category" target-entity="MealCategory" fetch="LAZY">
+      <join-columns>
+        <join-column name="category_id" referenced-column-name="category_id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

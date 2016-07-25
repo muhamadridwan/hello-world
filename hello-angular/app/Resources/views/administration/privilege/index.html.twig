@@ -1,0 +1,91 @@
+
+{% extends 'base.html.twig' %}
+{% block title %}User Privilege Management{% endblock %}
+     
+{% block body %}
+<h2 class="page-header" style="margin-top:10px;">User Privilege Management</h2>
+<!--<ul class=entries>-->
+<div class="panel panel-default">
+    {% set successMessages = app.session.flashbag.get('success') %}
+    {% if successMessages %}
+        <div class="alert-success success">
+        {% for flashMessage in successMessages %}
+            {{ flashMessage }}
+        {% endfor %} 
+        </div>
+    {% endif %}
+    {% set errorMessages = app.session.flashbag.get('error') %}
+    {% if errorMessages %}
+        <div class="alert-danger error">
+        {% for flashMessage in errorMessages %}
+            {{ flashMessage }}
+        {% endfor %} 
+        </div>
+    {% endif %}
+    <div class="panel-heading" style="height:3em;padding:0.2em;padding-right:1em;">
+        {#<form enctype="multipart/form-data" action="{{ path('loadUserPrivilege') }}" method="post" >
+            
+        </form>#}
+        {{ form_start(form) }}
+            {{ form_widget(form.usergroup) }} {{ form_widget(form.save) }}
+        {{ form_end(form) }}
+    </div>
+    {% if userPrivilegeMenu is defined %}
+    <form action="{{ path('saveUserPrivilege',{'userGroupId': userGroupId}) }}" method="post" style="padding-bottom:5px; margin-bottom:10px;">
+	<div class="panel">
+    <table  class="table">
+		<thead>
+			<tr><th rowspan="2" width="32">No</th>
+				<th rowspan="2" width="200">Menu</th>
+				<th colspan="5">Privilege</th>
+			</tr>
+			<tr><th width="50">Access</th>
+				<th width="50">Retrieve</th>
+				<th width="50">Create</th>
+				<th width="50">Update</th>
+				<th width="50">Delete</th>
+			</tr>
+		</thead>
+		<tbody>
+		
+        {% set idx = 1 %}
+		{% for p in privilegeForm.privileges %}
+			<tr>
+			<td class="center">{{idx}}</td>
+			<td>{% if p.menu_pid.vars.value != 'P' %}&nbsp;&nbsp;&nbsp;&nbsp;{% endif %}{{p.menu.vars.value}}
+			{{ form_widget(p.menu_id)}}
+			{{ form_widget(p.user_group_id)}}
+			
+			</td>
+				{% if p.menu_pid.vars.value != 'P' %}
+				
+				<td>{{ form_widget(p.p_access)}} </td>
+				<td>{{ form_widget(p.p_retrieve)}} </td>
+				<td>{{ form_widget(p.p_create)}} </td>
+				<td>{{ form_widget(p.p_update)}} </td>
+				<td>{{ form_widget(p.p_delete)}} </td>
+				
+				{% else %}
+				<td>
+				{{ form_widget(p.p_access)}}
+				</td> {# onchange="check_submenu(this,{$td.menu_id}) #}
+				<td colspan="4">&nbsp;</td>
+				{% endif %}
+			</tr>
+			{% set idx = idx +1 %}
+		{% endfor %}
+        
+		</tbody>
+	</table>
+	{{ form_widget(privilegeForm.savePrivilege, {'attr': {'class': 'pull-right','style': 'margin-right:10px;'}}) }}
+	</div>
+    
+    
+    </form>
+    {% endif %}
+</div>
+    
+{% endblock %}
+
+
+

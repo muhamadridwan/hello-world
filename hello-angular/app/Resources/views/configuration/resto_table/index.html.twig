@@ -1,0 +1,59 @@
+
+{% extends 'base.html.twig' %}
+{% block title %}Resto Table Management{% endblock %}
+     
+{% block body %}
+<h2 class="page-header" style="margin-top:10px;">Resto Table Management</h2>
+<!--<ul class=entries>-->
+<div class="panel panel-default">
+    {% set successMessages = app.session.flashbag.get('success') %}
+    {% if successMessages %}
+        <div class="alert-success success">
+        {% for flashMessage in successMessages %}
+            {{ flashMessage }}
+        {% endfor %} 
+        </div>
+    {% endif %}
+    {% set errorMessages = app.session.flashbag.get('error') %}
+    {% if errorMessages %}
+        <div class="alert-danger error">
+        {% for flashMessage in errorMessages %}
+            {{ flashMessage }}
+        {% endfor %} 
+        </div>
+    {% endif %}
+    <div class="panel-heading" style="height:3em;padding:0.2em;padding-right:1em;">
+    
+    <a href="{{ path('addRestoTable') }}"><button type="button" class="btn btn-primary pull-right">Add</button></a>
+    
+    </div>
+    <!-- Table -->
+    <table class="table">
+        <tr>
+            <th>No</th>
+            <th>Table</th>
+            <th>Action</th>
+        </tr>
+        {% set idx = 1 %}
+        {% for table in restoTable %}
+        <tr>
+            <td>{{idx}}</td>
+            <td>{{ table.getCustomerName() }}</td>
+            <td>
+                {# if session.logged_in #}
+                <a href="{{ path('editRestoTable', {'id': table.getCustomerId()}) }}"><span class="glyphicon glyphicon-pencil" aria-hidden="true" style="margin-right:0.3em"></span></a>
+                <a href="{{ path('deleteRestoTable', {'id': table.getCustomerId()}) }}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                {# endif #}
+            </td>
+        </tr>
+        {% set idx = idx +1 %}
+        {% else %}
+        <em>Unbelievable.  No entries here so far</em>
+        {% endfor %}
+    </table>
+</div>
+    
+{% endblock %}
+
+
+

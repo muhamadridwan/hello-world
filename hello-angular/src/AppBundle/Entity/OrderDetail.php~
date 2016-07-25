@@ -1,0 +1,75 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * OrderDetail
+ *
+ * @ORM\Table(name="order_detail", indexes={@ORM\Index(name="ixfk_order_detail_customer_order", columns={"order_id"}), @ORM\Index(name="ixfk_order_detail_meal", columns={"meal_id"})})
+ * @ORM\Entity
+ */
+class OrderDetail
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="qty", type="integer", nullable=false)
+     */
+    private $qty = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="total", type="integer", nullable=true)
+     */
+    private $total = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="total_discount", type="integer", nullable=true)
+     */
+    private $totalDiscount;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="total_before_discount", type="integer", nullable=true)
+     */
+    private $totalBeforeDiscount;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="order_detail_id", type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="order_detail_order_detail_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $orderDetailId;
+
+    /**
+     * @var \AppBundle\Entity\Meal
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Meal")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="meal_id", referencedColumnName="meal_id")
+     * })
+     */
+    private $meal;
+
+    /**
+     * @var \AppBundle\Entity\CustomerOrder
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CustomerOrder")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="order_id", referencedColumnName="order_id")
+     * })
+     */
+    private $order;
+
+
+}
+

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% block title %}User Group Management{% endblock %}
+{% block body %}
+{# if session.logged_in #}
+<h2 class="page-header" style="margin-top:10px;">User Group Management</h2>
+{% if errors %}
+    <div class="error">
+        <ul>
+        {% for error in errors %}
+            <li>{{ error.message }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+<form enctype="multipart/form-data" action="{% if act == 'add' %}{{ path('addUsergroup') }} {% else %} {{ path('editUsergroup',{'id': usergroup.userGroupId}) }} {% endif %}" method=post class="laminarin-form">
+    <dl>
+        <dt>User Group ID:</dt>
+        <dd>{{ form_widget(form.userGroupId) }}</dd>
+        <dt>User Group:</dt>
+        <dd>{{ form_widget(form.userGroupName) }}</dd>
+        <dt>Description:</dt>
+        <dd>{{ form_widget(form.userGroupDesc) }}</dd>
+        <dt>{{ form_widget(form.isActive) }}</dt>
+        <dd>{{ form_widget(form.save) }}
+
+            <a href="{{ path('usergroupIndex') }}"><button type="button" class="btn btn-primary pull-right">Back</button></a>
+        <br/></dd>
+    </dl>
+</form>
+
+  {# endif #}
+{% endblock %}

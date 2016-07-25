@@ -1,0 +1,41 @@
+<?php
+
+
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * MealCategory
+ *
+ * @ORM\Table(name="meal_category", uniqueConstraints={@ORM\UniqueConstraint(name="uq_meal_category_category_id", columns={"category_id"})})
+ * @ORM\Entity
+ */
+class MealCategory
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="category_id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="meal_category_category_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $categoryId = '"meal_category_category_id_seq"';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="category_name", type="string", length=32, nullable=false)
+     */
+    private $categoryName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="category_desc", type="string", length=64, nullable=true)
+     */
+    private $categoryDesc;
+
+
+}
+

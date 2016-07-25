@@ -1,0 +1,83 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * TMenu
+ *
+ * @ORM\Table(name="t_menu", uniqueConstraints={@ORM\UniqueConstraint(name="uq_menu_menu_id", columns={"menu_id"})})
+ * @ORM\Entity
+ */
+class TMenu
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="menu_pid", type="string", length=32, nullable=true)
+     */
+    private $menuPid;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="menu", type="string", length=32, nullable=true)
+     */
+    private $menu;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="menu_in_bahasa", type="string", length=32, nullable=true)
+     */
+    private $menuInBahasa;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="controller", type="string", length=32, nullable=true)
+     */
+    private $controller;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="menu_css", type="string", length=32, nullable=true)
+     */
+    private $menuCss;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="menu_icon", type="string", length=32, nullable=true)
+     */
+    private $menuIcon;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_active", type="boolean", nullable=false)
+     */
+    private $isActive = '1';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="menu_seq", type="integer", nullable=true)
+     */
+    private $menuSeq = '1';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="menu_id", type="string", length=32)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="t_menu_menu_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $menuId;
+
+
+}
+

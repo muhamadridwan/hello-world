@@ -1,0 +1,44 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+    app.bundle.service.authorization.class: AppBundle\Service\AuthorizationService
+    app.bundle.service.user.management.class: AppBundle\Service\UserManagementService
+    app.bundle.service.customer.management.class: AppBundle\Service\CustomerManagementService
+    app.bundle.service.employee.management.class: AppBundle\Service\EmployeeManagementService
+    app.bundle.service.usergroup.management.class: AppBundle\Service\UsergroupManagementService
+    app.bundle.service.meal.category.management.class: AppBundle\Service\MealCategoryManagementService
+    app.bundle.service.meal.management.class: AppBundle\Service\MealManagementService
+    app.bundle.service.order.management.class: AppBundle\Service\OrderManagementService
+    
+    
+
+services:
+    app.bundle.authorization.service:
+      class: %app.bundle.service.authorization.class%
+      arguments: ["@doctrine.orm.entity_manager"]
+    app.bundle.user.management.service:
+      class: %app.bundle.service.user.management.class%
+      arguments: ["@doctrine.orm.entity_manager"]
+    app.bundle.customer.management.service:
+      class: %app.bundle.service.customer.management.class%
+      arguments: ["@doctrine.orm.entity_manager"]
+    app.bundle.employee.management.service:
+      class: %app.bundle.service.employee.management.class%
+      arguments: ["@doctrine.orm.entity_manager"]
+    app.bundle.usergroup.management.service:
+      class: %app.bundle.service.usergroup.management.class%
+      arguments: ["@doctrine.orm.entity_manager"]
+    app.bundle.meal.category.management.service:
+      class: %app.bundle.service.meal.category.management.class%
+      arguments: ["@doctrine.orm.entity_manager"]
+    app.bundle.meal.management.service:
+      class: %app.bundle.service.meal.management.class%
+      arguments: ["@doctrine.orm.entity_manager"]
+    app.bundle.order.management.service:
+      class: %app.bundle.service.order.management.class%
+      arguments: ["@doctrine.orm.entity_manager"]
+    
+#     
+#    service_name:
+#        class: AppBundle\Directory\ClassName "@service_container",
+#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]

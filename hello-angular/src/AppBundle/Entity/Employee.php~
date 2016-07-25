@@ -1,0 +1,107 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Employee
+ *
+ * @ORM\Table(name="employee", uniqueConstraints={@ORM\UniqueConstraint(name="uq_employee_employee_id", columns={"employee_id"})}, indexes={@ORM\Index(name="ixfk_employee_t_user", columns={"user_id"})})
+ * @ORM\Entity
+ */
+class Employee
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="personal_id", type="string", length=32, nullable=true)
+     */
+    private $personalId;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="employee_name", type="string", length=32, nullable=false)
+     */
+    private $employeeName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="employee_fullname", type="string", length=32, nullable=true)
+     */
+    private $employeeFullname;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="employee_address", type="string", length=128, nullable=true)
+     */
+    private $employeeAddress;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="phone_number", type="string", length=20, nullable=true)
+     */
+    private $phoneNumber;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=32, nullable=true)
+     */
+    private $email;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="join_date", type="datetime", nullable=true)
+     */
+    private $joinDate;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="resign_date", type="datetime", nullable=true)
+     */
+    private $resignDate;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="picture", type="string", length=255, nullable=true)
+     */
+    private $picture;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_active", type="boolean", nullable=true)
+     */
+    private $isActive = '1';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="employee_id", type="string", length=32)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="employee_employee_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $employeeId;
+
+    /**
+     * @var \AppBundle\Entity\TUser
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\TUser")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * })
+     */
+    private $user;
+
+
+}
+

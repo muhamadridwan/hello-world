@@ -1,0 +1,62 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * CompanyProfile
+ *
+ * @ORM\Table(name="company_profile")
+ * @ORM\Entity
+ */
+class CompanyProfile
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="store_name", type="string", length=32, nullable=false)
+     */
+    private $storeName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="store_desc", type="string", length=128, nullable=true)
+     */
+    private $storeDesc;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="store_email", type="string", length=32, nullable=true)
+     */
+    private $storeEmail;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="store_address", type="string", length=255, nullable=true)
+     */
+    private $storeAddress;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="phone_number", type="string", length=20, nullable=true)
+     */
+    private $phoneNumber;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="store_id", type="string", length=32)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="company_profile_store_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $storeId;
+
+
+}
+

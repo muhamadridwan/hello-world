@@ -1,0 +1,187 @@
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+login:
+  path: login/
+  defaults: {_controller: AppBundle:Security:login}
+logout:
+  path: logout
+
+
+configuration:
+  path: configuration/
+  defaults: {_controller: AppBundle:MealCategory:index}
+
+### Meal Category Routing ###
+
+mealCategoryIndex:
+  path: configuration/mealCategory/
+  defaults: {_controller: AppBundle:MealCategory:index}
+addMealCategory:
+  path: configuration/mealCategory/add/
+  defaults: {_controller: AppBundle:MealCategory:add}
+  methods:  [GET, POST]
+editMealCategory:
+  path: configuration/mealCategory/edit/{id}
+  defaults: {_controller: AppBundle:MealCategory:edit}
+  methods:  [GET, POST]
+deleteMealCategory:
+  path: configuration/mealCategory/del/{id}
+  defaults: {_controller: AppBundle:MealCategory:delete}
+
+### Meal Routing ###
+
+mealIndex:
+  path: configuration/meal/
+  defaults: {_controller: AppBundle:Meal:index}
+addMeal:
+  path: configuration/meal/add/
+  defaults: {_controller: AppBundle:Meal:add}
+  methods:  [GET, POST]
+editMeal:
+  path: configuration/meal/edit/{id}
+  defaults: {_controller: AppBundle:Meal:edit}
+  methods:  [GET, POST]
+deleteMeal:
+  path: configuration/meal/del/{id}
+  defaults: {_controller: AppBundle:Meal:delete}
+
+### Resto Table Routing ###
+
+restoTableIndex:
+  path: configuration/restoTable/
+  defaults: {_controller: AppBundle:RestoTable:index}
+addRestoTable:
+  path: configuration/restoTable/add/
+  defaults: {_controller: AppBundle:RestoTable:add}
+  methods:  [GET, POST]
+editRestoTable:
+  path: configuration/RestoTable/edit/{id}
+  defaults: {_controller: AppBundle:RestoTable:edit}
+  methods:  [GET, POST]
+deleteRestoTable:
+  path: configuration/RestoTable/del/{id}
+  defaults: {_controller: AppBundle:RestoTable:delete}
+
+administration:
+  path: administration/
+  defaults: {_controller: AppBundle:Administration:userIndex}
+userIndex:
+  path: administration/user/
+  defaults: {_controller: AppBundle:User:index}
+addUser:
+  path: administration/user/add/
+  defaults: {_controller: AppBundle:User:add}
+  methods:  [GET, POST]
+editUser:
+  path: administration/user/edit/{id}
+  defaults: {_controller: AppBundle:User:edit}
+  methods:  [GET, POST]
+deleteUser:
+  path: administration/user/del/{id}
+  defaults: {_controller: AppBundle:User:delete}
+customerIndex:
+  path: administration/customer/
+  defaults: {_controller: AppBundle:Customer:index}
+addCustomer:
+  path: administration/customer/add/
+  defaults: {_controller: AppBundle:Customer:add}
+  methods:  [GET, POST]
+editCustomer:
+  path: administration/customer/edit/{id}
+  defaults: {_controller: AppBundle:Customer:edit}
+  methods:  [GET, POST]
+deleteCustomer:
+  path: administration/customer/del/{id}
+  defaults: {_controller: AppBundle:Customer:delete}
+adminIndex:
+  path: administration/admin/
+  defaults: {_controller: AppBundle:Administration:adminIndex}
+addAdmin:
+  path: administration/admin/add/
+  defaults: {_controller: AppBundle:Administration:addAdmin}
+  methods:  [GET, POST]
+deleteAdmin:
+  path: administration/admin/del/{id}
+  defaults: {_controller: AppBundle:Administration:deleteAdmin}
+employeeIndex:
+  path: administration/employee/
+  defaults: {_controller: AppBundle:Employee:index}
+addEmployee:
+  path: administration/employee/add/
+  defaults: {_controller: AppBundle:Employee:add}
+  methods:  [GET, POST]
+editEmployee:
+  path: administration/employee/edit/{id}
+  defaults: {_controller: AppBundle:Employee:edit}
+  methods:  [GET, POST]
+deleteEmployee:
+  path: administration/employee/del/{id}
+  defaults: {_controller: AppBundle:Employee:delete}
+usergroupIndex:
+  path: administration/usergroup/
+  defaults: {_controller: AppBundle:Usergroup:Index}
+addUsergroup:
+  path: administration/usergroup/add/
+  defaults: {_controller: AppBundle:Usergroup:add}
+  methods:  [GET, POST]
+editUsergroup:
+  path: administration/usergroup/edit/{id}
+  defaults: {_controller: AppBundle:Usergroup:edit}
+  methods:  [GET, POST]
+deleteUsergroup:
+  path: administration/usergroup/del/{id}
+  defaults: {_controller: AppBundle:Usergroup:delete}
+userPrivilegeIndex:
+  path: administration/userprivilege/{user_group_id}
+  defaults: {_controller: AppBundle:UserPrivilege:index, user_group_id: -1}
+saveUserPrivilege:
+  path: administration/userprivilege/saveuserprivilege/{userGroupId}
+  defaults: {_controller: AppBundle:UserPrivilege:saveUserPrivilege}
+
+changePasswordIndex:
+  path: myProfile/changePassword/
+  defaults: {_controller: AppBundle:Security:changePasswordIndex}
+
+
+orders:
+  path: orders/
+  defaults: {_controller: AppBundle:Order:orderIndex}
+orderIndex:
+  path: orders/order/{category_id}
+  defaults: {_controller: AppBundle:Order:orderIndex, category_id: -1}
+pickTheMeal:
+  path: orders/order/pickTheMeal/{category_id}
+  defaults: {_controller: AppBundle:Order:pickTheMeal}
+cancelPickTheMeal:
+  path: orders/order/cancelPickTheMeal/{meal_id}/{category_id}
+  defaults: {_controller: AppBundle:Order:cancelPickTheMeal}
+checkOutTheOrders:
+  path: orders/order/checkOutTheOrders/
+  defaults: {_controller: AppBundle:Order:checkOutTheOrders}
+
+activeOrderIndex:
+  path: orders/activeOrder/{order_status}
+  defaults: {_controller: AppBundle:Order:activeOrderIndex, order_status: 0}
+cooksTheFood:
+  path: orders/cooksTheFood/{customer_order_id}
+  defaults: {_controller: AppBundle:Order:cooksTheFood}
+servesTheFood:
+  path: orders/servesTheFood/{customer_order_id}
+  defaults: {_controller: AppBundle:Order:servesTheFood}
+paymentIndex:
+  path: orders/payment/{customer_order_id}
+  defaults: {_controller: AppBundle:Order:payment}
+confirmPayment:
+  path: orders/confirmPayment/{customer_order_id}
+  defaults: {_controller: AppBundle:Order:confirmPayment}  
+orderHistoryIndex:
+  path: orders/history/
+  defaults: {_controller: AppBundle:Order:historyIndex}
+detailHistoryIndex:
+  path: orders/history/detail/{customer_order_id}
+  defaults: {_controller: AppBundle:Order:detailHistoryIndex}
+
+myProfileIndex:
+  path: myprofile/
+  defaults: {_controller: AppBundle:MyProfile:index}

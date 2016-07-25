@@ -1,0 +1,56 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/book/security.html
+security:
+    encoders:
+        AppBundle\Entity\TUser:
+            algorithm: bcrypt
+
+    providers:
+    #    in_memory:
+    #        memory: ~
+        our_db_provider:
+            entity:
+                class: AppBundle:TUser
+                property: username
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            pattern: ^/
+            anonymous: ~
+            # activate different ways to authenticate
+
+            http_basic: ~
+            # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
+
+            form_login:
+                login_path: login
+                check_path: login
+            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+            provider: our_db_provider
+            logout:
+                path: /logout
+                target: /
+    access_control:
+        # require ROLE_ADMIN for /admin*
+        #- { path: ^/administration, roles: [ROLE_ADMIN, ROLE_SUPERADMIN] }
+        - { path: ^/configuration, roles: [ROLE_ADMIN, ROLE_SUPERADMIN] }
+        - { path: ^/administration/admin, roles: ROLE_SUPERADMIN }
+        - { path: ^/administration/user, roles: ROLE_SUPERADMIN }
+        - { path: ^/administration/usergroup, roles: ROLE_SUPERADMIN }
+        - { path: ^/administration/userprivilege, roles: ROLE_SUPERADMIN }
+        - { path: ^/administration/employee, roles: [ROLE_ADMIN, ROLE_SUPERADMIN] }
+        - { path: ^/administration/customer, roles: [ROLE_ADMIN, ROLE_SUPERADMIN] }
+        #- { path: ^/orders, roles: ROLE_CUSTOMER }
+        - { path: ^/orders/order, roles: [ROLE_ADMIN, ROLE_CUSTOMER]}
+        - { path: ^/orders/cooksTheFood, roles: ROLE_KITCHEN_ADMIN }
+        - { path: ^/orders/servesTheFood, roles: ROLE_KITCHEN_ADMIN }
+        - { path: ^/orders/payment, roles: ROLE_ADMIN }
+        - { path: ^/orders/confirmPayment, roles: ROLE_ADMIN }
+        - { path: ^/orders/activeOrder, roles: [ROLE_ADMIN, ROLE_SUPERADMIN, ROLE_CUSTOMER, ROLE_KITCHEN_ADMIN]}
+        - { path: ^/orders/history, roles: [ROLE_ADMIN, ROLE_SUPERADMIN, ROLE_CUSTOMER, ROLE_KITCHEN_ADMIN]}
+        - { path: ^/myprofile, roles: [ROLE_ADMIN, ROLE_SUPERADMIN, ROLE_CUSTOMER, ROLE_KITCHEN_ADMIN]}  
+

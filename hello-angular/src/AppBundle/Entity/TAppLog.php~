@@ -1,0 +1,86 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * TAppLog
+ *
+ * @ORM\Table(name="t_app_log", uniqueConstraints={@ORM\UniqueConstraint(name="uq_app_log_activity_id", columns={"activity_id"})}, indexes={@ORM\Index(name="ixfk_t_app_log_t_user", columns={"activity_user_id"})})
+ * @ORM\Entity
+ */
+class TAppLog
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="activity", type="string", length=128, nullable=true)
+     */
+    private $activity;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="activity_desc", type="string", length=128, nullable=true)
+     */
+    private $activityDesc;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="activity_url", type="string", length=128, nullable=true)
+     */
+    private $activityUrl;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="user_agent", type="string", length=64, nullable=true)
+     */
+    private $userAgent;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ip_address", type="string", length=15, nullable=true)
+     */
+    private $ipAddress;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="activity_time", type="datetime", nullable=false)
+     */
+    private $activityTime;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="remark", type="string", length=255, nullable=true)
+     */
+    private $remark;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="activity_id", type="string", length=64)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="t_app_log_activity_id_seq", allocationSize=1, initialValue=1)
+     */
+    private $activityId;
+
+    /**
+     * @var \AppBundle\Entity\TUser
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\TUser")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="activity_user_id", referencedColumnName="id")
+     * })
+     */
+    private $activityUser;
+
+
+}
+
