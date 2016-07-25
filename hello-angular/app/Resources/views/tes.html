@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html ng-app="app">
+    <head>
+        <meta charset="UTF-8" />
+        <title>angular js tes</title>
+    </head>
+    <body>
+        <h1  ng-controller="HelloWorldCtrl">{[{helloMessage}]}</h1>
+            <script type="text/javascript" src="../../../web/bundles/js/jquery-2.2.3.min.js"></script>
+            <script type="text/javascript" src="../../../web/bundles/js/bootstrap.min.js"></script>
+            <script type="text/javascript" src="../../../web/bundles/js/angular-1.5.8/angular.min.js"></script>
+			<script type="text/javascript" src="../../../web/bundles/js/laminarin.js"></script>
+			<script type="text/javascript" >
+			angular.module('app',[]);
+			angular.module('app', []).config(function($interpolateProvider){
+				$interpolateProvider.startSymbol('{[{').endSymbol('}]}');
+			});
+			angular.module('app').controller("HelloWorldCtrl",
+			function HelloWorldCtrl($scope){
+					$scope.helloMessage = "Hello Angular!!";
+				});
+			</script>
+    </body>
+</html>
