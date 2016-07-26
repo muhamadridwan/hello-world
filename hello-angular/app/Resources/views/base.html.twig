@@ -12,14 +12,16 @@
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         <script type="text/javascript" src="{{ asset('bundles/lib/jquery-2.2.3.min.js') }}"></script>
-            <script type="text/javascript" src="{{asset('bundles/lib/bootstrap.min.js')}}"></script>
-            <script type="text/javascript" src="{{asset('bundles/lib/angular-1.5.8/angular.min.js')}}"></script>
-            <script type="text/javascript" src="{{asset('bundles/js/app.js')}}"></script>
-            <script type="text/javascript" src="{{asset('bundles/js/laminarin.js')}}"></script>
-            <script type="text/javascript" src="{{asset('bundles/js/controllers/HomeCtrl.js')}}"></script>
+        <script type="text/javascript" src="{{asset('bundles/lib/bootstrap.min.js')}}"></script>
+        <script type="text/javascript" src="{{asset('bundles/lib/angular-1.5.8/angular.min.js')}}"></script>
+        <script type="text/javascript" src="{{asset('bundles/lib/angular-1.5.8/angular-sanitize.min.js')}}"></script>
+        <script type="text/javascript" src="{{asset('bundles/js/app.js')}}"></script>
+        <script type="text/javascript" src="{{asset('bundles/js/filters.js')}}"></script>
+        <script type="text/javascript" src="{{asset('bundles/js/laminarin.js')}}"></script>
+        <script type="text/javascript" src="{{asset('bundles/js/controllers/HomeCtrl.js')}}"></script>
             
     </head>
-    <body>
+    <body ng-cloak>
         <nav class="navbar navbar-default bg-dark-brown nav-border">
         <div class="container-fluid">
             

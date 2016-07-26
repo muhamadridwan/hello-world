@@ -56,3 +56,7 @@ h2              { font-size: 1.2em; }
 .white-text:hover, .white-text:focus, .white-text.active {background-color: #eee !important; color: #343434 !important;}
 
 ul { list-style-type: none; }
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], ng-cloak, x-ng-cloak {
+	display: none;
+}

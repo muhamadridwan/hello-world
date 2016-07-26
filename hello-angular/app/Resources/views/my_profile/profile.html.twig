@@ -7,12 +7,15 @@
     <img ng-src="{{asset('bundles/images/')}}{[{event.imageUrl}]}" alt="{[{event.name}]}" />
     <div class="row">
         <div class="span11">
-            <h2>{[{event.name}]}</h2>
+            <h2 ng-bind="event.name"></h2>
         </div>
+        <div ng-style="eventStyle" ng-bind-html="snippet">some title</div>
         <div class="span3">
             <div><strong>Date : </strong>{[{event.date}]}
             </div>
             <div><strong>Time : </strong>{[{event.time}]}</div>
+            <div><strong>Price : </strong>{[{ 100 | currency}]}</div>
+            <div><strong>Number : </strong>{[{3 | number:2 }]}</div>
         </div>
         <div class="span4">
             <address>
@@ -23,30 +26,63 @@
     </div>
     <hr />
     <h3>Sessions</h3>
+    Order by: 
+    <select ng-model="sortOrder" class="input-small">
+            <option value="name">Name</option>
+            <option value="-upVoteCount">Votes</option>
+        </select>
+    Show: 
+    <select ng-model="s.level">
+        <option value="">All</option>
+        <option value="introductory">Introductory</option>
+        <option value="advanced">Advanced</option>
+    </select>
     <ul class="thumbnails">
-        <li ng-repeat="session in event.sessions">
+        <li ng-repeat="session in event.sessions | orderBy: sortOrder | filter:s | limitTo:2 ">
             <div class="row session">
-                <div class="span0 well votingWidget">
-                    <div class="votingButton">
-                        <i class="icon-chevron-up icon-white"></i>
+                <div class="span0 well votingWidget pull-left" style="margin-right:10px; padding:5px;">
+                    <div class="votingButton" style="text-align:center;" ng-click="upVoteSession(session)">
+                        <i class="glyphicon glyphicon-chevron-up icon-white"></i>
                     </div>
                     <div class="badge badge-inverse">
                         <div>{[{session.upVoteCount}]}</div>
                     </div>
-                    <div class="votingButton">
-                        <i class="icon-chevron-down icon-white"></i>
+                    <div class="votingButton" style="text-align:center;" ng-click="downVoteSession(session)">
+                        <i class="glyphicon glyphicon-chevron-down icon-white"></i>
                     </div>
                 </div>
-                <div class="well span9">
+                <div class="well span9 pull-left" style="width:80%">
                     <h4 class="well-title">{[{session.name}]}</h4>
                     <h6 style="margin-top:-10px">{[{session.creatorName}]}</h6>
-                    <span>Duration : {[{session.duration}]}</span><br/>
+                    <span>Duration : {[{session.duration  | durations}]}</span><br/>
                     <span>Level : {[{session.level}]}</span>
                     <p>{[{session.abstract}]}</p>
                 </div>
             </div>
         </li>
     </ul>
+
+    <form>
+        <fieldset>
+            <label for="eventName">Event Name : </label>
+            <input id="eventName" type="text" ng-model="event.name" placeholder="Name or your event..">
+            <label for="eventDate">Event Date : </label>
+            <input id="eventDate" type="text" ng-model="event.date" placeholder="Event date..">
+            <label for="eventTime">Time : </label>
+            <input id="eventTime" type="text" ng-model="event.time" placeholder="Time..">
+            <label for="eventAddress">Address : </label>
+            <input id="eventAddress" type="text" ng-model="event.location.address" placeholder="Event address..">
+            <label for="eventCity">City : </label>
+            <input id="eventCity" type="text" ng-model="event.location.city" placeholder="City..">
+            <label for="eventProvince">Province : </label>
+            <input id="eventProvince" type="text" ng-model="event.location.province" placeholder="Province..">
+            <label for="eventImage">Image : </label>
+            <input id="eventImage" type="url" ng-model="event.imageUrl" placeholder="Image Url..">
+            
+        </fieldset>
+
+        <img ng-src="{{asset('bundles/images/')}}{[{event.imageUrl}]}" src="" />
+    </form>
 </div>
 
 {% endblock %}
