@@ -11,7 +11,7 @@
         </div>
         <div ng-style="eventStyle" ng-bind-html="snippet">some title</div>
         <div class="span3">
-            <div><strong>Date : </strong>{[{event.date}]}
+            <div ng-bind-template="<strong>Date : </strong>{[{event.date}]}">
             </div>
             <div><strong>Time : </strong>{[{event.time}]}</div>
             <div><strong>Price : </strong>{[{ 100 | currency}]}</div>
@@ -62,30 +62,33 @@
         </li>
     </ul>
 
-    <form>
+    <form name="newEventForm">
         <fieldset>
             <label for="eventName">Event Name : </label>
-            <input id="eventName" type="text" ng-model="event.name" placeholder="Name or your event..">
+            <input id="eventName" type="text" ng-model="event.name" placeholder="Name or your event.."><br/>
             <label for="eventDate">Event Date : </label>
-            <input id="eventDate" type="text" ng-model="event.date" placeholder="Event date..">
+            <input id="eventDate" type="text" ng-pattern="/\d\d/\d\d/\d\d\d\d/" ng-model="event.date" placeholder="Event date.."><br/>
             <label for="eventTime">Time : </label>
-            <input id="eventTime" type="text" ng-model="event.time" placeholder="Time..">
+            <input id="eventTime" type="text" ng-model="event.time" placeholder="Time.."><br/>
             <label for="eventAddress">Address : </label>
-            <input id="eventAddress" type="text" ng-model="event.location.address" placeholder="Event address..">
+            <input id="eventAddress" type="text" ng-model="event.location.address" placeholder="Event address.."><br/>
             <label for="eventCity">City : </label>
-            <input id="eventCity" type="text" ng-model="event.location.city" placeholder="City..">
+            <input id="eventCity" type="text" ng-model="event.location.city" placeholder="City.."><br/>
             <label for="eventProvince">Province : </label>
-            <input id="eventProvince" type="text" ng-model="event.location.province" placeholder="Province..">
+            <input id="eventProvince" type="text" ng-model="event.location.province" placeholder="Province.."><br/>
             <label for="eventImage">Image : </label>
-            <input id="eventImage" type="url" ng-model="event.imageUrl" placeholder="Image Url..">
+            <input id="eventImage" type="url" ng-model="event.imageUrl" placeholder="Image Url.."><br/>
             
         </fieldset>
 
-        <img ng-src="{{asset('bundles/images/')}}{[{event.imageUrl}]}" src="" />
+        <img ng-src="{[{event.imageUrl}]}" src="" /><br/><br/>
+        <button type="submit"  ng-disabled="newEventForm.$invalid" ng-click="saveEvent(event,newEventForm)" class="btn btn-primary">Save</button>
+        <button type="submit" ng-click="cancelEvent(event,newEventForm)" class="btn btn-default">Cancel</button>
     </form>
 </div>
 
 {% endblock %}
 {% block javascripts %}
+    <script type="text/javascript" src="{{asset('bundles/js/services/EventData.js')}}"></script>
     <script type="text/javascript" src="{{asset('bundles/js/controllers/EventCtrl.js')}}"></script>
 {% endblock %}
