@@ -3,9 +3,12 @@ function EventCtrl($scope, eventData){
 	$scope.snippet = '<span style="color:red">hi there!</span>';
 	$scope.eventStyle = {color:'#f00'};
 	$scope.sortOrder = 'name';
-	$scope.event = {};
+	$scope.event = null;
+	//$scope.event = {};
 	eventData.getEvent(function(event){
 		$scope.event = event;
+		$scope.$apply;
+		//console.log(event);
 	});//eventData.event;
 
 	$scope.upVoteSession = function(session){

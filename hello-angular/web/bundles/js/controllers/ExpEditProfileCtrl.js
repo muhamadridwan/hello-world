@@ -1,6 +1,6 @@
 app.controller("ExpEditProfileCtrl",
 function ExpEditProfileCtrl($scope, md5, gravatarUrlBuilder){
-	host = "http://192.168.56.102:5001/bundles/images/";
+	host = "http://172.19.11.41:5001/bundles/images/";
 	
 	$scope.user = {
 		picture : "13087640_10206194597528878_334803502942933110_n.jpg",

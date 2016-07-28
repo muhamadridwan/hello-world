@@ -67,7 +67,44 @@ class LearnAngularController extends BaseController
                 upVoteCount : 32
             }
         ]}}';
-        $response = new Response(json_encode($event));
+
+
+        $event2 = array(
+            "name" => "Angular Boot Camp",
+            "date" => "18/01/2016",
+            "time" => "05:00 am",
+            "location" => array(
+                    "address" => "Google Headquarters",
+                    "city" => "Mountain View",
+                    "province" => "CA"
+                ),
+            "imageUrl" => "http://172.19.11.41:5001/bundles/images/AngularJS.png",
+            "sessions" => [
+            array("name" => "Directives Masterclass",
+                "creatorName" => "Muhamad Ridwn",
+                "duration" => 4,
+                "level" => "advanced",
+                "abstract" => "In this session you will learn the ins and outs of directives.",
+                "upVoteCount" => 0)
+            ,
+            array(
+                "name" => "Scopes for Fun and Profit",
+                "creatorName" => "Muhamad Ridwan",
+                "duration" => 1,
+                "level" => "introductory",
+                "abstract" => "Introduction to Scopes.",
+                "upVoteCount" => 20
+            ),
+            array(
+                "name" => "Well Behaved Controller",
+                "creatorName" => "Muhamad Ridwan",
+                "duration" => 1,
+                "level" => "introductory",
+                "abstract" => "We talk about  Controller.",
+                "upVoteCount" => 32
+            )
+        ]);
+        $response = new Response(json_encode($event2));
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
