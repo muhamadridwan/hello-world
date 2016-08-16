@@ -52,5 +52,5 @@ security:
         - { path: ^/orders/confirmPayment, roles: ROLE_ADMIN }
         - { path: ^/orders/activeOrder, roles: [ROLE_ADMIN, ROLE_SUPERADMIN, ROLE_CUSTOMER, ROLE_KITCHEN_ADMIN]}
         - { path: ^/orders/history, roles: [ROLE_ADMIN, ROLE_SUPERADMIN, ROLE_CUSTOMER, ROLE_KITCHEN_ADMIN]}
-        - { path: ^/myprofile, roles: [ROLE_ADMIN, ROLE_SUPERADMIN, ROLE_CUSTOMER, ROLE_KITCHEN_ADMIN]}  
+        #- { path: ^/myprofile, roles: [ROLE_ADMIN, ROLE_SUPERADMIN, ROLE_CUSTOMER, ROLE_KITCHEN_ADMIN]}  
 

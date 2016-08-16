@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+<!--<ul class=entries>-->
+<div class="container-fluid" ng-controller="CookiesSampleCtrl" style="padding:20px;">
+    <button class="btn" ng-click="saveEventToCookie(event)">Store Cookie</button>
+    <button class="btn" ng-click="getEventFromCookie()">Get Cookie</button>
+    <button class="btn" ng-click="removeEventCookie()">Remove Cookie</button>
+</div>
+
+{% endblock %}
+{% block javascripts %}
+    
+    
+    <script type="text/javascript" src="{{asset('bundles/js/controllers/CookiesSampleCtrl.js')}}"></script>
+    
+    
+{% endblock %}

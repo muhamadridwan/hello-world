@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+<!--<ul class=entries>-->
+<div class="container-fluid" ng-controller="FilterSampleCtrl" style="padding:20px;">
+    Duration 1 : {[{data.duration1}]}<br/>
+    Duration 2 : {[{data.duration2}]}<br/>
+    Duration 3 : {[{data.duration3}]}<br/>
+    Duration 4 : {[{data.duration4}]}<br/>
+</div>
+
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="{{asset('bundles/js/filters.js')}}"></script>
+    
+    <script type="text/javascript" src="{{asset('bundles/js/controllers/FilterSampleCtrl.js')}}"></script>
+    
+    
+{% endblock %}

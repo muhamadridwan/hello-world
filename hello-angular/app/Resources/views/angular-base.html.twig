@@ -18,10 +18,8 @@
         <script type="text/javascript" src="{{asset('bundles/lib/angular-1.5.8/angular-sanitize.min.js')}}"></script>
         <script type="text/javascript" src="{{asset('bundles/lib/angular-1.5.8/angular-resource.min.js')}}"></script>
         <script type="text/javascript" src="{{asset('bundles/lib/angular-1.5.8/angular-route.min.js')}}"></script>
-        <script type="text/javascript" src="{{asset('bundles/lib/angular-1.5.8/angular-cookies.min.js')}}"></script>
-        
+
         <script type="text/javascript" src="{{asset('bundles/js/app.js')}}"></script>
-        <script type="text/javascript" src="{{ asset('bundles/js/controllers/EditEventCtrl.js') }}"></script>
         <script type="text/javascript" src="{{asset('bundles/js/filters.js')}}"></script>
         <script type="text/javascript" src="{{asset('bundles/js/laminarin.js')}}"></script>
         <script type="text/javascript" src="{{asset('bundles/js/controllers/HomeCtrl.js')}}"></script>
@@ -80,7 +78,7 @@
                             <li><a href="{{path('angularTimeoutService')}}">Timeout Service</a></li>
                             <li><a href="{{path('angularFilterServiceSample')}}">Filter Service</a></li>
                             <li><a href="{{path('angularCookieServiceSample')}}">Cookie Service</a></li>
-                            <li><a href="#/newEvent">Route Service</a></li>
+                            <li><a href="#/newEvent">new event</a></li>
                             
                         </ul>
                     </li>
@@ -115,8 +113,9 @@
             {% endfor %}
         </div>
         {% endif %}
-        <ng-view></ng-view>
-        {% block body %}{% endblock %}
+        <ng-view>
+            
+        </ng-view>
     </div>
         
         {% block javascripts %}{% endblock %}

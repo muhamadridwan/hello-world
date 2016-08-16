@@ -5,11 +5,29 @@ function EventCtrl($scope, eventData){
 	$scope.sortOrder = 'name';
 	$scope.event = null;
 	//$scope.event = {};
-	eventData.getEvent(function(event){
+	//eventData.event;
+
+	//ajax 
+	/*eventData.getEvent(function(event){
 		$scope.event = event;
 		$scope.$apply;
-		//console.log(event);
-	});//eventData.event;
+		
+	});*/
+
+
+	//ajax with Q angular library
+	/*eventData.getEventWithQ().then(
+		function(event){$scope.event = event;},
+		function(status){console.log(status);}
+
+	);*/
+
+	//ajax with resource lib
+	eventData.getEventWithResource().$promise.then(
+			function(event){$scope.event = event;console.log(event);},
+			function(response){console.log(response);}
+		);
+
 
 	$scope.upVoteSession = function(session){
 		session.upVoteCount++;
