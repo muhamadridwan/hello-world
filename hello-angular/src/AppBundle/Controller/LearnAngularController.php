@@ -183,6 +183,17 @@ class LearnAngularController extends BaseController
         $this->resp['base_dir'] = realpath($this->getParameter('kernel.root_dir').'/..');
         return $this->render('angular/templates/new_event.html.twig');
     }
+
+    /**
+    * @Route("/getEventList", name="newEventWithNGRoute")
+    */
+    function getEventListWithNGRouteAction()
+    {
+        $this->authSetup();
+        $this->resp['base_dir'] = realpath($this->getParameter('kernel.root_dir').'/..');
+        return $this->render('angular/templates/event_list.html.twig');
+    }
+    
     
 
 }

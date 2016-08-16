@@ -1,6 +1,6 @@
 "use strict"
 
-app.controller("EventListCtlr",
+app.controller("EventListCtrl",
 function EventListCtrl($scope, eventData){
 	$scope.event = eventData.getEvent();
 })

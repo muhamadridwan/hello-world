@@ -7,7 +7,7 @@ app.config(function($interpolateProvider, $routeProvider){
 			templateUrl: "/newEventWithNGRoute",
 			controller: "EditEventCtlr"
 		});
-	$routeProvider.when("/event",
+	$routeProvider.when("/eventList",
 	{
 		templateUrl: "/getEventList",
 		controller: "EventListCtrl"
