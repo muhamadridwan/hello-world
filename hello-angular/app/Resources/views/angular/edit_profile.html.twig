@@ -7,7 +7,8 @@
     <form name="profileForm">
         <div class="row-fluid">
             <div class="span3">
-                <img class="img-thumbnail" width="200em" ng-src="{[{getGravatarUrl(user);}]}" alt="image"/><br/><br/>
+                <!-- <img class="img-thumbnail" width="200em" ng-src="{[{getGravatarUrl(user);}]}" alt="image"/><br/><br/> -->
+                <gravatar email="{[{user.emailAddress}]}"/>
             </div>
             <div class="span3">
                 <fieldset>
@@ -42,5 +43,7 @@
 {% endblock %}
 {% block javascripts %}
     <script type="text/javascript" src="{{asset('bundles/js/services/GravatarUrlBuilder.js')}}"></script>
+    <script type="text/javascript" src="{{asset('bundles/js/directives/gravatar.js')}}"></script>
+    
     <script type="text/javascript" src="{{asset('bundles/js/controllers/ExpEditProfileCtrl.js')}}"></script>
 {% endblock %}

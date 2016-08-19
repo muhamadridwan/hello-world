@@ -175,9 +175,9 @@ class LearnAngularController extends BaseController
     }
 
     /**
-    * @Route("/newEventWithNGRoute", name="newEventWithNGRoute")
+    * @Route("/newEventWithNGRoute",name="newEventWithNGRoute")
     */
-    function newEventWithNGRouteAction()
+    function newEventWithNGRoute()
     {
         $this->authSetup();
         $this->resp['base_dir'] = realpath($this->getParameter('kernel.root_dir').'/..');
@@ -185,7 +185,7 @@ class LearnAngularController extends BaseController
     }
 
     /**
-    * @Route("/getEventList", name="newEventWithNGRoute")
+    * @Route("/getEventList", name="getEventList")
     */
     function getEventListWithNGRouteAction()
     {

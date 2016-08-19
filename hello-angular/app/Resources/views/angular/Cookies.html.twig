@@ -7,11 +7,18 @@
     <button class="btn" ng-click="getEventFromCookie()">Get Cookie</button>
     <button class="btn" ng-click="removeEventCookie()">Remove Cookie</button>
 </div>
+Date: <input type="text" datekeys /><br/>
+<mysample /><br/>
+
+<greeting/>
+
+
 
 {% endblock %}
 {% block javascripts %}
     
-    
+    <script type="text/javascript" src="{{asset('bundles/js/directives/mysample.js')}}"></script>
+    <script type="text/javascript" src="{{asset('bundles/js/directives/datekeys.js')}}"></script>
     <script type="text/javascript" src="{{asset('bundles/js/controllers/CookiesSampleCtrl.js')}}"></script>
     
     
