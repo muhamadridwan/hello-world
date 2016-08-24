@@ -2,6 +2,11 @@
 
 var eventsApp = angular.module('eventsApp', ['ngResource', 'ngRoute'])
     .config(function($routeProvider, $locationProvider) {
+        $routeProvider.when('/',
+            {
+                templateUrl: 'templates/home.html',
+                controller: 'HomeCtrl'
+            })
         $routeProvider.when('/newEvent',
             {
                 templateUrl:'templates/NewEvent.html',

@@ -188,3 +188,9 @@ changePasswordIndex:
 contactUsIndex:
   path: contactUs/
   defaults: {_controller: AppBundle:Home:contactUs}
+
+
+###########       API        ############
+getAllEmployee:
+  path: api/employee/getAllEmployee/
+  defaults: {_controller:AppBundle:API/EmployeeAPI:getAllEmployee}
