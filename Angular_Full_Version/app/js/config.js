@@ -12,7 +12,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
     IdleProvider.idle(5); // in seconds
     IdleProvider.timeout(120); // in seconds
 
-    $urlRouterProvider.otherwise("/dashboards/dashboard_1");
+    $urlRouterProvider.otherwise("/configuration/employee");
 
     $ocLazyLoadProvider.config({
         // Set to true if you want to see what and when is dynamically loaded
@@ -20,7 +20,35 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
     });
 
     $stateProvider
+		.state('configuration', {
+            abstract: true,
+            url: "/configuration",
+            templateUrl: "views/common/content.html",
+        })
+        .state('configuration.employee', {
+            url: "/employee",
+            templateUrl: "views/dashboard_1.html",
+            resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
 
+                            serie: true,
+                            name: 'angular-flot',
+                            files: [ 'js/lib/plugins/flot/jquery.flot.js', 'js/lib/plugins/flot/jquery.flot.time.js', 'js/lib/plugins/flot/jquery.flot.tooltip.min.js', 'js/lib/plugins/flot/jquery.flot.spline.js', 'js/lib/plugins/flot/jquery.flot.resize.js', 'js/lib/plugins/flot/jquery.flot.pie.js', 'js/lib/plugins/flot/curvedLines.js', 'js/lib/plugins/flot/angular-flot.js', ]
+                        },
+                        {
+                            name: 'angles',
+                            files: ['js/lib/plugins/chartJs/angles.js', 'js/lib/plugins/chartJs/Chart.min.js']
+                        },
+                        {
+                            name: 'angular-peity',
+                            files: ['js/lib/plugins/peity/jquery.peity.min.js', 'js/lib/plugins/peity/angular-peity.js']
+                        }
+                    ]);
+                }
+            }
+        })
         .state('dashboards', {
             abstract: true,
             url: "/dashboards",
