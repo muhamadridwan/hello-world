@@ -2,13 +2,16 @@
  * INSPINIA - Responsive Admin Theme
  *
  */
+ var APIUrl = "http://172.19.11.143:5001";
  var app = angular.module('inspinia', [
         'ui.router',                    // Routing
         'oc.lazyLoad',                  // ocLazyLoad
         'ui.bootstrap',                 // Ui Bootstrap
         'pascalprecht.translate',       // Angular Translate
         'ngIdle',                       // Idle timer
-        'ngSanitize'                    // ngSanitize
+        'ngSanitize',                   // ngSanitize
+		'ngResource',
+		'ngRoute'
     ]);
 //(function () {
     
