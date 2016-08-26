@@ -192,5 +192,5 @@ contactUsIndex:
 
 ###########       API        ############
 getAllEmployee:
-  path: api/employee/getAllEmployee/
-  defaults: {_controller:AppBundle:API/EmployeeAPI:getAllEmployee}
+  path: api/configuration/mealCategory/getAllMealCategory/
+  defaults: {_controller:AppBundle:API/MealCategoryAPI:getAllMealCategory}

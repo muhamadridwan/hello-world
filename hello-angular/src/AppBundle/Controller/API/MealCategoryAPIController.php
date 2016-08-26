@@ -15,26 +15,26 @@ use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-class EmployeeAPIController extends BaseAPIController
+class MealCategoryAPIController extends BaseAPIController
 {
 	function __construct()
 	{
 		parent::__construct();
 	}
 
-	public function getAllEmployeeAction()
+	public function getAllMealCategoryAction()
 	{
 		$encoders = array(new XmlEncoder(), new JsonEncoder());
 		$normalizers = array(new ObjectNormalizer());
 
 		$serializer = new Serializer($normalizers, $encoders);
 		
-		$employees = $this->container->get('app.bundle.employee.management.service')->getAllEmployee();
-		
-		$jEmployees = $serializer->serialize($employees, 'json');
+		$mealCategories = $this->container->get('app.bundle.meal.category.management.service')->getAllMealCategory();
+
+		$jmealCategories = $serializer->serialize($mealCategories, 'json');
 		
 		$response = new JsonResponse();
-		$response->setData($jEmployees);
+		$response->setData(json_decode($jmealCategories));
 
 		return $response;
 	}
