@@ -12,7 +12,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
     IdleProvider.idle(5); // in seconds
     IdleProvider.timeout(120); // in seconds
 
-    $urlRouterProvider.otherwise("/configuration/employee");
+    $urlRouterProvider.otherwise("/configuration/meal_category");
 
     $ocLazyLoadProvider.config({
         // Set to true if you want to see what and when is dynamically loaded
@@ -25,25 +25,33 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
             url: "/configuration",
             templateUrl: "views/common/content.html",
         })
-        .state('configuration.employee', {
-            url: "/employee",
-            templateUrl: "views/dashboard_1.html",
-            resolve: {
+        .state('configuration.meal_category', {
+            url: "/meal_category",
+			controller: MealCategoryCtrl,
+            templateUrl: "views/configuration/meal_category/meal_category.html",
+			resolve: {
                 loadPlugin: function ($ocLazyLoad) {
                     return $ocLazyLoad.load([
                         {
-
                             serie: true,
-                            name: 'angular-flot',
-                            files: [ 'js/lib/plugins/flot/jquery.flot.js', 'js/lib/plugins/flot/jquery.flot.time.js', 'js/lib/plugins/flot/jquery.flot.tooltip.min.js', 'js/lib/plugins/flot/jquery.flot.spline.js', 'js/lib/plugins/flot/jquery.flot.resize.js', 'js/lib/plugins/flot/jquery.flot.pie.js', 'js/lib/plugins/flot/curvedLines.js', 'js/lib/plugins/flot/angular-flot.js', ]
+                            files: ['js/lib/plugins/dataTables/datatables.min.js','css/plugins/dataTables/datatables.min.css']
                         },
                         {
-                            name: 'angles',
-                            files: ['js/lib/plugins/chartJs/angles.js', 'js/lib/plugins/chartJs/Chart.min.js']
+                            serie: true,
+                            name: 'datatables',
+                            files: ['js/lib/plugins/dataTables/angular-datatables.min.js']
                         },
                         {
-                            name: 'angular-peity',
-                            files: ['js/lib/plugins/peity/jquery.peity.min.js', 'js/lib/plugins/peity/angular-peity.js']
+                            serie: true,
+                            name: 'datatables.buttons',
+                            files: ['js/lib/plugins/dataTables/angular-datatables.buttons.min.js']
+                        },
+						{
+                            files: ['js/lib/plugins/sweetalert/sweetalert.min.js', 'css/plugins/sweetalert/sweetalert.css']
+                        },
+                        {
+                            name: 'oitozero.ngSweetAlert',
+                            files: ['js/lib/plugins/sweetalert/angular-sweetalert.min.js']
                         }
                     ]);
                 }
