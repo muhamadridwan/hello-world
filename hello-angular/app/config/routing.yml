@@ -191,6 +191,11 @@ contactUsIndex:
 
 
 ###########       API        ############
-getAllEmployee:
+getAllMealCategoryAPI:
   path: api/configuration/mealCategory/getAllMealCategory/
   defaults: {_controller:AppBundle:API/MealCategoryAPI:getAllMealCategory}
+addMealCategoryAPI:
+  path: api/configuration/mealCategory/save/
+  defaults: {_controller:AppBundle:API/MealCategoryAPI:save}
+  methods:  [POST]
+

@@ -8,7 +8,8 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use AppBundle\Entity\TUser;
-use AppBundle\Entity\Employee;
+use AppBundle\Entity\MealCategory;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
@@ -39,183 +40,92 @@ class MealCategoryAPIController extends BaseAPIController
 		return $response;
 	}
 
-	public function addAction(Request $request)
+	
+	public function saveAction(Request $request)
 	{
-		$this->authSetup();
-		$userService = $this->container->get('app.bundle.user.management.service');
-		$employee = new Employee();
-        $errors = "";
-        $form = $this->createFormBuilder($employee)
-            ->add('personalId', TextType::class, array('required'=>false))
-            ->add('employeeName', TextType::class)
-            ->add('employeeFullname', TextType::class, array('required'=>false))
-            ->add('employeeAddress', TextType::class, array('required'=>false))
-            ->add('phoneNumber', TextType::class, array('required'=>false))
-            ->add('email', TextType::class, array('required'=>false))
-            ->add('picture', HiddenType::class, array('required'=>false))
-            ->add('pictureFile', FileType::class, array(
-            		'required'=>false,
-            		'mapped' => false,
-            		'attr' => array(
-            			'class'=> 'uploadfile',
-            			'elm-view' => '#cust-pic-preview'
-            			)))
-            ->add('save', SubmitType::class, array('label' => 'Save'))
-            ->getForm();
 		
-
+        /*$form = $this->createFormBuilder($mealCategory)
+            ->add('categoryName', TextType::class)
+            ->add('categoryDesc', TextareaType::class, array('required'=>false))
+            ->getForm();
+		$errors = "";*/
+		$response = new JsonResponse();
+		$response->setStatusCode(500);
 		if($request->getMethod()=='POST')
 		{
-
-		    $form->handleRequest($request);
-		    $newEmployee = $form->getData();
-		    $date = date_create();
-
-		    $newEmployee->setEmployeeId("emp-".date_timestamp_get($date));//base64_encode(random_bytes(10)));
 		    
-		    $validator = $this->get('validator');
-    		$errors = $validator->validate($newEmployee);
+		    $data = $request->getContent();
 
-		    if (count($errors) == 0) {
-		        $picture = $form['pictureFile']->getData();
-		    	$serverDir = $this->get('kernel')->getRootDir().'/../web/bundles/images/employee/';		    	
-		    	
-		    	try
-		    	{
-		    		if($picture!=null)
-		    		{
-			    		$filename = $newEmployee->getEmployeeId()."-".time().".".$picture->getClientOriginalExtension();
-			    		$picture->move($serverDir, $filename);
-			    		$newEmployee->setPicture($filename);	
-		    		}
+		    $encoders = array(new XmlEncoder(), new JsonEncoder());
+			$normalizers = array(new ObjectNormalizer());
+			$serializer = new Serializer($normalizers, $encoders);
+		    
+		    $retrievedMealCategory = $serializer->deserialize($data, 'AppBundle\Entity\MealCategory', 'json');
+		   
+			//$mealCategory->setCategoryName($data["categoryName"]);
+			//$mealCategory->setCategoryDesc($data["categoryDesc"]);
 
-		    		$this->container->get('app.bundle.employee.management.service')->addEmployee($newEmployee);
-		        	$this->session->getFlashBag()->add('success', 'Add new employee is successful.');
-					return $this->redirectToRoute("employeeIndex");
-		    		
-		    	}
-		    	catch(\Exception $e)
-		    	{
-		    		$errors[0]['message'] = "Failed to upload picture.";
-		    	}
+		    if(isset($data["categoryId"])) {
 		    	
-		        
-		    }
+			    $mealCategory = $this->container->get('app.bundle.meal.category.management.service')->getMealCategoryById($data["categoryId"]);
+			    if (!$mealCategory) {
+			    	$response->setStatusCode(404, "Meal category doesn't exist.");
+
+			    }
+			    else
+			    {
+			    	$this->container->get('app.bundle.meal.category.management.service')->editMealCategory($mealCategory, $retrievedMealCategory);
+			    	$response->setStatusCode(200);
+			    }
+				
+			}
+			else
+			{
+				$this->container->get('app.bundle.meal.category.management.service')->addMealCategory($retrievedMealCategory);
+
+				$jmealCategory = $serializer->serialize($retrievedMealCategory, 'json');
+				
+				$response->setStatusCode(200);
+				$response->setData(json_decode($jmealCategory));
+			}
+
+
+		}
+		else
+		{
+			$response->setStatusCode(404);
 		}
 
-        $this->resp["form"] = $form->createView();
-        $this->resp["employee"] = $employee;
-        $this->resp["act"] = "add";
-        $this->resp['errors'] = $errors;
-		return $this->render("administration/employee/employee_form.html.twig", $this->resp);
-		
-	}
-
-	public function editAction($id,Request $request)
-	{
-		$this->authSetup();
-		$errors = "";
-		$userService = $this->container->get('app.bundle.user.management.service');
-
-		$employee = $this->container->get('app.bundle.employee.management.service')->getEmployeeById($id);
-        
-        if (!$employee) {
-	        $errors[0]['message'] = 'No employee found for employee id '.$id;   
-	    }
-
-        $form = $this->createFormBuilder($employee)
-            ->add('personalId', TextType::class, array('required'=>false))
-            ->add('employeeName', TextType::class)
-            ->add('employeeFullname', TextType::class, array('required'=>false))
-            ->add('employeeAddress', TextType::class, array('required'=>false))
-            ->add('phoneNumber', TextType::class, array('required'=>false))
-            ->add('email', TextType::class, array('required'=>false))
-            ->add('picture', HiddenType::class, array('required'=>false))
-            ->add('pictureFile', FileType::class, array(
-            		'mapped' => false,
-            		'required'=> false,
-            		//'data_class' => null,
-            		'attr' => array(
-            			'class'=> 'uploadfile',
-            			'elm-view' => '#cust-pic-preview'
-            			)))
-            ->add('save', SubmitType::class, array('label' => 'Save'))
-            ->getForm();
-		
-		
-		if($request->getMethod()=='POST')
-		{
-		    $form->handleRequest($request);
-		    $modifiedEmployee = $form->getData();
-		    
-		    $validator = $this->get('validator');
-    		$errors = $validator->validate($modifiedEmployee);
-
-		    if (count($errors) == 0) {
-		        $picture = $form['pictureFile']->getData();
-		    	$serverDir = $this->get('kernel')->getRootDir().'/../web/bundles/images/employee/';		    	
-		    	
-		    	try
-		    	{
-		    		if($picture!=null)
-		    		{
-			    		$filename = $employee->getEmployeeId()."-".time().".".$picture->getClientOriginalExtension();
-				    	$picture->move($serverDir, $filename);
-				    	
-				    	if($employee->getPicture()){
-							try{
-								unlink($serverDir.$employee->getPicture());
-							}
-							catch(\Exception $e){}
-						}
-				    	
-				    	$modifiedEmployee->setPicture($filename);	
-		    		}
-
-		    		$this->container->get('app.bundle.employee.management.service')->editEmployee($employee, $modifiedEmployee);
-		        	$this->session->getFlashBag()->add('success', 'Update employee is successful. Employee with id '.$id.' has been updated.');
-		        	return $this->redirectToRoute("employeeIndex");
-		    		
-		    	}
-		    	catch(\Exception $e)
-		    	{
-		    		$errors[0]['message'] = "Failed to upload picture.";
-		    	}
-		    }
-		    
-		} 
-			
-		$this->resp["form"] = $form->createView();
-        $this->resp["employee"] = $employee;
-        $this->resp["act"] = "edit";
-        $this->resp['errors'] = $errors;
-		return $this->render("administration/employee/employee_form.html.twig", $this->resp);
 		
 
+		return $response;
 	}
 
 	
-	public function deleteAction($id)
+	public function deleteAction(Request $request)
 	{
-		$serverDir = $this->get('kernel')->getRootDir().'/../web/bundles/images/employee/';
-		$picturePath = $this->container->get('app.bundle.employee.management.service')->getEmployeeById($id)->getPicture();
-		
-		$errorMessage = $this->container->get('app.bundle.employee.management.service')->deleteEmployee($id);
+		$response = new JsonResponse();
+		$response->setStatusCode(500);
+
+		$encoders = array(new XmlEncoder(), new JsonEncoder());
+		$normalizers = array(new ObjectNormalizer());
+		$serializer = new Serializer($normalizers, $encoders);
+	    
+	    $retrievedMealCategory = $serializer->deserialize($data, 'AppBundle\Entity\MealCategory', 'json');
+		$errorMessage = $this->container->get('app.bundle.meal.category.management.service')->deleteMealCategory($retrievedMealCategory->getCategoryId());
+
 		if($errorMessage){
-			$this->session->getFlashBag()->add('error', $errorMessage);
+			$response->setStatusCode(500, $errorMessage[0]);			
 		}
 		else{
-			if($picturePath){
-				try{
-					unlink($serverDir.$picturePath);
-				}
-				catch(\Exception $e){}
-			}
-			
-			$this->session->getFlashBag()->add('success', 'Delete employee is successful. Employee with id '.$id.' has been removed.');
+
+			$jmealCategory = $serializer->serialize($retrievedMealCategory, 'json');
+
+			$response->setStatusCode(200);
+			$response->setData(json_decode($jmealCategory));
 		}
-		
-		return $this->redirectToRoute("employeeIndex");
+
+		return $response;
 	}
 
 	

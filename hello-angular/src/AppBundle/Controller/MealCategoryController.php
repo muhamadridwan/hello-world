@@ -85,7 +85,7 @@ class MealCategoryController extends BaseController
 		    $validator = $this->get('validator');
     		$errors = $validator->validate($modifiedMealCategory);
 
-		    if (count($errors) == 0) {
+		    if(count($errors) == 0) {
 		        $this->container->get('app.bundle.meal.category.management.service')->editMealCategory($mealCategory, $modifiedMealCategory);
 		        $this->session->getFlashBag()->add('success', 'Update category is successful. Meal category with id '.$id.' has been updated.');
 		        return $this->redirectToRoute("mealCategoryIndex");

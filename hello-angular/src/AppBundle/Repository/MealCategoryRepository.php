@@ -47,6 +47,8 @@ class MealCategoryRepository
 		$mealCategory->setCategoryDesc($modifiedMealCategory->getCategoryDesc());
 		
 		$this->em->flush();
+
+
 	}
 
 	public function getMealCategoryById($id)
