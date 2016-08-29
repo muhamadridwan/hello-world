@@ -31,7 +31,10 @@ app.factory('MealCategorySvc', function($http, $log, $q, $resource){
 				method: 'POST', 
 				url: APIUrl + "/api/configuration/mealCategory/delete/",
 				data: mealCategory,
-				responseType: "json"
+				responseType: "json",
+				headers: {
+                    'Content-Type': 'application/json; charset=utf-8'
+				}
 				})
 			.success(function(data, status, headers, config){
 				callback(data);

@@ -54,6 +54,7 @@ function MealCategoryCtrl($scope, MealCategorySvc, DTOptionsBuilder, SweetAlert)
 	};
 	
 	$scope.deleteMealCategory = function(mealCategory){
+		$scope.mealCategory = mealCategory;
 		SweetAlert.swal({
 				title: "Are you sure?",
 				text: "You will delete meal category: " + mealCategory+".",
@@ -63,20 +64,22 @@ function MealCategoryCtrl($scope, MealCategorySvc, DTOptionsBuilder, SweetAlert)
 				confirmButtonText: "Yes, delete it!",
 				cancelButtonText: "No, cancel!",
 				closeOnConfirm: false,
-				closeOnCancel: false },
-			function (isConfirm) {
+				closeOnCancel: true },
+			function ( isConfirm) {
 				if (isConfirm) {
 					MealCategorySvc.deleteMealCategory(mealCategory, function(mealCategory){
-						if(!mealCategory){
-							var index = $scope.mealCategories.indexOf(items);
-							delete $scope.mealCategories[index];
-							//$scope.mealCategories.push(mealCategory);
+						if(mealCategory){
+							var index = $scope.mealCategories.indexOf($scope.mealCategory);
+							$scope.mealCategories.splice(index, 1);
 						}
+						$scope.mealCategory = {};
 						$scope.editMode = false;
-						$scope.apply;			
+						$scope.apply;
+						SweetAlert.swal("Deleted!", "The meal category has been deleted.", "success");						
 					});
-					SweetAlert.swal("Deleted!", "The meal category has been deleted.", "success");
+					
 				} else {
+					$scope.mealCategory = {};
 					$scope.editMode = false;
 					$scope.apply;
 				}
