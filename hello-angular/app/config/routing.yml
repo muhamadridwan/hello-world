@@ -191,6 +191,12 @@ contactUsIndex:
 
 
 ###########       API        ############
+getAuthorizationToken:
+  path: api/security/getAuthorizationToken/{username}/{password}
+  defaults: {_controller:AppBundle:Security:getAuthorizationToken}
+getUserByToken:
+  path: api/security/getUserByToken/
+  defaults: {_controller:AppBundle:Security:getUserByToken}
 getAllMealCategoryAPI:
   path: api/configuration/mealCategory/getAllMealCategory/
   defaults: {_controller:AppBundle:API/MealCategoryAPI:getAllMealCategory}

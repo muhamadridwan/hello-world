@@ -137,6 +137,22 @@ class SecurityController extends BaseController
 	{
 
 	}
+
+	public function getAuthorizationTokenAction($username, $password)
+	{
+		$token = $this->get('lexik_jwt_authentication.encoder')
+            ->encode(['username' => $username]);
+
+        return new Response($token);
+	}
+
+	public function getUserByTokenAction(Request $request)
+	{
+		$token = $this->get('app.jwt_token_authenticator')->getCredentials($request);
+        $data = $this->get('lexik_jwt_authentication.encoder')->decode($token);
+       
+        return new Response($data);
+	}
 }
 
 ?>
