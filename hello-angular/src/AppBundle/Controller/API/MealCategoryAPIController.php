@@ -104,7 +104,7 @@ class MealCategoryAPIController extends BaseAPIController
 	
 	public function deleteAction(Request $request)
 	{
-		$response = new JsonResponse();
+		$response = new JsonResponse(); 
 		$response->setStatusCode(500);
 
 		$encoders = array(new XmlEncoder(), new JsonEncoder());
