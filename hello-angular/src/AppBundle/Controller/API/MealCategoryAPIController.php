@@ -104,26 +104,33 @@ class MealCategoryAPIController extends BaseAPIController
 	
 	public function deleteAction(Request $request)
 	{
+
 		$response = new JsonResponse(); 
 		$response->setStatusCode(500);
 
-		$encoders = array(new XmlEncoder(), new JsonEncoder());
-		$normalizers = array(new ObjectNormalizer());
-		$serializer = new Serializer($normalizers, $encoders);
-	    
-	    $retrievedMealCategory = $serializer->deserialize($data, 'AppBundle\Entity\MealCategory', 'json');
-		$errorMessage = $this->container->get('app.bundle.meal.category.management.service')->deleteMealCategory($retrievedMealCategory->getCategoryId());
+		if($request->getMethod()=='POST')
+		{
+		    
+		    $data = json_decode($request->getContent(), true);
 
-		if($errorMessage){
-			$response->setStatusCode(500, $errorMessage[0]);			
-		}
-		else{
+		    $mealCategory = $this->container->get('app.bundle.meal.category.management.service')->getMealCategoryById($data["categoryId"]);
+		    
+		   
+		    $errorMessage = $this->container->get('app.bundle.meal.category.management.service')->deleteMealCategory($mealCategory->getCategoryId());
+			if($errorMessage){
+				$response->setStatusCode(500, $errorMessage[0]);
+			}
+			else{
+				$encoders = array(new XmlEncoder(), new JsonEncoder());
+				$normalizers = array(new ObjectNormalizer());
+				$serializer = new Serializer($normalizers, $encoders);
+				$jmealCategory = $serializer->serialize($mealCategory, 'json');
 
-			$jmealCategory = $serializer->serialize($retrievedMealCategory, 'json');
-
-			$response->setStatusCode(200);
-			$response->setData(json_decode($jmealCategory));
-		}
+				$response->setStatusCode(200);
+				$response->setData(json_decode($jmealCategory));
+			}
+		    
+	    }
 
 		return $response;
 	}

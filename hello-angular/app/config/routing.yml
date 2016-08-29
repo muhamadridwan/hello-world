@@ -198,4 +198,7 @@ addMealCategoryAPI:
   path: api/configuration/mealCategory/save/
   defaults: {_controller:AppBundle:API/MealCategoryAPI:save}
   methods:  [POST]
+deleteMealCategoryAPI:
+  path: api/configuration/mealCategory/delete/
+  defaults: {_controller:AppBundle:API/MealCategoryAPI:delete}
 
