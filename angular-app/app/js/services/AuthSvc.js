@@ -1,4 +1,4 @@
-app.factory('AuthSvc', function (SynchManager, Authorization) {
+app.factory('AuthSvc', function ($window, SynchManager, Authorization, AppCache) {
 	return {
 		login : function(user){
 			SynchManager.post(
@@ -7,6 +7,7 @@ app.factory('AuthSvc', function (SynchManager, Authorization) {
 			function(data, status, headers, config){
 				Authorization.authToken = data["token"];
 				Authorization.authorized = true;
+				$window.localStorage['Auth'] = Authorization;
 				Authorization.go("configuration.meal_category");
 				
 			}, 

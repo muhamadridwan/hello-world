@@ -1441,62 +1441,25 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
 
 }
 
-app.service('Authorization', function($state) {
-
-  this.authorized = false;
-  this.memorizedState = null;
-  this.authToken = "";
-
-  var clear = function() {
-    this.authorized = false;
-    this.memorizedState = null;
-  },
-
-  go = function(fallback) {
-    this.authorized = true;
-    var targetState = this.memorizedState ? this.memorizedState : fallback;
-    $state.go(targetState);
-  };
-
-  return {
-    authorized: this.authorized,
-    memorizedState: this.memorizedState,
-    authToken : this.authToken,
-	clear: clear,
-    go: go
-  };
-});
-
-
-function LodashFactory($window) {  
-  if(!$window._){
-    // If lodash is not available you can now provide a
-    // mock service, try to load it from somewhere else,
-    // redirect the user to a dedicated error page, ...
-  }
-  return $window._;
-}
-
-// Define dependencies
-LodashFactory.$inject = ['$window'];
-
-// Register factory
-app.factory('_', LodashFactory);  
-
-
 app
     .config(config)
     .run(function(_, $rootScope, $state, Authorization) {
         $rootScope.$state = $state;
 		$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+			console.log("on state change success");
 			if (!Authorization.authorized) {
+				console.log(Authorization.authorized);
 			  if (Authorization.memorizedState && (!_.has(fromState, 'data.redirectTo') || toState.name !== fromState.data.redirectTo)) {
 				Authorization.clear();
+				console.log(Authorization);
+				console.log("clear auth");
 			  }
 			  if (_.has(toState, 'data.authorization') && _.has(toState, 'data.redirectTo')) {
 				if (_.has(toState, 'data.memory') && toState.data.memory) {
 				  Authorization.memorizedState = toState.name;
 				}
+				console.log(toState);
+				console.log("redirect");
 				$state.go(toState.data.redirectTo);
 			  }
 			}
