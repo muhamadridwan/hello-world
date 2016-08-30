@@ -42,7 +42,7 @@ twig:
 doctrine:
     dbal:
         driver:   pdo_pgsql
-        host:     "172.19.11.133"
+        host:     "172.19.11.97"
         port:     "32768" 
         dbname:   "symfony-hello"
         user:     "postgres"

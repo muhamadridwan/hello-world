@@ -192,8 +192,8 @@ contactUsIndex:
 
 ###########       API        ############
 getAuthorizationToken:
-  path: api/security/getAuthorizationToken/{username}/{password}
-  defaults: {_controller:AppBundle:Security:getAuthorizationToken}
+  path: api/authorization/getAuthorizationToken/
+  defaults: {_controller:AppBundle:API/AuthorizationAPI:getAuthorizationToken}
 getUserByToken:
   path: api/security/getUserByToken/
   defaults: {_controller:AppBundle:Security:getUserByToken}

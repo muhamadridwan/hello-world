@@ -33,6 +33,11 @@ class UserManagementService
 		$this->userRepo->editUser($user, $modifiedUser);
 	}
 
+	public function getUserByUsername($username)
+	{
+		return $this->userRepo->getUserByUsername($username);
+	}
+
 	public function getAllUser()
 	{
 		return $this->userRepo->getAllUser();

@@ -48,8 +48,13 @@ class UserRepository
 
 		$qb->setParameters(array(
 			"username"=> $username));
+		try {
+	        return $qb->getQuery()->getSingleResult(); 
+	    }
+	    catch(\Doctrine\ORM\NoResultException $e) {
+	        return null;
+	    }
 		
-		return $qb->getQuery()->getSingleResult();
 
 	}
 
