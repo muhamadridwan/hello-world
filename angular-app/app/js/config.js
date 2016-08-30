@@ -12,7 +12,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
     IdleProvider.idle(5); // in seconds
     IdleProvider.timeout(120); // in seconds
 
-    $urlRouterProvider.otherwise("/configuration/meal_category");
+    $urlRouterProvider.otherwise("/login");
 
     $ocLazyLoadProvider.config({
         // Set to true if you want to see what and when is dynamically loaded
@@ -20,15 +20,53 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
     });
 
     $stateProvider
+		.state('login', {
+            url: "/login",
+            templateUrl: "views/authorization/login.html",
+			data: { pageTitle: 'Login', specialClass: 'gray-bg' },
+			resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        {
+                            files: ['js/lib/plugins/sweetalert/sweetalert.min.js', 'css/plugins/sweetalert/sweetalert.css']
+                        },
+                        {
+                            name: 'oitozero.ngSweetAlert',
+                            files: ['js/lib/plugins/sweetalert/angular-sweetalert.min.js']
+                        }
+                    ]);
+                }
+            }
+        })
+		// .state('login', {
+            // url: "/login",
+            // templateUrl: "views/login.html",
+            // data: { pageTitle: 'Login', specialClass: 'gray-bg' }
+        // })
+        .state('login_two_columns', {
+            url: "/login_two_columns",
+            templateUrl: "views/login_two_columns.html",
+            data: { pageTitle: 'Login two columns', specialClass: 'gray-bg' }
+        })
 		.state('configuration', {
             abstract: true,
             url: "/configuration",
             templateUrl: "views/common/content.html",
+			data: {
+			  authorization: false,
+			  redirectTo: 'login',
+			  memory: true
+			}
         })
         .state('configuration.meal_category', {
             url: "/meal_category",
 			controller: MealCategoryCtrl,
             templateUrl: "views/configuration/meal_category/meal_category.html",
+			data: {
+			  authorization: false,
+			  redirectTo: 'login',
+			  memory: true
+			},
 			resolve: {
                 loadPlugin: function ($ocLazyLoad) {
                     return $ocLazyLoad.load([
@@ -733,16 +771,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
             templateUrl: "views/empty_page.html",
             data: { pageTitle: 'Empty page' }
         })
-        .state('login', {
-            url: "/login",
-            templateUrl: "views/login.html",
-            data: { pageTitle: 'Login', specialClass: 'gray-bg' }
-        })
-        .state('login_two_columns', {
-            url: "/login_two_columns",
-            templateUrl: "views/login_two_columns.html",
-            data: { pageTitle: 'Login two columns', specialClass: 'gray-bg' }
-        })
+        
         .state('register', {
             url: "/register",
             templateUrl: "views/register.html",
@@ -1411,8 +1440,66 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
         });
 
 }
+
+app.service('Authorization', function($state) {
+
+  this.authorized = false;
+  this.memorizedState = null;
+  this.authToken = "";
+
+  var clear = function() {
+    this.authorized = false;
+    this.memorizedState = null;
+  },
+
+  go = function(fallback) {
+    this.authorized = true;
+    var targetState = this.memorizedState ? this.memorizedState : fallback;
+    $state.go(targetState);
+  };
+
+  return {
+    authorized: this.authorized,
+    memorizedState: this.memorizedState,
+    authToken : this.authToken,
+	clear: clear,
+    go: go
+  };
+});
+
+
+function LodashFactory($window) {  
+  if(!$window._){
+    // If lodash is not available you can now provide a
+    // mock service, try to load it from somewhere else,
+    // redirect the user to a dedicated error page, ...
+  }
+  return $window._;
+}
+
+// Define dependencies
+LodashFactory.$inject = ['$window'];
+
+// Register factory
+app.factory('_', LodashFactory);  
+
+
 app
     .config(config)
-    .run(function($rootScope, $state) {
+    .run(function(_, $rootScope, $state, Authorization) {
         $rootScope.$state = $state;
+		$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+			if (!Authorization.authorized) {
+			  if (Authorization.memorizedState && (!_.has(fromState, 'data.redirectTo') || toState.name !== fromState.data.redirectTo)) {
+				Authorization.clear();
+			  }
+			  if (_.has(toState, 'data.authorization') && _.has(toState, 'data.redirectTo')) {
+				if (_.has(toState, 'data.memory') && toState.data.memory) {
+				  Authorization.memorizedState = toState.name;
+				}
+				$state.go(toState.data.redirectTo);
+			  }
+			}
+
+		  });
     });
