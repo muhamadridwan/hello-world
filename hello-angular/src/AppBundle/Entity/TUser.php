@@ -3,8 +3,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * TUser
@@ -12,22 +10,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="t_user", uniqueConstraints={@ORM\UniqueConstraint(name="uq_t_user_id", columns={"id"})}, indexes={@ORM\Index(name="ixfk_user_user_group", columns={"user_group_id"})})
  * @ORM\Entity
  */
-class TUser implements UserInterface, \Serializable
+class TUser
 {
     /**
      * @var string
      *
      * @ORM\Column(name="username", type="string", length=32, nullable=false)
-     * @Assert\Length(
-     *      max = 32,
-     *      maxMessage = "Username cannot be longer than {{ limit }} characters"
-     * )
-     * @Assert\NotNull(
-     *      message="Username should not be null."
-     * )
-     * @Assert\NotBlank(
-     *      message="Username should not be blank."
-     * )
      */
     private $username;
 
@@ -35,16 +23,6 @@ class TUser implements UserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(name="password", type="string", length=64, nullable=false)
-     * @Assert\Length(
-     *      max = 64,
-     *      maxMessage = "Password cannot be longer than {{ limit }} characters"
-     * )
-     * @Assert\NotNull(
-     *      message="Password should not be null."
-     * )
-     * @Assert\NotBlank(
-     *      message="Password should not be blank."
-     * )
      */
     private $password;
 
@@ -53,18 +31,21 @@ class TUser implements UserInterface, \Serializable
      *
      * @ORM\Column(name="is_active", type="boolean", nullable=true)
      */
-    private $isActive = true;
+    private $isActive = '1';
 
     /**
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=32, nullable=true)
-     * @Assert\Length(
-     *      max = 32,
-     *      maxMessage = "Email cannot be longer than {{ limit }} characters"
-     * )
      */
     private $email;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="valid_token", type="text", nullable=true)
+     */
+    private $validToken;
 
     /**
      * @var integer
@@ -185,6 +166,30 @@ class TUser implements UserInterface, \Serializable
     }
 
     /**
+     * Set validToken
+     *
+     * @param string $validToken
+     *
+     * @return TUser
+     */
+    public function setValidToken($validToken)
+    {
+        $this->validToken = $validToken;
+
+        return $this;
+    }
+
+    /**
+     * Get validToken
+     *
+     * @return string
+     */
+    public function getValidToken()
+    {
+        return $this->validToken;
+    }
+
+    /**
      * Get id
      *
      * @return integer
@@ -216,57 +221,5 @@ class TUser implements UserInterface, \Serializable
     public function getUserGroup()
     {
         return $this->userGroup;
-    }
-
-    public function getRoles()
-    {
-        return array($this->getUserGroup()->getUserGroupId());
-    }
-    public function getSalt()
-    {
-        return null;
-    }
-    public function eraseCredentials()
-    {}
-    
-    /** @see \Serializable::serialize() */
-    public function serialize()
-    {
-        return serialize(array(
-            $this->id,
-            $this->username,
-            $this->password,
-            $this->isActive
-            // see section on salt below
-            // $this->salt,
-        ));
-    }
-    /** @see \Serializable::unserialize() */
-    public function unserialize($serialized)
-    {
-        list (
-            $this->id,
-            $this->username,
-            $this->password,
-            $this->isActive
-            // see section on salt below
-            // $this->salt
-        ) = unserialize($serialized);
-    }
-    public function isAccountNonExpired()
-    {
-        return true;
-    }
-    public function isAccountNonLocked()
-    {
-        return true;
-    }
-    public function isCredentialsNonExpired()
-    {
-        return true;
-    }
-    public function isEnabled()
-    {
-        return $this->isActive;
     }
 }

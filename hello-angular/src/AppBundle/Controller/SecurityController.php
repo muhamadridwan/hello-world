@@ -151,7 +151,7 @@ class SecurityController extends BaseController
 		$token = $this->get('app.jwt_token_authenticator')->getCredentials($request);
         $data = $this->get('lexik_jwt_authentication.encoder')->decode($token);
        
-        return new Response($data);
+        return new Response(json_decode($data,true));
 	}
 }
 

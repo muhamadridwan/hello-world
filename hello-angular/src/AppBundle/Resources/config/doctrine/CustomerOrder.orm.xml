@@ -2,9 +2,9 @@
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
   <entity name="AppBundle\Entity\CustomerOrder" table="customer_order">
     <indexes>
-      <index name="ixfk_customer_order_employee_02" columns="confirmed_by"/>
       <index name="ixfk_customer_order_employee" columns="cashier"/>
       <index name="ixfk_customer_order_customer" columns="customer_id"/>
+      <index name="ixfk_customer_order_employee_02" columns="confirmed_by"/>
     </indexes>
     <unique-constraints>
       <unique-constraint name="uq_user_order_order_id" columns="order_id"/>

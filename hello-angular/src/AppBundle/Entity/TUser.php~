@@ -41,6 +41,13 @@ class TUser
     private $email;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="valid_token", type="text", nullable=true)
+     */
+    private $validToken;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="id", type="integer")

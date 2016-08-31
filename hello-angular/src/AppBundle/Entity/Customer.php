@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Customer
@@ -17,10 +16,6 @@ class Customer
      * @var string
      *
      * @ORM\Column(name="personal_id", type="string", length=32, nullable=true)
-     * @Assert\Length(
-     *      max = 32,
-     *      maxMessage = "Personal ID cannot be longer than {{ limit }} characters"
-     * )
      */
     private $personalId;
 
@@ -28,16 +23,6 @@ class Customer
      * @var string
      *
      * @ORM\Column(name="customer_name", type="string", length=32, nullable=false)
-     * @Assert\Length(
-     *      max = 32,
-     *      maxMessage = "Customer/Table name cannot be longer than {{ limit }} characters"
-     * )
-     * @Assert\NotNull(
-     *      message="Customer/Table name should not be null."
-     * )
-     * @Assert\NotBlank(
-     *      message="Customer/Table name should not be blank."
-     * )
      */
     private $customerName;
 
@@ -45,10 +30,6 @@ class Customer
      * @var string
      *
      * @ORM\Column(name="customer_fullname", type="string", length=32, nullable=true)
-     * @Assert\Length(
-     *      max = 32,
-     *      maxMessage = "Customer fullname cannot be longer than {{ limit }} characters"
-     * )
      */
     private $customerFullname;
 
@@ -56,10 +37,6 @@ class Customer
      * @var string
      *
      * @ORM\Column(name="customer_address", type="string", length=128, nullable=true)
-     * @Assert\Length(
-     *      max = 128,
-     *      maxMessage = "Address cannot be longer than {{ limit }} characters"
-     * )
      */
     private $customerAddress;
 
@@ -67,10 +44,6 @@ class Customer
      * @var string
      *
      * @ORM\Column(name="phone_number", type="string", length=20, nullable=true)
-     * @Assert\Length(
-     *      max = 20,
-     *      maxMessage = "Phone number cannot be longer than {{ limit }} characters"
-     * )
      */
     private $phoneNumber;
 
@@ -78,10 +51,6 @@ class Customer
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=32, nullable=true)
-     * @Assert\Length(
-     *      max = 32,
-     *      maxMessage = "Email cannot be longer than {{ limit }} characters"
-     * )
      */
     private $email;
 
@@ -89,10 +58,6 @@ class Customer
      * @var string
      *
      * @ORM\Column(name="picture", type="string", length=255, nullable=true)
-     * @Assert\Length(
-     *      max = 200,
-     *      maxMessage = "Picture name cannot be longer than {{ limit }} characters"
-     * )
      */
     private $picture;
 
@@ -101,23 +66,15 @@ class Customer
      *
      * @ORM\Column(name="is_resto_table", type="boolean", nullable=false)
      */
-    private $isRestoTable = false;
+    private $isRestoTable = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="customer_id", type="string", length=32)
      * @ORM\Id
-     * @Assert\Length(
-     *      max = 32,
-     *      maxMessage = "Customer Id cannot be longer than {{ limit }} characters"
-     * )
-     * @Assert\NotNull(
-     *      message="Customer Id should not be null."
-     * )
-     * @Assert\NotBlank(
-     *      message="Customer Id should not be blank."
-     * )
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="customer_customer_id_seq", allocationSize=1, initialValue=1)
      */
     private $customerId;
 
@@ -323,20 +280,6 @@ class Customer
     public function getIsRestoTable()
     {
         return $this->isRestoTable;
-    }
-
-    /**
-     * Set customerId
-     *
-     * @param string $customerId
-     *
-     * @return Customer
-     */
-    public function setCustomerId($customerId)
-    {
-        $this->customerId = $customerId;
-
-        return $this;
     }
 
     /**

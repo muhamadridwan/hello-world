@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * TPrivilege
  *
- * @ORM\Table(name="t_privilege", indexes={@ORM\Index(name="ixfk_privilege_menu", columns={"menu_id"}), @ORM\Index(name="ixfk_privilege_user_group", columns={"user_group_id"})})
+ * @ORM\Table(name="t_privilege", indexes={@ORM\Index(name="ixfk_privilege_user_group", columns={"user_group_id"}), @ORM\Index(name="ixfk_privilege_menu", columns={"menu_id"})})
  * @ORM\Entity
  */
 class TPrivilege

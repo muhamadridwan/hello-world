@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * MealCategory
@@ -17,12 +16,6 @@ class MealCategory
      * @var string
      *
      * @ORM\Column(name="category_name", type="string", length=32, nullable=false)
-     * @Assert\Length(
-     *      max = 32,
-     *      maxMessage = "Category name cannot be longer than {{ limit }} characters"
-     * )
-     * @Assert\NotNull()
-     * @Assert\NotBlank()
      */
     private $categoryName;
 
@@ -30,10 +23,6 @@ class MealCategory
      * @var string
      *
      * @ORM\Column(name="category_desc", type="string", length=64, nullable=true)
-     * @Assert\Length(
-     *      max = 64,
-     *      maxMessage = "Description cannot be longer than {{ limit }} characters"
-     * )
      */
     private $categoryDesc;
 

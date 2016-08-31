@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * TUserGroup
@@ -17,16 +16,6 @@ class TUserGroup
      * @var string
      *
      * @ORM\Column(name="user_group_name", type="string", length=32, nullable=false)
-     * @Assert\Length(
-     *      max = 32,
-     *      maxMessage = "User group name cannot be longer than {{ limit }} characters"
-     * )
-     * @Assert\NotNull(
-     *      message="User group name should not be null."
-     * )
-     * @Assert\NotBlank(
-     *      message="User group name should not be blank."
-     * )
      */
     private $userGroupName;
 
@@ -34,10 +23,6 @@ class TUserGroup
      * @var string
      *
      * @ORM\Column(name="user_group_desc", type="string", length=64, nullable=true)
-     * @Assert\Length(
-     *      max = 64,
-     *      maxMessage = "Description cannot be longer than {{ limit }} characters"
-     * )
      */
     private $userGroupDesc;
 
@@ -46,23 +31,15 @@ class TUserGroup
      *
      * @ORM\Column(name="is_active", type="boolean", nullable=true)
      */
-    private $isActive = true;
+    private $isActive = '1';
 
     /**
      * @var string
      *
      * @ORM\Column(name="user_group_id", type="string", length=32)
      * @ORM\Id
-     * @Assert\Length(
-     *      max = 32,
-     *      maxMessage = "User group id cannot be longer than {{ limit }} characters"
-     * )
-     * @Assert\NotNull(
-     *      message="User group id should not be null."
-     * )
-     * @Assert\NotBlank(
-     *      message="User group id should not be blank."
-     * )
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="t_user_group_user_group_id_seq", allocationSize=1, initialValue=1)
      */
     private $userGroupId;
 
@@ -140,20 +117,6 @@ class TUserGroup
         return $this->isActive;
     }
 
-    /**
-     * Set userGroupId
-     *
-     * @param string $userGroupId
-     *
-     * @return TUserGroup
-     */
-    public function setUserGroupId($userGroupId)
-    {
-        $this->userGroupId = $userGroupId;
-
-        return $this;
-    }
-    
     /**
      * Get userGroupId
      *

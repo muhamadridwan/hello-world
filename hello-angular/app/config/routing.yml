@@ -191,12 +191,19 @@ contactUsIndex:
 
 
 ###########       API        ############
+getAuthorizationTokenTes:
+  path: api/Security/getAuthorizationToken/{username}/{password}
+  defaults: {_controller:AppBundle:Security:getAuthorizationToken}
+getUserByToken:
+  path: api/Security/getUserByToken/
+  defaults: {_controller:AppBundle:Security:getUserByToken}
+
 getAuthorizationToken:
   path: api/authorization/getAuthorizationToken/
   defaults: {_controller:AppBundle:API/AuthorizationAPI:getAuthorizationToken}
-getUserByToken:
-  path: api/security/getUserByToken/
-  defaults: {_controller:AppBundle:Security:getUserByToken}
+removeAuthorizationToken:
+  path: api/authorization/removeAuthorizationToken/
+  defaults: {_controller:AppBundle:API/AuthorizationAPI:removeAuthorizationToken}
 getAllMealCategoryAPI:
   path: api/configuration/mealCategory/getAllMealCategory/
   defaults: {_controller:AppBundle:API/MealCategoryAPI:getAllMealCategory}

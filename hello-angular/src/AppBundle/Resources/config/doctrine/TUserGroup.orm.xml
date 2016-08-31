@@ -5,6 +5,8 @@
       <unique-constraint name="uq_user_group_user_group_id" columns="user_group_id"/>
     </unique-constraints>
     <id name="userGroupId" type="string" column="user_group_id" length="32">
+      <generator strategy="SEQUENCE"/>
+      <sequence-generator sequence-name="t_user_group_user_group_id_seq" allocation-size="1" initial-value="1"/>
     </id>
     <field name="userGroupName" type="string" column="user_group_name" length="32" nullable="false">
       <options>

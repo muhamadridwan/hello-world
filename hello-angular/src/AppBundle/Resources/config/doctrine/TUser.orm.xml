@@ -31,6 +31,11 @@
         <option name="fixed"/>
       </options>
     </field>
+    <field name="validToken" type="text" column="valid_token" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
     <many-to-one field="userGroup" target-entity="TUserGroup" fetch="LAZY">
       <join-columns>
         <join-column name="user_group_id" referenced-column-name="user_group_id"/>

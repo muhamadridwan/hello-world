@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Employee
@@ -17,10 +16,6 @@ class Employee
      * @var string
      *
      * @ORM\Column(name="personal_id", type="string", length=32, nullable=true)
-     * @Assert\Length(
-     *      max = 32,
-     *      maxMessage = "Personal ID cannot be longer than {{ limit }} characters"
-     * )
      */
     private $personalId;
 
@@ -28,16 +23,6 @@ class Employee
      * @var string
      *
      * @ORM\Column(name="employee_name", type="string", length=32, nullable=false)
-     * @Assert\Length(
-     *      max = 32,
-     *      maxMessage = "Employee name cannot be longer than {{ limit }} characters"
-     * )
-     * @Assert\NotNull(
-     *      message="Employee name should not be null."
-     * )
-     * @Assert\NotBlank(
-     *      message="Employee name should not be blank."
-     * )
      */
     private $employeeName;
 
@@ -45,10 +30,6 @@ class Employee
      * @var string
      *
      * @ORM\Column(name="employee_fullname", type="string", length=32, nullable=true)
-     * @Assert\Length(
-     *      max = 32,
-     *      maxMessage = "Employee fullname cannot be longer than {{ limit }} characters"
-     * )
      */
     private $employeeFullname;
 
@@ -56,10 +37,6 @@ class Employee
      * @var string
      *
      * @ORM\Column(name="employee_address", type="string", length=128, nullable=true)
-     * @Assert\Length(
-     *      max = 128,
-     *      maxMessage = "Address cannot be longer than {{ limit }} characters"
-     * )
      */
     private $employeeAddress;
 
@@ -67,10 +44,6 @@ class Employee
      * @var string
      *
      * @ORM\Column(name="phone_number", type="string", length=20, nullable=true)
-     * @Assert\Length(
-     *      max = 20,
-     *      maxMessage = "Phone number cannot be longer than {{ limit }} characters"
-     * )
      */
     private $phoneNumber;
 
@@ -78,10 +51,6 @@ class Employee
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=32, nullable=true)
-     * @Assert\Length(
-     *      max = 32,
-     *      maxMessage = "Email cannot be longer than {{ limit }} characters"
-     * )
      */
     private $email;
 
@@ -103,10 +72,6 @@ class Employee
      * @var string
      *
      * @ORM\Column(name="picture", type="string", length=255, nullable=true)
-     * @Assert\Length(
-     *      max = 200,
-     *      maxMessage = "Picture name cannot be longer than {{ limit }} characters"
-     * )
      */
     private $picture;
 
@@ -115,23 +80,15 @@ class Employee
      *
      * @ORM\Column(name="is_active", type="boolean", nullable=true)
      */
-    private $isActive = true;
+    private $isActive = '1';
 
     /**
      * @var string
      *
      * @ORM\Column(name="employee_id", type="string", length=32)
      * @ORM\Id
-     * @Assert\Length(
-     *      max = 32,
-     *      maxMessage = "Employee Id cannot be longer than {{ limit }} characters"
-     * )
-     * @Assert\NotNull(
-     *      message="Employee Id should not be null."
-     * )
-     * @Assert\NotBlank(
-     *      message="Employee Id should not be blank."
-     * )
+     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\SequenceGenerator(sequenceName="employee_employee_id_seq", allocationSize=1, initialValue=1)
      */
     private $employeeId;
 
@@ -385,20 +342,6 @@ class Employee
     public function getIsActive()
     {
         return $this->isActive;
-    }
-
-    /**
-     * Set employeeId
-     *
-     * @param string $employeeId
-     *
-     * @return Employee
-     */
-    public function setEmployeeId($employeeId)
-    {
-        $this->employeeId = $employeeId;
-
-        return $this;
     }
 
     /**

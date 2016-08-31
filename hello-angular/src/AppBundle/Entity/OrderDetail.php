@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * OrderDetail
  *
- * @ORM\Table(name="order_detail", indexes={@ORM\Index(name="ixfk_order_detail_customer_order", columns={"order_id"}), @ORM\Index(name="ixfk_order_detail_meal", columns={"meal_id"})})
+ * @ORM\Table(name="order_detail", indexes={@ORM\Index(name="ixfk_order_detail_meal", columns={"meal_id"}), @ORM\Index(name="ixfk_order_detail_customer_order", columns={"order_id"})})
  * @ORM\Entity
  */
 class OrderDetail
@@ -225,5 +225,4 @@ class OrderDetail
     {
         return $this->order;
     }
-
 }

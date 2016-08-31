@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Meal
@@ -17,16 +16,6 @@ class Meal
      * @var string
      *
      * @ORM\Column(name="meal_name", type="string", length=32, nullable=false)
-     * @Assert\Length(
-     *      max = 32,
-     *      maxMessage = "Meal name cannot be longer than {{ limit }} characters"
-     * )
-     * @Assert\NotNull(
-     *      message="Meal name should not be null."
-     * )
-     * @Assert\NotBlank(
-     *      message="Meal name should not be blank."
-     * )
      */
     private $mealName;
 
@@ -34,10 +23,6 @@ class Meal
      * @var string
      *
      * @ORM\Column(name="meal_desc", type="string", length=500, nullable=true)
-     * @Assert\Length(
-     *      max = 500,
-     *      maxMessage = "Meal name cannot be longer than {{ limit }} characters"
-     * )
      */
     private $mealDesc;
 
@@ -45,10 +30,6 @@ class Meal
      * @var string
      *
      * @ORM\Column(name="meal_desc_indo", type="string", length=64, nullable=true)
-     * @Assert\Length(
-     *      max = 64,
-     *      maxMessage = "Meal name cannot be longer than {{ limit }} characters"
-     * )
      */
     private $mealDescIndo;
 
@@ -56,20 +37,6 @@ class Meal
      * @var integer
      *
      * @ORM\Column(name="meal_price", type="integer", nullable=false)
-     * @Assert\Type(
-     *     type="integer",
-     *     message="Price is not a valid {{ type }}."
-     * )
-     * @Assert\NotNull(
-     *      message="Price should not be null."
-     * )
-     * @Assert\NotBlank(
-     *      message="Price should not be blank."
-     * )
-     * @Assert\GreaterThanOrEqual(
-     *     value = 0,
-     *     message="Price must be greater or equal 0."
-     * )
      */
     private $mealPrice;
 
@@ -77,14 +44,6 @@ class Meal
      * @var integer
      *
      * @ORM\Column(name="discount", type="integer", nullable=true)
-     * @Assert\Type(
-     *     type="integer",
-     *     message="Discount is not a valid {{ type }}."
-     * )
-     * @Assert\GreaterThanOrEqual(
-     *     value = 0,
-     *     message="Discount must be greater or equal 0."
-     * )
      */
     private $discount = '0';
 
@@ -92,10 +51,6 @@ class Meal
      * @var string
      *
      * @ORM\Column(name="picture", type="string", length=255, nullable=true)
-     * @Assert\Length(
-     *      max = 200,
-     *      maxMessage = "Meal name cannot be longer than {{ limit }} characters"
-     * )
      */
     private $picture;
 
