@@ -1,5 +1,5 @@
 
-app.service('Authorization', function($state, $window, AppCache) {
+app.service('Authorization', function($state, $localStorage, AppCache) {
 
   this.authorized;
   this.memorizedState;
@@ -16,8 +16,8 @@ app.service('Authorization', function($state, $window, AppCache) {
     $state.go(targetState);
   };
 
-  if($window.localStorage['Auth']){
-	  return $window.localStorage['Auth'];
+  if($localStorage.auth){
+	  return $localStorage.auth;
   } 
   else
   {
@@ -27,6 +27,6 @@ app.service('Authorization', function($state, $window, AppCache) {
     authToken : this.authToken,
 	clear: clear,
     go: go
-	}
+	};
   }
 });

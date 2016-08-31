@@ -4,4 +4,7 @@ app.controller('AuthCtrl', function AuthCtrl($scope, AuthSvc){
 	$scope.login = function(user){
 		AuthSvc.login(user);
 	};
+	$scope.logout = function(user){
+		
+	}
 });
