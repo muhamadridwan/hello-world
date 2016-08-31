@@ -1447,6 +1447,7 @@ app
         $rootScope.$state = $state;
 		$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 			console.log("on state change success");
+			console.log(Authorization.authorized);
 			if (!Authorization.authorized) {
 				console.log(Authorization.authorized);
 			  if (Authorization.memorizedState && (!_.has(fromState, 'data.redirectTo') || toState.name !== fromState.data.redirectTo)) {

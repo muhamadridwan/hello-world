@@ -5,10 +5,11 @@ app.service('Authorization', function($state, $localStorage, AppCache) {
   this.memorizedState;
   this.authToken;
 
-  var clear = function() {
+  clear = function(fallback){
     this.authorized = false;
     this.memorizedState = null;
-  },
+	this.authToken = "";
+  };
 
   go = function(fallback) {
     this.authorized = true;
