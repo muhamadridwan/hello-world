@@ -8,8 +8,6 @@
       <unique-constraint name="uq_customer_customer_id" columns="customer_id"/>
     </unique-constraints>
     <id name="customerId" type="string" column="customer_id" length="32">
-      <generator strategy="SEQUENCE"/>
-      <sequence-generator sequence-name="customer_customer_id_seq" allocation-size="1" initial-value="1"/>
     </id>
     <field name="personalId" type="string" column="personal_id" length="32" nullable="true">
       <options>

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CustomerOrder
  *
- * @ORM\Table(name="customer_order", uniqueConstraints={@ORM\UniqueConstraint(name="uq_user_order_order_id", columns={"order_id"})}, indexes={@ORM\Index(name="ixfk_customer_order_employee", columns={"cashier"}), @ORM\Index(name="ixfk_customer_order_customer", columns={"customer_id"}), @ORM\Index(name="ixfk_customer_order_employee_02", columns={"confirmed_by"})})
+ * @ORM\Table(name="customer_order", uniqueConstraints={@ORM\UniqueConstraint(name="uq_user_order_order_id", columns={"order_id"})}, indexes={@ORM\Index(name="ixfk_customer_order_employee_02", columns={"confirmed_by"}), @ORM\Index(name="ixfk_customer_order_employee", columns={"cashier"}), @ORM\Index(name="ixfk_customer_order_customer", columns={"customer_id"})})
  * @ORM\Entity
  */
 class CustomerOrder
@@ -245,6 +245,34 @@ class CustomerOrder
     public function getOrderStatus()
     {
         return $this->orderStatus;
+    }
+
+    public function getOrderStatusDesc()
+    {
+        switch ($this->orderStatus) {
+            case 0:
+                return "Ordered";
+                break;
+            case 1:
+                return "Waiting for confirmation";
+                break;
+            case 2:
+                return "Cooking";
+                break;
+            case 3:
+                return "On delivery";
+                break;
+            case 4:
+                return "Enjoying the meal";
+                break;
+            case 5:
+                return "Done";
+                break;
+            default:
+                return "Waiting for check-out";
+                break;
+        }
+
     }
 
     /**

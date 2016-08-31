@@ -67,6 +67,7 @@ class UserRepository
 	{
 		$user->setUsername($modifiedUser->getUsername());
 		$user->setEmail($modifiedUser->getEmail());
+		$user->setValidToken($modifiedUser->getValidToken());
 		$this->em->flush();
 	}
 
