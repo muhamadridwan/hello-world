@@ -35,6 +35,8 @@ class AuthorizationAPIController extends BaseAPIController
 
 					$token = $this->get('lexik_jwt_authentication.encoder')
             ->encode(['username' => $user->getUsername()]);
+            		$user->setValidToken($token);
+            		$this->container->get('app.bundle.user.management.service')->editUser($user, $user);
 
             		$resp["token"] = $token;
 					$response->setStatusCode(200);
@@ -61,36 +63,43 @@ class AuthorizationAPIController extends BaseAPIController
 
 	public function removeAuthorizationTokenAction(Request $request)
 	{
+
+		
 		$response = new JsonResponse();
 		$response->setStatusCode(500);
 
 		if($request->getMethod() == "POST")
 		{
-			$data = json_decode($request->getContent(), true);
+			
+			$token = $this->get('app.jwt_token_authenticator')->getCredentials($request);
+        	$data = $this->get('lexik_jwt_authentication.encoder')->decode($token);
+
+			//$data = json_decode($data, true);
+
+
 			//var_dump($data);
 			$user = $this->container->get('app.bundle.user.management.service')->getUserByUsername($data["username"]);
 
 			if ($user) 
 		    {
-		    	$encoder = $this->container->get('security.password_encoder');
-				if($encoder->isPasswordValid($user, $data["password"])){
+		    	if($user->getValidToken() == $token)
+		    	{
+		    		$user->setValidToken("");
+		    		$this->container->get('app.bundle.user.management.service')->editUser($user, $user);
 
-					$token = $this->get('lexik_jwt_authentication.encoder')
-            ->encode(['username' => $user->getUsername()]);
-
-            		$resp["token"] = $token;
-					$response->setStatusCode(200);
-					$response->setData($resp);
-				}
-				else
-				{
-					$response->setStatusCode(401, "Password is not valid.");
-				}
+		    		$response->setStatusCode(200);
+		    	}
+		    	else
+		    	{
+		    		$response->setStatusCode(401, "Token is not valid.");		
+		    	}
+		    		
 		    }
 		    else
 			{
 				$response->setStatusCode(401, "User doesn't exist.");
 			}
+		    	
 
 		}
 		else
