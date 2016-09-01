@@ -79,7 +79,7 @@ class AuthorizationAPIController extends BaseAPIController
 
 			//var_dump($data);
 			$user = $this->container->get('app.bundle.user.management.service')->getUserByUsername($data["username"]);
-
+			
 			if ($user) 
 		    {
 		    	if($user->getValidToken() == $token)
