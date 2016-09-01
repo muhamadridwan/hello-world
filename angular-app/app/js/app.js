@@ -2,7 +2,7 @@
  * INSPINIA - Responsive Admin Theme
  *
  */
- var APIUrl = "http://172.19.11.106:5001";
+ var APIUrl = "http://172.19.11.113:5001";
  var AuthToken = "";
  
  

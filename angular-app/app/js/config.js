@@ -63,7 +63,7 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
 			controller: MealCategoryCtrl,
             templateUrl: "views/configuration/meal_category/meal_category.html",
 			data: {
-			  authorization: false,
+			  authorization: true,
 			  redirectTo: 'login',
 			  memory: true
 			},
@@ -83,13 +83,6 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
                             serie: true,
                             name: 'datatables.buttons',
                             files: ['js/lib/plugins/dataTables/angular-datatables.buttons.min.js']
-                        },
-						{
-                            files: ['js/lib/plugins/sweetalert/sweetalert.min.js', 'css/plugins/sweetalert/sweetalert.css']
-                        },
-                        {
-                            name: 'oitozero.ngSweetAlert',
-                            files: ['js/lib/plugins/sweetalert/angular-sweetalert.min.js']
                         }
                     ]);
                 }
@@ -1447,11 +1440,24 @@ app
         $rootScope.$state = $state;
 		$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 			console.log("on state change success");
-			console.log(Authorization.authorized);
-			if (!Authorization.authorized) {
-				console.log(Authorization.authorized);
+			console.log("Authorization: ");
+			console.log(Authorization);
+			console.log("fromState : ");
+			console.log(fromState);
+			console.log("toState : ");
+			console.log(toState);
+				
+			if (!Authorization.authorized && !(toState.name == "login")) {
+				console.log("Authorization.memorizedState && (!_.has(fromState, 'data.redirectTo') || toState.name !== fromState.data.redirectTo)");
+				console.log("!_.has(fromState, 'data.redirectTo') : "+ !_.has(fromState, 'data.redirectTo')); 
+				console.log("toState.name !== fromState.data.redirectTo : ");
+				
+				
 			  if (Authorization.memorizedState && (!_.has(fromState, 'data.redirectTo') || toState.name !== fromState.data.redirectTo)) {
+				console.log("Authorization: ");
+				console.log(Authorization);
 				Authorization.clear();
+				console.log("Authorization: ");
 				console.log(Authorization);
 				console.log("clear auth");
 			  }
@@ -1459,6 +1465,7 @@ app
 				if (_.has(toState, 'data.memory') && toState.data.memory) {
 				  Authorization.memorizedState = toState.name;
 				}
+				console.log("toState: ");
 				console.log(toState);
 				console.log("redirect");
 				$state.go(toState.data.redirectTo);

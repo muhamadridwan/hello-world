@@ -42,33 +42,6 @@ app.factory('MealCategorySvc', function($http, $log, $q, $resource){
 			.error(function(data, status, headers, config){
 				$log.warn(data, status, headers, config);
 			});
-		},
-		getEvent : function(callback){
-			$http({method: 'GET', url:'http://172.19.11.100:5001/angularGetEvent'})
-			.success(function(data, status, headers, config){
-				callback(data);
-			})
-			.error(function(data, status, headers, config){
-				$log.warn(data, status, headers, config);
-			});
-
-		},
-		getEventWithQ : function(){
-			$http({method: "GET", url: 'http://172.19.11.100:5001/angularGetEvent'})
-			.success(function(data, status, headers, config){
-				deferred.resolve(data);
-			})
-			.error(function(data, status, headers, config){
-				deferred.reject(status);
-			});
-
-			deferred.promise;
-
-		},
-		
-		save : function(event){
-			resource.save(event);
-
 		}
 	};
 

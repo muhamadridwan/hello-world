@@ -1,10 +1,9 @@
 
 function MealCategoryCtrl($scope, MealCategorySvc, DTOptionsBuilder, SweetAlert){
 	$scope.mealCategory = {};
+	$scope.mealCategories = [];
 	$scope.editMode = false;
-	$scope.dtOptions = DTOptionsBuilder.newOptions()
-        .withDOM('<"html5buttons"B>lTfgitp')
-        .withButtons([]);
+	$scope.addMode = false;
 	
 	MealCategorySvc.getAllMealCategory(function(mealCategories){
 		$scope.mealCategories = mealCategories;
@@ -13,16 +12,27 @@ function MealCategoryCtrl($scope, MealCategorySvc, DTOptionsBuilder, SweetAlert)
 		
 	});
 	
+	$scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withDOM('<"html5buttons"B>lTfgitp')
+        .withButtons([]);
+	
+	
 	$scope.cancelChanges = function(){
 		$scope.editMode = false;
 	};
 	
 	$scope.save = function(){
 		MealCategorySvc.saveMealCategory($scope.mealCategory, function(mealCategory){
-			if(!mealCategory){
-				$scope.mealCategories.push(mealCategory);
+			if($scope.addMode)
+			{
+				if(mealCategory){
+					$scope.mealCategories.push(mealCategory);
+				}
 			}
+			
 			$scope.editMode = false;
+			$scope.addMode = false;
+			
 			$scope.apply;			
 		});
 	};
@@ -30,6 +40,7 @@ function MealCategoryCtrl($scope, MealCategorySvc, DTOptionsBuilder, SweetAlert)
 	$scope.addMealCategory = function(){
 		$scope.mealCategory = {};
 		$scope.editMode = true;
+		$scope.addMode = true;
 	};
 	
 	$scope.editMealCategory = function(mealCategory){

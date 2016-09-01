@@ -1,14 +1,13 @@
-app.factory('AuthSvc', function (SynchManager, Authorization, AppCache, $localStorage) {
+app.factory('AuthSvc', function (SynchManager, Authorization, AppCache, $localStorage, $state) {
 	return {
 		login : function(user){
 			SynchManager.post(
 			"/api/authorization/getAuthorizationToken/", 
 			user, 
 			function(data, status, headers, config){
-				Authorization.authToken = data["token"];
-				Authorization.authorized = true;
+				Authorization.setAuth(true, authToken = data["token"]);
 				$localStorage.auth = Authorization;
-				Authorization.go("configuration.meal_category");
+				$state.go("configuration.meal_category");
 				
 			}, 
 			function(data, status, headers, config){});
@@ -18,12 +17,14 @@ app.factory('AuthSvc', function (SynchManager, Authorization, AppCache, $localSt
 			SynchManager.post("/api/authorization/removeAuthorizationToken/",
 			null,
 			function(data, status, headers, config){
-				Authorization.authToken = "";
-				Authorization.authorized = false;
-				console.log("it should be (false) : " + Authorization.authorized);
+				console.log("Authorization before set to false: ");
+				console.log(Authorization);
+				Authorization.clear();
+				console.log("Authorization after set to false: ");
+				console.log(Authorization);
 				delete $localStorage.auth;
 				$localStorage.$reset();
-				Authorization.go("login");
+				$state.go("login");
 				
 			},
 			function(data, status, headers, config){
