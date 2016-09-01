@@ -16,10 +16,11 @@ app.factory('AuthSvc', function (SynchManager, Authorization, AppCache, $localSt
 		},
 		logout: function(user){
 			SynchManager.post("/api/authorization/removeAuthorizationToken/",
-			user,
+			null,
 			function(data, status, headers, config){
 				Authorization.authToken = "";
 				Authorization.authorized = false;
+				console.log("it should be (false) : " + Authorization.authorized);
 				delete $localStorage.auth;
 				$localStorage.$reset();
 				Authorization.go("login");

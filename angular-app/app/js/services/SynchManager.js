@@ -1,4 +1,4 @@
-app.factory('SynchManager', function($http, $log, $q, $resource, SweetAlert, Authorization){
+app.factory('SynchManager', function($http, $log, $q, $resource, SweetAlert, $localStorage){
 	
 	return {
 		post : function(url, data, onSuccess, onError){
@@ -7,7 +7,9 @@ app.factory('SynchManager', function($http, $log, $q, $resource, SweetAlert, Aut
 				url: APIUrl + url,
 				data: data,
 				responseType: "json",
-				Authorization: "Bearer " //+ Authorization["authToken"]
+				headers: {
+					Authorization: 'Bearer ' +  ($localStorage.auth ? $localStorage.auth["authToken"] : "")
+					}
 				})
 			.success(function(data, status, headers, config){
 				if(typeof(onSuccess) == "function")
@@ -29,7 +31,9 @@ app.factory('SynchManager', function($http, $log, $q, $resource, SweetAlert, Aut
 			$http({
 				method: 'GET', 
 				url: APIUrl + url,
-				Authorization: "Bearer "  //+ Authorization["authToken"]
+				headers: {
+					Authorization: 'Bearer ' +  ($localStorage.auth ? $localStorage.auth["authToken"] : "")
+					}
 				})
 			.success(function(data, status, headers, config){
 				if(typeof(onSuccess) == "function")
