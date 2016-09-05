@@ -4,16 +4,19 @@ app.service('Authorization', function($state, $localStorage) {
   this.authorized = false;
   this.memorizedState = null;
   this.authToken = "";
+  this.userData = {};
 
-  this.setAuth = function(authorized, token){
+  this.setAuth = function(authorized, token, userData){
 	this.authorized = authorized;
-    this.authToken = token;  
+    this.authToken = token;
+	this.userData = userData;
   };
   
   this.clear = function(){
     this.authorized = false;
     this.memorizedState = null;
 	this.authToken = "";
+	this.userData = {};
   };
 
   this.go = function(fallback) {
@@ -28,6 +31,7 @@ app.service('Authorization', function($state, $localStorage) {
     memorizedState: $localStorage.auth.memorizedState,
     authToken : $localStorage.auth.authToken,
 	setAuth : this.setAuth,
+	userData : this.userData,
 	clear: this.clear,
     go: this.go
 	};
@@ -39,6 +43,7 @@ app.service('Authorization', function($state, $localStorage) {
     memorizedState: this.memorizedState,
     authToken : this.authToken,
 	setAuth : this.setAuth,
+	userData : this.userData,
 	clear: this.clear,
     go: this.go
 	};

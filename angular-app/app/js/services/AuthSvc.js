@@ -5,7 +5,8 @@ app.factory('AuthSvc', function (SynchManager, Authorization, $localStorage, $st
 			"/api/authorization/getAuthorizationToken/", 
 			user, 
 			function(data, status, headers, config){
-				Authorization.setAuth(true, authToken = data["token"]);
+				Authorization.setAuth(true, data["token"], data["userData"]);
+				
 				console.log(data);
 				$localStorage.auth = Authorization;
 				$state.go("configuration.meal_category");
