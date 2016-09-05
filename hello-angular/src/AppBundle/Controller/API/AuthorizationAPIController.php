@@ -19,13 +19,11 @@ class AuthorizationAPIController extends BaseAPIController
 
 	public function getAuthorizationTokenAction(Request $request)
 	{
-		$response = new JsonResponse();
-		$response->setStatusCode(500);
-
+		
 		if($request->getMethod() == "POST")
 		{
 			$data = json_decode($request->getContent(), true);
-			//var_dump($data);
+			
 			$user = $this->container->get('app.bundle.user.management.service')->getUserByUsername($data["username"]);
 
 			if ($user) 
@@ -37,76 +35,52 @@ class AuthorizationAPIController extends BaseAPIController
             ->encode(['username' => $user->getUsername()]);
             		$user->setValidToken($token);
             		$this->container->get('app.bundle.user.management.service')->editUser($user, $user);
-
-            		$resp["token"] = $token;
-					$response->setStatusCode(200);
-					$response->setData($resp);
+            		
+            		$this->setupUserMenu($user);
+            		$this->resp["token"] = $token;
+					$this->response->setStatusCode(200);
+					$resp = json_decode($this->toJson($this->resp));
+					//var_dump($resp);
+					$this->response->setData($resp);
 				}
 				else
 				{
-					$response->setStatusCode(401, "Password is not valid.");
+					$this->response->setStatusCode(401, "Password is not valid.");
 				}
 		    }
 		    else
 			{
-				$response->setStatusCode(401, "User doesn't exist.");
+				$this->response->setStatusCode(401, "User doesn't exist.");
 			}
 
 		}
 		else
 		{
-			$response->setStatusCode(405, "It is only available on POST.");
+			$this->response->setStatusCode(405, "It is only available on POST.");
 		}
 		
-        return $response;
+        return $this->response;
 	}
 
 	public function removeAuthorizationTokenAction(Request $request)
 	{
 
-		
-		$response = new JsonResponse();
-		$response->setStatusCode(500);
-
 		if($request->getMethod() == "POST")
 		{
-			
-			$token = $this->get('app.jwt_token_authenticator')->getCredentials($request);
-        	$data = $this->get('lexik_jwt_authentication.encoder')->decode($token);
-
-			//$data = json_decode($data, true);
-
-
-			//var_dump($data);
-			$user = $this->container->get('app.bundle.user.management.service')->getUserByUsername($data["username"]);
-			
-			if ($user) 
-		    {
-		    	if($user->getValidToken() == $token)
-		    	{
-		    		$user->setValidToken("");
-		    		$this->container->get('app.bundle.user.management.service')->editUser($user, $user);
-
-		    		$response->setStatusCode(200);
-		    	}
-		    	else
-		    	{
-		    		$response->setStatusCode(401, "Token is not valid.");		
-		    	}
-		    		
-		    }
-		    else
+			if($this->isTokenValid($request))
 			{
-				$response->setStatusCode(401, "User doesn't exist.");
-			}
-		    	
+				$user = $this->authUser;
+				$user->setValidToken("");
+	    		$this->container->get('app.bundle.user.management.service')->editUser($user, $user);
 
+	    		$this->response->setStatusCode(200);
+			}
 		}
 		else
 		{
-			$response->setStatusCode(405, "It is only available on POST.");
+			$this->response->setStatusCode(405, "It is only available on POST.");
 		}
 		
-        return $response;
+        return $this->response;
 	}
 }

@@ -6,29 +6,80 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Service\AuthorizationService;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class BaseAPIController extends Controller
 {
+	protected $authUser;
 	protected $userData = array();
 	protected $resp = array();
-	protected $maxData = 10;
-	protected $session;
+	protected $response;
+	
 	function __construct()
 	{
+		$this->response = new JsonResponse();
+		$this->response->setStatusCode(500);
 	}
 
-	protected function authSetup()
+	protected function isTokenValid(Request $request)
 	{
-		$userGroupID = "ROLE_ANONYMOUS";
-		if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) 
+		$token = $this->get('app.jwt_token_authenticator')->getCredentials($request);
+        $data = $this->get('lexik_jwt_authentication.encoder')->decode($token);
+
+			
+		$user = $this->container->get('app.bundle.user.management.service')->getUserByUsername($data["username"]);
+		
+		if($user) 
+	    {
+	    	if($user->getValidToken() == $token)
+	    	{
+	    		$this->setupUserMenu($user);
+	    		$this->authUser = $user;
+				$this->resp['userData'] = $this->userData;
+	    		return true;
+	    	}
+	    	else
+	    	{
+
+	    		$this->response->setStatusCode(401, "Token is not valid.");
+	    		return false;		
+	    	}
+	    		
+	    }
+	    else
 		{
-			$this->userData['user'] = $this->getUser();
-			$userGroupID = $this->userData['user']->getUserGroup()->getUserGroupID();
+			$this->response->setStatusCode(401, "The user is not authenticated.");
+			return false;
 		}
 
-		$this->userData['menu'] = $this->container->get('app.bundle.authorization.service')->getMenu($userGroupID);
+	}
 
-		$this->resp['userData'] = $this->userData;
+	protected function toObject($jData, $class)
+	{
+
+	}
+
+	protected function toJson($obj)
+	{
+		$encoders = array(new XmlEncoder(), new JsonEncoder());
+		$normalizers = array(new ObjectNormalizer());
+
+		$serializer = new Serializer($normalizers, $encoders);
+
+		return $serializer->serialize($obj, 'json');
+
+	}
+
+	protected function setupUserMenu($user){
+
+		$this->userData['menu'] = $this->container->get('app.bundle.authorization.service')->getMenu($user->getUserGroup()->getUserGroupID());
+	    		$this->authUser = $user;
+				$this->resp['userData'] = $this->userData;
+	    		
 	}
 }
 
