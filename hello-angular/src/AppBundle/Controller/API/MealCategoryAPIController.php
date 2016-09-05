@@ -16,21 +16,20 @@ class MealCategoryAPIController extends BaseAPIController
 		parent::__construct();
 	}
 
-	public function getAllMealCategoryAction()
+	public function getAllMealCategoryAction(Request $request)
 	{
-		$encoders = array(new XmlEncoder(), new JsonEncoder());
-		$normalizers = array(new ObjectNormalizer());
+		if($this->isTokenValid($request))
+		{
+			$mealCategories = $this->container->get('app.bundle.meal.category.management.service')->getAllMealCategory();
 
-		$serializer = new Serializer($normalizers, $encoders);
+			$jmealCategories = $this->toJson($mealCategories);
+			$this->response->setStatusCode(200);
+			$this->response->setData(json_decode($jmealCategories));
+
+		}
+
+		return $this->response;
 		
-		$mealCategories = $this->container->get('app.bundle.meal.category.management.service')->getAllMealCategory();
-
-		$jmealCategories = $serializer->serialize($mealCategories, 'json');
-		
-		$response = new JsonResponse();
-		$response->setData(json_decode($jmealCategories));
-
-		return $response;
 	}
 
 	
