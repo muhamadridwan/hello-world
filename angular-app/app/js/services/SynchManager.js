@@ -1,4 +1,4 @@
-app.factory('SynchManager', function($http, $log, $q, $resource, SweetAlert, $localStorage){
+app.factory('SynchManager', function($http, $log, $q, $resource, $localStorage, NotificationSvc){
 	
 	return {
 		post : function(url, data, onSuccess, onError){
@@ -23,7 +23,11 @@ app.factory('SynchManager', function($http, $log, $q, $resource, SweetAlert, $lo
 					onError(data, status, headers, config);
 				}
 				$log.warn(data, status, headers, config);
-				//SweetAlert.swal("Something Wrong!", data["message"], "error");
+				
+				if(status==401)
+				{
+					NotificationSvc.notifyUnauthorizedUser();
+				}
 			});
 			
 		},
@@ -47,7 +51,10 @@ app.factory('SynchManager', function($http, $log, $q, $resource, SweetAlert, $lo
 					onError(data, status, headers, config);
 				}
 				$log.warn(data, status, headers, config);
-				//SweetAlert.swal("Something Wrong!", data["message"], "error");
+				if(status==401)
+				{
+					NotificationSvc.notifyUnauthorizedUser();
+				}
 			});
 		}
 	};

@@ -5,8 +5,8 @@ function MealCategoryCtrl($scope, MealCategorySvc, DTOptionsBuilder, SweetAlert)
 	$scope.editMode = false;
 	$scope.addMode = false;
 	
-	MealCategorySvc.getAllMealCategory(function(mealCategories){
-		$scope.mealCategories = mealCategories;
+	MealCategorySvc.getAllMealCategory(function(data, status, headers, config){
+		$scope.mealCategories = data;
 		$scope.$apply;
 		
 	});

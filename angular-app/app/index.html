@@ -27,6 +27,7 @@
 	
 	
     <link id="loadBefore" href="css/style.css" rel="stylesheet">
+	<link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
 
 
 </head>
@@ -58,6 +59,7 @@
 <!-- Main Angular scripts-->
 <script src="js/lib/angular/angular.min.js"></script>
 <script src="js/lib/angular/angular-sanitize.js"></script>
+<script src="js/lib/ngstorage/ngStorage.min.js"></script>
 <script src="js/lib/plugins/oclazyload/dist/ocLazyLoad.min.js"></script>
 <script src="js/lib/angular-translate/angular-translate.min.js"></script>
 <script src="js/lib/ui-router/angular-ui-router.min.js"></script>
@@ -66,7 +68,8 @@
 
 <script src="js/lib/angular/angular-resource.min.js"></script>
 <script src="js/lib/angular/angular-route.min.js"></script>
-<script src="js/lib/ngstorage/ngStorage.min.js"></script>
+<script src="js/lib/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="js/lib/plugins/sweetalert/angular-sweetalert.min.js"></script>
 
 <script src="js/lib/lodash/lodash.min.js"></script>
 
@@ -76,18 +79,19 @@
  https://developers.google.com/maps/documentation/javascript/tutorial#api_key
  After your sign up replace the key in the URL below..
 -->
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQTpXj82d8UpCi97wzo_nKXL7nYrd4G70"></script>
+<!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQTpXj82d8UpCi97wzo_nKXL7nYrd4G70"></script> -->
 
 <!-- Anglar App Script -->
 
 
 <script src="js/app.js"></script>
-<script src="js/services/AppCache.js"></script>
+<script src="js/services/NotificationSvc.js"></script>
 <script src="js/services/Authorization.js"></script>
 
 <script src="js/translations.js"></script>
 <script src="js/directives.js"></script>
 <script src="js/controllers.js"></script>
+
 
 <script src="js/services/SynchManager.js"></script>
 <script src="js/services/AuthSvc.js"></script>

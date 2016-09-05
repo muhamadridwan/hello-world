@@ -6,44 +6,57 @@
  * Initial there are written state for all view in theme.
  *
  */
-
+					
 function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdleProvider, KeepaliveProvider) {
 
     // Configure Idle settings
     IdleProvider.idle(5); // in seconds
     IdleProvider.timeout(120); // in seconds
-
-    $urlRouterProvider.otherwise("/configuration/meal_category");
-
+	
+	$urlRouterProvider.otherwise("/configuration/meal_category");
+	
+    
     $ocLazyLoadProvider.config({
         // Set to true if you want to see what and when is dynamically loaded
-        debug: true
+        debug: false
     });
 	
 	var commonLib = [
-						{
-                            files: ['js/lib/plugins/sweetalert/sweetalert.min.js', 'css/plugins/sweetalert/sweetalert.css']
-                        },
-                        {
-                            name: 'oitozero.ngSweetAlert',
-                            files: ['js/lib/plugins/sweetalert/angular-sweetalert.min.js']
-                        }
-					];
-	
+		{
+			"serie": true,
+			"files": ["js/lib/plugins/dataTables/datatables.min.js", "css/plugins/dataTables/datatables.min.css"]
+		}, 
+		{
+			"serie": true,
+			"name": "datatables",
+			"files": ["js/lib/plugins/dataTables/angular-datatables.min.js"]
+		}, 
+		{
+			"serie": true,
+			"name": "datatables.buttons",
+			"files": ["js/lib/plugins/dataTables/angular-datatables.buttons.min.js"]
+		}, 
+		{
+			"files": ["js/lib/plugins/sweetalert/sweetalert.min.js", "css/plugins/sweetalert/sweetalert.css"]
+		}, 
+		{
+			"name": "oitozero.ngSweetAlert",
+			"files": ["js/lib/plugins/sweetalert/angular-sweetalert.min.js"]
+		}
+	];
 	
     $stateProvider
 		.state('login', {
             url: "/login",
             templateUrl: "views/authorization/login.html",
-			data: { pageTitle: 'Login', specialClass: 'gray-bg' }
-			// ,
-			// resolve: {
-                // loadPlugin: function ($ocLazyLoad) {
-					// var libs = [];
-					// libs.concat(commonLib);
-                    // return $ocLazyLoad.load(libs);
-                // }
-            // }
+			data: { pageTitle: 'Login', specialClass: 'gray-bg' },
+			resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+					var libs = [];
+					angular.copy(commonLib, libs);
+					return $ocLazyLoad.load(libs);
+                }
+            }
         })
 		// .state('login', {
             // url: "/login",
@@ -76,29 +89,9 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
 			},
 			resolve: {
                 loadPlugin: function ($ocLazyLoad) {
-                    return $ocLazyLoad.load([
-                        {
-                            serie: true,
-                            files: ['js/lib/plugins/dataTables/datatables.min.js','css/plugins/dataTables/datatables.min.css']
-                        },
-                        {
-                            serie: true,
-                            name: 'datatables',
-                            files: ['js/lib/plugins/dataTables/angular-datatables.min.js']
-                        },
-                        {
-                            serie: true,
-                            name: 'datatables.buttons',
-                            files: ['js/lib/plugins/dataTables/angular-datatables.buttons.min.js']
-                        },
-						{
-                            files: ['js/lib/plugins/sweetalert/sweetalert.min.js', 'css/plugins/sweetalert/sweetalert.css']
-                        },
-                        {
-                            name: 'oitozero.ngSweetAlert',
-                            files: ['js/lib/plugins/sweetalert/angular-sweetalert.min.js']
-                        }
-                    ]);
+					var libs = [];
+					angular.copy(commonLib, libs);
+					return $ocLazyLoad.load(libs);
                 }
             }
         })
@@ -1450,10 +1443,17 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
 
 app
     .config(config)
-    .run(function(_, $rootScope, $state, Authorization) {
-        $rootScope.$state = $state;
+    .run(function(_, $rootScope, $state, Authorization, NotificationSvc) {
+        
+		$rootScope.$state = $state;
+		
 		$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+			//console.log("auth: ", Authorization);
+			
 			if (!Authorization.authorized && !(toState.name == "login")) {
+				
+			  NotificationSvc.notifyUnauthorizedUser();
+			
 			  if (Authorization.memorizedState && (!_.has(fromState, 'data.redirectTo') || toState.name !== fromState.data.redirectTo)) {
 				Authorization.clear();
 			  }
@@ -1461,6 +1461,7 @@ app
 				if (_.has(toState, 'data.memory') && toState.data.memory) {
 				  Authorization.memorizedState = toState.name;
 				}
+				//console.log("redirected.");
 				$state.go(toState.data.redirectTo);
 			  }
 			}

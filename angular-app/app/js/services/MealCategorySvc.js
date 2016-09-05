@@ -1,14 +1,19 @@
-app.factory('MealCategorySvc', function($http, $log, $q, $resource){
+app.factory('MealCategorySvc', function($http, $log, $q, $resource, SynchManager){
 	
 	return {
-		getAllMealCategory : function(callback){
-			$http({method: 'GET', url:APIUrl + "/api/configuration/mealCategory/getAllMealCategory/"})
-			.success(function(data, status, headers, config){
-				callback(data);
-			})
-			.error(function(data, status, headers, config){
-				$log.warn(data, status, headers, config);
-			});
+		getAllMealCategory : function(onSuccess){
+			
+			SynchManager.get(
+			"/api/configuration/mealCategory/getAllMealCategory/", 
+			onSuccess, null);
+			
+			// $http({method: 'GET', url:APIUrl + "/api/configuration/mealCategory/getAllMealCategory/"})
+			// .success(function(data, status, headers, config){
+				// callback(data);
+			// })
+			// .error(function(data, status, headers, config){
+				// $log.warn(data, status, headers, config);
+			// });
 			
 		},
 		saveMealCategory: function(mealCategory, callback){

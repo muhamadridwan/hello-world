@@ -1,5 +1,5 @@
 
-app.service('Authorization', function($state, $localStorage, AppCache) {
+app.service('Authorization', function($state, $localStorage) {
 
   this.authorized = false;
   this.memorizedState = null;
