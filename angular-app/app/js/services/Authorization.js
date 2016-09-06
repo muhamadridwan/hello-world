@@ -30,8 +30,8 @@ app.service('Authorization', function($state, $localStorage) {
 	authorized: $localStorage.auth.authorized,
     memorizedState: $localStorage.auth.memorizedState,
     authToken : $localStorage.auth.authToken,
+	userData :$localStorage.auth.userData,
 	setAuth : this.setAuth,
-	userData : this.userData,
 	clear: this.clear,
     go: this.go
 	};
@@ -42,8 +42,8 @@ app.service('Authorization', function($state, $localStorage) {
 	authorized: this.authorized,
     memorizedState: this.memorizedState,
     authToken : this.authToken,
-	setAuth : this.setAuth,
 	userData : this.userData,
+	setAuth : this.setAuth,
 	clear: this.clear,
     go: this.go
 	};

@@ -78,8 +78,42 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
 			  memory: true
 			}
         })
-        .state('configuration.meal_category', {
+        .state('configuration.mealCategoryIndex', {
             url: "/meal_category",
+			controller: MealCategoryCtrl,
+            templateUrl: "views/configuration/meal_category/meal_category.html",
+			data: {
+			  authorization: true,
+			  redirectTo: 'login',
+			  memory: true
+			},
+			resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+					var libs = [];
+					angular.copy(commonLib, libs);
+					return $ocLazyLoad.load(libs);
+                }
+            }
+        })
+		.state('configuration.mealIndex', {
+            url: "/meal",
+			controller: MealCtrl,
+            templateUrl: "views/configuration/meal/meal.html",
+			data: {
+			  authorization: true,
+			  redirectTo: 'login',
+			  memory: true
+			},
+			resolve: {
+                loadPlugin: function ($ocLazyLoad) {
+					var libs = [];
+					angular.copy(commonLib, libs);
+					return $ocLazyLoad.load(libs);
+                }
+            }
+        })
+		.state('configuration.restoTableIndex', {
+            url: "/resto_table",
 			controller: MealCategoryCtrl,
             templateUrl: "views/configuration/meal_category/meal_category.html",
 			data: {
