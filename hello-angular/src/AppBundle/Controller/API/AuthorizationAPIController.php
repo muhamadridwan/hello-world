@@ -36,7 +36,7 @@ class AuthorizationAPIController extends BaseAPIController
             		$user->setValidToken($token);
             		$this->container->get('app.bundle.user.management.service')->editUser($user, $user);
             		
-            		$this->setupUserMenu($user);
+            		$this->setupUserData($user);
             		$this->resp["token"] = $token;
 					$this->response->setStatusCode(200);
 					$resp = json_decode($this->toJson($this->resp));

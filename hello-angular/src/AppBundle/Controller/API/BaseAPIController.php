@@ -37,7 +37,7 @@ class BaseAPIController extends Controller
 	    {
 	    	if($user->getValidToken() == $token)
 	    	{
-	    		$this->setupUserMenu($user);
+	    		$this->setupUserData($user);
 	    		$this->authUser = $user;
 				$this->resp['userData'] = $this->userData;
 	    		return true;
@@ -60,7 +60,11 @@ class BaseAPIController extends Controller
 
 	protected function toObject($jData, $class)
 	{
-
+		$encoders = array(new XmlEncoder(), new JsonEncoder());
+		$normalizers = array(new ObjectNormalizer());
+		$serializer = new Serializer($normalizers, $encoders);
+	    
+	    return $serializer->deserialize($data, $class, 'json');
 	}
 
 	protected function toJson($obj)
@@ -74,7 +78,7 @@ class BaseAPIController extends Controller
 
 	}
 
-	protected function setupUserMenu($user){
+	protected function setupUserData($user){
 
 		$this->userData['menu'] = $this->container->get('app.bundle.authorization.service')->getMenu($user->getUserGroup()->getUserGroupID());
 	    		$this->authUser = $user;
