@@ -97,8 +97,8 @@ function config($stateProvider, $urlRouterProvider, $ocLazyLoadProvider, IdlePro
         })
 		.state('configuration.mealIndex', {
             url: "/meal",
-			controller: MealCtrl,
-            templateUrl: "views/configuration/meal/meal.html",
+			controller: MealCategoryCtrl,
+            templateUrl: "views/configuration/meal_category/meal_category.html",
 			data: {
 			  authorization: true,
 			  redirectTo: 'login',
